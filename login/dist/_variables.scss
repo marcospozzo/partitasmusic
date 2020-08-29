@@ -1,0 +1,63 @@
+$backgroundColor: rgba(233, 229, 222, 1);
+$backgroundHighlight: rgba(186, 166, 153, 1);
+$grayHighlight: rgba(85, 76, 72, 1);
+$colorHighlight: rgba(192, 99, 40, 1);
+$colorHighlightActive: #c15715;
+
+$gradient-top: linear-gradient(
+  0deg,
+  #e9e5deff,
+  #baa699ff,
+  #554c48ff,
+  #c06328ff
+);
+$gradient-right: linear-gradient(
+  90deg,
+  #e9e5deff,
+  #baa699ff,
+  #554c48ff,
+  #c06328ff
+);
+$gradient-bottom: linear-gradient(
+  180deg,
+  #e9e5deff,
+  #baa699ff,
+  #554c48ff,
+  #c06328ff
+);
+$gradient-left: linear-gradient(
+  270deg,
+  #e9e5deff,
+  #baa699ff,
+  #554c48ff,
+  #c06328ff
+);
+$gradient-top-right: linear-gradient(
+  45deg,
+  #e9e5deff,
+  #baa699ff,
+  #554c48ff,
+  #c06328ff
+);
+$gradient-bottom-right: linear-gradient(
+  135deg,
+  #e9e5deff,
+  #baa699ff,
+  #554c48ff,
+  #c06328ff
+);
+$gradient-top-left: linear-gradient(
+  225deg,
+  #e9e5deff,
+  #baa699ff,
+  #554c48ff,
+  #c06328ff
+);
+$gradient-bottom-left: linear-gradient(
+  315deg,
+  #e9e5deff,
+  #baa699ff,
+  #554c48ff,
+  #c06328ff
+);
+$gradient-radial: radial-gradient(#e9e5deff, #baa699ff, #554c48ff, #c06328ff);
