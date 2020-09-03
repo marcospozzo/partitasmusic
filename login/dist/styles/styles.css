@@ -9,14 +9,18 @@
   -webkit-box-direction: normal;
       -ms-flex-flow: column;
           flex-flow: column;
+  position: relative;
 }
 
 .logo {
-  margin-bottom: 20px;
+  margin-bottom: 50px;
+  width: 80%;
+  -ms-flex-item-align: center;
+      -ms-grid-row-align: center;
+      align-self: center;
 }
 
 .form {
-  position: relative;
   z-index: 1;
   background: #baa699;
   max-width: 360px;
