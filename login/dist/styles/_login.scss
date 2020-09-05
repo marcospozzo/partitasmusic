@@ -63,6 +63,11 @@
   color: black;
   text-decoration: none;
 }
+
+.form .message a:hover {
+  text-decoration: underline;
+}
+
 .form .register-form {
   display: none;
 }
@@ -100,6 +105,7 @@
 .container .info span .fa {
   color: #ef3b3a;
 }
+
 body {
   width: 100vw;
   height: 100vh;

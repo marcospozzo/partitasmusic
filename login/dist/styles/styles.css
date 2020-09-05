@@ -76,6 +76,10 @@
   text-decoration: none;
 }
 
+.form .message a:hover {
+  text-decoration: underline;
+}
+
 .form .register-form {
   display: none;
 }
