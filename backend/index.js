@@ -42,3 +42,5 @@ app.listen(PORT || 3000, () => console.log(`Server started at ${PORT}`));
 // user.token = token;
 // console.log(user);
 // console.log(user.token.isValid());
+// const mail = require('./email/email');
+// mail().catch(console.error);
