@@ -42,5 +42,14 @@ app.listen(PORT || 3000, () => console.log(`Server started at ${PORT}`));
 // user.token = token;
 // console.log(user);
 // console.log(user.token.isValid());
-// const mail = require('./email/email');
-// mail().catch(console.error);
+
+// const mailing = require('./email/email');
+// const data = {
+//   to: 'info@partitasmusic.com',
+//   subject: `New account request `,
+//   text: `requested an account with the following email address:.\n\n
+//             Click on the following URL to APPRO'\n''\n'
+//             Click on the following URL to REJECT`,
+//   html: '',
+// };
+// mailing(data).catch(console.error);
