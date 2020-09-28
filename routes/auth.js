@@ -11,10 +11,11 @@ router.post('/signup', async (req, res) => {
     const user = new User({
       name: req.body.name,
       email: req.body.email,
+      whois: req.body.whois,
     });
     try {
       const savedUser = await user.save();
-      sendUserForValidation(savedUser);
+      sendUserForValidation(savedUser, req.headers.host);
       res.sendStatus(200);
     } catch (err) {
       res.status(400).send(err);
@@ -28,7 +29,7 @@ router.get('/signup/:token', async (req, res) => {
     decoded
   ) {
     if (err) {
-      res.sendStatus(404);
+      res.sendStatus(401);
     } else {
       User.findById(decoded.id, async function (err, user) {
         if (err || user == null || user.status != 'pending') {
@@ -36,7 +37,7 @@ router.get('/signup/:token', async (req, res) => {
         } else {
           user.status = decoded.status;
           await user.save();
-          sendStatusToUser(user);
+          sendStatusToUser(user, req.headers.host);
           res.sendStatus(200);
         }
       });
@@ -44,15 +45,21 @@ router.get('/signup/:token', async (req, res) => {
   });
 });
 
+router.get('/set-password/:token', async (req, res) => {
+  res.render('set', {
+    token: req.params.token,
+  });
+});
+
 // user sets password with provided token
-router.post('/set-password', async (req, res) => {
-  if ('token' in req.body && 'password' in req.body) {
-    jwt.verify(req.body.token, process.env.RESET_TOKEN, function (
+router.post('/set-password/:token', async (req, res) => {
+  if ('token' in req.params && req.body.password == req.body.confirm) {
+    jwt.verify(req.params.token, process.env.RESET_TOKEN, function (
       err,
       decoded
     ) {
       if (err) {
-        res.sendStatus(403);
+        res.sendStatus(401);
       } else {
         User.findById(decoded.id, async function (err, user) {
           if (
@@ -75,19 +82,22 @@ router.post('/set-password', async (req, res) => {
   }
 });
 
-router.get('/login', async (req, res) => {
-  User.findOne({ email: req.body.email }, async function (err, user) {
-    if (err || user == null || user.status != 'activated') {
-      res.sendStatus(404);
-    } else {
-      const match = await bcrypt.compare(req.body.password, user.password);
-      if (match) {
-        res.sendStatus(200);
-      } else {
+router.post('/login', async (req, res) => {
+  if ('email' in req.body && 'password' in req.body) {
+    User.findOne({ email: req.body.email }, async function (err, user) {
+      if (err || user == null || user.status != 'activated') {
         res.sendStatus(404);
+      } else {
+        const match = await bcrypt.compare(req.body.password, user.password);
+        if (match) {
+          res.status(200);
+          res.redirect('/');
+        } else {
+          res.sendStatus(403);
+        }
       }
-    }
-  });
+    });
+  }
 });
 
 // user requests password reset based on email
@@ -97,14 +107,14 @@ router.post('/reset-password', async (req, res) => {
       if (err || user == null || user.status != 'activated') {
         res.sendStatus(404);
       } else {
-        sentEmailWithToken(user);
+        sendEmailWithToken(user, req.headers.host);
         res.sendStatus(200);
       }
     });
   }
 });
 
-function sendUserForValidation(user) {
+function sendUserForValidation(user, host) {
   const approvalToken = jwt.sign(
     {
       id: user.id,
@@ -123,19 +133,19 @@ function sendUserForValidation(user) {
     { expiresIn: '1w' }
   );
 
-  const approvalURL = `http://localhost:3000/api/user/signup/${approvalToken}`;
-  const rejectionURL = `http://localhost:3000/api/user/signup/${rejectionToken}`;
+  const approvalURL = `http://${host}/api/user/signup/${approvalToken}`;
+  const rejectionURL = `http://${host}/api/user/signup/${rejectionToken}`;
 
   const data = {
     to: 'info@partitasmusic.com',
     subject: `New account request by ${user.name}`,
-    text: `Dear Partitas: \n\n${user.name} requested an account with the following email address: ${user.email}. \n\nClick on the following URL to APPROVE ${user.name}: ${approvalURL} \n\nClick on the following URL to REJECT ${user.name}: ${rejectionURL} \n\nBest regards.`,
+    text: `Dear Partitas: \n\nThere is a new account request: \nName: ${user.name} \nEmail: ${user.email} \nWho is: ${user.whois} \n\nClick on the following URL to APPROVE ${user.name}: ${approvalURL} \n\nClick on the following URL to REJECT ${user.name}: ${rejectionURL} \n\nBest regards.`,
     html: '',
   };
   sendMail(data).catch(console.error);
 }
 
-function sendStatusToUser(user) {
+function sendStatusToUser(user, host) {
   if (user.status == 'approved') {
     const token = jwt.sign(
       {
@@ -144,7 +154,7 @@ function sendStatusToUser(user) {
       process.env.RESET_TOKEN,
       { expiresIn: '1w' }
     );
-    const approvalURL = `http://localhost:3000/api/user/set-password/${token}`;
+    const approvalURL = `http://${host}/api/user/set-password/${token}`;
 
     const data = {
       to: user.email,
@@ -166,24 +176,37 @@ function sendStatusToUser(user) {
   }
 }
 
-function sentEmailWithToken(user) {
+function sendEmailWithToken(user, host) {
   const token = jwt.sign(
     {
       id: user.id,
     },
     process.env.RESET_TOKEN,
-    { expiresIn: '1h' }
+    { expiresIn: '15m' }
   );
 
-  const resetlURL = `http://localhost:3000/api/user/set-password/${token}`;
+  const resetlURL = `http://${host}/api/user/set-password/${token}`;
 
   const data = {
     to: user.email,
     subject: 'Reset your password',
-    text: `Dear ${user.name}: \n\nIf you requested a password reset you can do so here: ${resetlURL} \n\nIf you did not requested a password reset, please let us know by answering this email. \n\nBest regards, \nPartitas Music.`,
+    text: `Dear ${user.name}: \n\nIf you requested a password reset you can do so here: ${resetlURL} \n\nIf you did not request a password reset, please let us know by answering this email. \n\nBest regards, \nPartitas Music.`,
     html: '',
   };
   sendMail(data).catch(console.error);
 }
 
+const checkAuth = (req, res, next) => {
+  const token = req.headers.authorization.split(' ')[1];
+  jwt.verify(token, process.env.SESSION_TOKEN, function (err, decoded) {
+    if (err) {
+      return res.status(401).json({
+        message: 'Auth failed',
+      });
+    }
+    next();
+  });
+};
+
 module.exports = router;
+module.exports = checkAuth;

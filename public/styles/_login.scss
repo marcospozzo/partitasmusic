@@ -1,54 +1,56 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:300);
+@import './variables.scss';
+
 .login-page {
   width: 360px;
   padding: 8% 0 0;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-flow: column;
-          flex-flow: column;
+  flex-flow: column;
   position: relative;
 }
 
 .logo {
   margin-bottom: 50px;
   width: 80%;
-  -ms-flex-item-align: center;
-      -ms-grid-row-align: center;
-      align-self: center;
+  align-self: center;
 }
 
 .form {
   z-index: 1;
-  background: #baa699;
-  max-width: 360px;
+  background: $backgroundHighlight;
+  // max-width: 360px;
+  width: 100%;
   margin: 0 auto 100px;
   padding: 45px;
   text-align: center;
-  -webkit-box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
-          box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
 }
-
-.form input {
-  font-family: "Roboto", sans-serif;
+.form input,
+.form textarea {
+  font-family: 'Roboto', sans-serif;
   outline: 0;
-  background: #e9e5de;
+  background: $backgroundColor;
   width: 100%;
+  // width: 400px;
+  max-width: 100%;
+  min-width: 100%;
   border: 0;
   margin: 0 0 15px;
   padding: 15px;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
   font-size: 14px;
 }
 
+textarea {
+  height: 100px;
+  resize: none;
+}
+
 .form button {
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
   text-transform: uppercase;
   outline: 0;
-  background: #c06328;
+  background: $colorHighlight;
   width: 100%;
   border: 0;
   padding: 15px;
@@ -58,19 +60,16 @@
   transition: all 0.3 ease;
   cursor: pointer;
 }
-
 .form button:hover,
 .form button:active,
 .form button:focus {
-  background: #c15715;
+  background: $colorHighlightActive;
 }
-
 .form .message {
   margin: 15px 0 0;
   color: black;
   font-size: 12px;
 }
-
 .form .message a {
   color: black;
   text-decoration: none;
@@ -80,8 +79,25 @@
   text-decoration: underline;
 }
 
-.form .register-form {
+.first-pair {
+  @extend .message;
+}
+
+.second-pair {
+  @extend .message;
+}
+
+.form .signup-form {
   display: none;
+}
+
+.form .reset-password-form {
+  display: none;
+}
+
+.form .bottom-nav-containter {
+  display: flex;
+  justify-content: space-around;
 }
 
 .container {
@@ -90,19 +106,16 @@
   max-width: 300px;
   margin: 0 auto;
 }
-
 .container:before,
 .container:after {
-  content: "";
+  content: '';
   display: block;
   clear: both;
 }
-
 .container .info {
   margin: 50px auto;
   text-align: center;
 }
-
 .container .info h1 {
   margin: 0 0 15px;
   padding: 0;
@@ -110,17 +123,14 @@
   font-weight: 300;
   color: #1a1a1a;
 }
-
 .container .info span {
   color: #4d4d4d;
   font-size: 12px;
 }
-
 .container .info span a {
   color: #000000;
   text-decoration: none;
 }
-
 .container .info span .fa {
   color: #ef3b3a;
 }
@@ -128,25 +138,23 @@
 body {
   width: 100vw;
   height: 100vh;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  background: #e9e5de;
-  /* fallback for old browsers */
-  background: -webkit-gradient(linear, right top, left top, from(#e9e5de), to(#baa699));
-  background: linear-gradient(to left, #e9e5de, #baa699);
-  font-family: "Roboto", sans-serif;
+  justify-content: center;
+
+  background: $backgroundColor; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    right,
+    $backgroundColor,
+    $backgroundHighlight
+  );
+  background: -moz-linear-gradient(
+    right,
+    $backgroundColor,
+    $backgroundHighlight
+  );
+  background: -o-linear-gradient(right, $backgroundColor, $backgroundHighlight);
+  background: linear-gradient(to left, $backgroundColor, $backgroundHighlight);
+  font-family: 'Roboto', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
-* {
-  margin: 0px;
-  padding: 0px;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-}
-/*# sourceMappingURL=styles.css.map */

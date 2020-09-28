@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Partitas Music | Set password</title>
+    <link rel="icon" type="image/png" href="/favicon-PM.png" />
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+
+  <body>
+    <!-- partial:index.partial.html -->
+    <div class="login-page">
+      <img class="logo" src="/logo-pm.png" alt="logo" />
+      <div class="form">
+        <!-- login form -->
+        <form
+          class="login-form"
+          action="http://localhost:3000/api/user/set-password/<%= token %>"
+          method="POST"
+        >
+          <input
+            type="password"
+            name="password"
+            placeholder="new password"
+            autocomplete="new-password"
+            autofocus
+            required
+          />
+          <input
+            type="password"
+            name="confirm"
+            placeholder="confirm password"
+            autocomplete="new-password"
+            required
+          />
+          <button type="submit">set</button>
+        </form>
+      </div>
+    </div>
+    <!-- partial -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="/login/script.js"></script>
+  </body>
+</html>
