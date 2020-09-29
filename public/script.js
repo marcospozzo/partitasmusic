@@ -13,4 +13,8 @@ $('.second-pair').click(function () {
   $('.signup-form').animate({ height: 'toggle', opacity: 'toggle' }, 'slow');
 });
 
+$('#go-to-login').click(function () {
+  window.location.href = '/login.html';
+});
+
 // $('.form button').click(() => console.log('button pressed'));

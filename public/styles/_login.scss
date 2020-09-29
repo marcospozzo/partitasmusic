@@ -9,22 +9,50 @@
   position: relative;
 }
 
+#go-to-login {
+  width: 360px;
+  margin-top: 45px;
+}
+
 .logo {
   margin-bottom: 50px;
   width: 80%;
+  max-width: 300px;
   align-self: center;
+  justify-self: center;
 }
 
 .form {
-  z-index: 1;
-  background: $backgroundHighlight;
+  // z-index: 1;
   // max-width: 360px;
+  background: $backgroundHighlight;
   width: 100%;
   margin: 0 auto 100px;
   padding: 45px;
   text-align: center;
+  justify-content: center;
+  align-content: center;
+  align-self: center;
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
 }
+
+.home {
+  @extend .form;
+  width: 80vw;
+  height: 80vh;
+  margin: 0px;
+  padding: 45px 90px;
+  display: flex;
+  text-align: left;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+ul {
+  list-style-position: inside;
+}
+
 .form input,
 .form textarea {
   font-family: 'Roboto', sans-serif;
@@ -140,6 +168,7 @@ body {
   height: 100vh;
   display: flex;
   justify-content: center;
+  align-content: center;
 
   background: $backgroundColor; /* fallback for old browsers */
   background: -webkit-linear-gradient(
