@@ -195,7 +195,7 @@ function sendEmailWithToken(user, host) {
   };
   sendMail(data).catch(console.error);
 }
-
+/*
 const checkAuth = (req, res, next) => {
   const token = req.headers.authorization.split(' ')[1];
   jwt.verify(token, process.env.SESSION_TOKEN, function (err, decoded) {
@@ -207,6 +207,6 @@ const checkAuth = (req, res, next) => {
     next();
   });
 };
-
+*/
 module.exports = router;
-module.exports = checkAuth;
+// module.exports = checkAuth;
