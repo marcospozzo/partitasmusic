@@ -27,7 +27,7 @@ const UserSchema = new mongoose.Schema(
     whois: {
       type: String,
       required: true,
-      max: 2000,
+      max: 1000,
     },
     role: {
       type: String,

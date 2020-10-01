@@ -6,39 +6,39 @@ const dotenv = require('dotenv');
 const sendMail = require('../email/email');
 dotenv.config();
 
-router.post('/signup', async (req, res) => {
-  if ('email' in req.body && 'name' in req.body) {
+router.post('/signup', async (req, res, next) => {
+  try {
     const user = new User({
       name: req.body.name,
       email: req.body.email,
       whois: req.body.whois,
     });
-    try {
-      const savedUser = await user.save();
-      sendUserForValidation(savedUser, req.headers.host);
-      res.sendStatus(200);
-    } catch (err) {
-      res.status(400).send(err);
-    }
+    const savedUser = await user.save();
+    sendUserForValidation(savedUser, req.headers.host);
+    res.status(200);
+    res.redirect('/login.html');
+  } catch (err) {
+    next(err);
   }
 });
 
-router.get('/signup/:token', async (req, res) => {
+router.get('/signup/:token', async (req, res, next) => {
   jwt.verify(req.params.token, process.env.STATUS_TOKEN, function (
     err,
     decoded
   ) {
     if (err) {
-      res.sendStatus(401);
+      next(err);
     } else {
       User.findById(decoded.id, async function (err, user) {
         if (err || user == null || user.status != 'pending') {
-          res.sendStatus(404);
+          next(err);
         } else {
           user.status = decoded.status;
           await user.save();
           sendStatusToUser(user, req.headers.host);
-          res.sendStatus(200);
+          res.status(200);
+          res.redirect('/');
         }
       });
     }
@@ -52,14 +52,14 @@ router.get('/set-password/:token', async (req, res) => {
 });
 
 // user sets password with provided token
-router.post('/set-password/:token', async (req, res) => {
-  if ('token' in req.params && req.body.password == req.body.confirm) {
+router.post('/set-password/:token', async (req, res, next) => {
+  if (req.body.password == req.body.confirm) {
     jwt.verify(req.params.token, process.env.RESET_TOKEN, function (
       err,
       decoded
     ) {
       if (err) {
-        res.sendStatus(401);
+        next(err);
       } else {
         User.findById(decoded.id, async function (err, user) {
           if (
@@ -68,13 +68,14 @@ router.post('/set-password/:token', async (req, res) => {
             user.status == 'pending' ||
             user.status == 'rejected'
           ) {
-            res.sendStatus(404);
+            next(err);
           } else {
             const hashedPassword = await bcrypt.hash(req.body.password, 10);
             user.password = hashedPassword;
             user.status = 'activated';
             await user.save();
-            res.sendStatus(200);
+            res.status(200);
+            res.redirect('/login.html');
           }
         });
       }
@@ -82,36 +83,33 @@ router.post('/set-password/:token', async (req, res) => {
   }
 });
 
-router.post('/login', async (req, res) => {
-  if ('email' in req.body && 'password' in req.body) {
-    User.findOne({ email: req.body.email }, async function (err, user) {
-      if (err || user == null || user.status != 'activated') {
-        res.sendStatus(404);
+router.post('/login', async (req, res, next) => {
+  User.findOne({ email: req.body.email }, async function (err, user) {
+    if (err || user == null || user.status != 'activated') {
+      next(err);
+    } else {
+      const match = await bcrypt.compare(req.body.password, user.password);
+      if (match) {
+        res.status(200);
+        res.redirect('/');
       } else {
-        const match = await bcrypt.compare(req.body.password, user.password);
-        if (match) {
-          res.status(200);
-          res.redirect('/');
-        } else {
-          res.sendStatus(403);
-        }
+        res.sendStatus(403);
       }
-    });
-  }
+    }
+  });
 });
 
 // user requests password reset based on email
-router.post('/reset-password', async (req, res) => {
-  if ('email' in req.body) {
-    User.findOne({ email: req.body.email }, async function (err, user) {
-      if (err || user == null || user.status != 'activated') {
-        res.sendStatus(404);
-      } else {
-        sendEmailWithToken(user, req.headers.host);
-        res.sendStatus(200);
-      }
-    });
-  }
+router.post('/reset-password', async (req, res, next) => {
+  User.findOne({ email: req.body.email }, async function (err, user) {
+    if (err || user == null || user.status != 'activated') {
+      next(err);
+    } else {
+      sendEmailWithToken(user, req.headers.host);
+      res.status(200);
+      res.redirect('/login.html');
+    }
+  });
 });
 
 function sendUserForValidation(user, host) {
