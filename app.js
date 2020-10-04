@@ -2,11 +2,12 @@ const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3000;
 const mongoose = require('mongoose');
-const dotenv = require('dotenv');
+const dotenv = require('dotenv').config();
+const createError = require('http-errors');
+// const expressLayouts = require('express-ejs-layouts');
 
+// app.use(expressLayouts);
 app.set('view engine', 'ejs');
-
-dotenv.config();
 
 // db connect
 mongoose
@@ -18,33 +19,19 @@ mongoose
   .then(() => console.log('Connected to database'))
   .catch((error) => {
     console.log(error);
-    // sendEmailAlert(error); TODO
   });
 
 // middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(
-  express.static('public', {
-    extensions: ['html', 'htm'],
-  })
-);
+app.use(express.static('public'));
 
-// app.get('/', (req, res) => {
-//   res.render('set');
-// });
+// middleware routes
+app.use('/', require('./routes/index'));
+app.use('/users', require('./routes/users'));
 
-// routes middlewares
-const authRoute = require('./routes/auth');
-const { json } = require('express');
-app.use('/api/user', authRoute);
-
-//404 handler and pass to error handler
-app.use((req, res, next) => {
-  const err = new Error('Not found');
-  err.status = 404;
-  next(err);
-});
+// 404 handler
+app.use((req, res, next) => next(createError(404)));
 
 // error handler
 app.use((err, req, res, next) => {

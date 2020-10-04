@@ -12,6 +12,27 @@
   position: relative;
 }
 
+.alert, .alert-success {
+  color: #ffffff;
+  background-color: #630707;
+  position: relative;
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 14px;
+  font-style: italic;
+  border: 0;
+}
+
+.alert-success {
+  background-color: #076340;
+}
+
+label.error {
+  font-style: italic;
+  font-size: 0.7em;
+}
+
 #go-to-login {
   width: 360px;
   margin-top: 45px;
@@ -32,7 +53,10 @@
   background: #baa699;
   width: 100%;
   margin: 0 auto 100px;
-  padding: 45px;
+  padding-left: 45px;
+  padding-right: 45px;
+  padding-top: 30px;
+  padding-bottom: 45px;
   text-align: center;
   -webkit-box-pack: center;
       -ms-flex-pack: center;
@@ -81,7 +105,7 @@ ul {
   max-width: 100%;
   min-width: 100%;
   border: 0;
-  margin: 0 0 15px;
+  margin-top: 15px;
   padding: 15px;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
@@ -101,6 +125,7 @@ textarea {
   width: 100%;
   border: 0;
   padding: 15px;
+  margin-top: 15px;
   color: #ffffff;
   font-size: 14px;
   -webkit-transition: all 0.3 ease;

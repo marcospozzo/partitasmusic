@@ -3,35 +3,29 @@
   <head>
     <meta charset="UTF-8" />
     <title>Partitas Music | Login</title>
-    <link rel="icon" type="image/png" href="../favicon-PM.png" />
-    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="icon" type="image/png" href="/img/favicon-PM.png" />
+    <link rel="stylesheet" href="/css/styles.css" />
   </head>
   <body>
-    <!-- partial:index.partial.html -->
     <div class="login-page">
-      <img class="logo" src="../logo-pm.png" alt="logo" />
+      <img class="logo" src="/img/logo-pm.png" alt="logo" />
       <div class="form">
         <!-- login form -->
         <form
+          id="login-form"
           class="login-form"
-          action="http://localhost:3000/api/user/login"
+          action="/users/login"
           method="POST"
         >
-          <input
-            type="email"
-            name="email"
-            placeholder="email"
-            autofocus
-            required
-          />
+          <%- include('partials/messages'); %>
+          <input type="email" name="email" placeholder="email" autofocus />
           <input
             type="password"
             name="password"
             placeholder="password"
             autocomplete="on"
-            required
           />
-          <button type="submit">login</button>
+          <button>login</button>
 
           <div class="bottom-nav-containter">
             <span id="reset-password" class="first-pair"
@@ -45,42 +39,32 @@
         </form>
         <!-- reset password form -->
         <form
+          id="reset-password-form"
           class="reset-password-form"
-          action="http://localhost:3000/api/user/reset-password"
+          action="/users/reset-password"
           method="POST"
         >
-          <input type="email" name="email" placeholder="email" required />
-          <button type="submit">reset</button>
+          <input type="email" name="email" placeholder="email" />
+          <button>reset</button>
           <p class="first-pair"><a href="#">Back</a></p>
         </form>
-
         <!-- signup form -->
         <form
+          id="signup-form"
           class="signup-form"
-          action="http://localhost:3000/api/user/signup"
+          action="/users/signup"
           method="POST"
         >
-          <input
-            type="text"
-            name="name"
-            placeholder="Full Name"
-            autocapitalize="words"
-            required
-          />
-          <input type="email" name="email" placeholder="email" required />
-          <textarea
-            placeholder="Who are you?"
-            name="whois"
-            maxlength="1000"
-            required
-          ></textarea>
-          <button type="submit">submit</button>
+          <input type="text" name="name" placeholder="Full Name" />
+          <input type="email" name="email" placeholder="email" />
+          <textarea placeholder="Who are you?" name="whois"></textarea>
+          <button>submit</button>
           <p class="second-pair"><a href="#">Back</a></p>
         </form>
       </div>
     </div>
-    <!-- partial -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <script src="./script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
+    <script src="/script.js"></script>
   </body>
 </html>

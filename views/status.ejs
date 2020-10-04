@@ -2,40 +2,19 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Partitas Music | Set password</title>
+    <title>Partitas Music | Status</title>
     <link rel="icon" type="image/png" href="/img/favicon-PM.png" />
     <link rel="stylesheet" href="/css/styles.css" />
   </head>
+
   <body>
     <div class="login-page">
       <img class="logo" src="/img/logo-pm.png" alt="logo" />
       <div class="form">
         <!-- login form -->
-        <form
-          id="set-form"
-          class="login-form"
-          action="/users/set-password/<%= token %>"
-          method="POST"
-        >
+        <form id="submit-form" class="login-form">
           <%- include('partials/messages'); %>
-          <input
-            id="password"
-            type="password"
-            name="password"
-            placeholder="new password"
-            autocomplete="new-password"
-            autofocus
-            required
-          />
-          <input
-            id="confirm"
-            type="password"
-            name="confirm"
-            placeholder="confirm password"
-            autocomplete="new-password"
-            required
-          />
-          <button>set</button>
+          <button id="close">close</button>
         </form>
       </div>
     </div>
