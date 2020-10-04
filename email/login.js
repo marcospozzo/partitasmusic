@@ -20,8 +20,8 @@ function sendUserForValidation(user, host) {
     { expiresIn: '1w' }
   );
 
-  const approvalURL = `http://${host}/users/signup/${approvalToken}`;
-  const rejectionURL = `http://${host}/users/signup/${rejectionToken}`;
+  const approvalURL = `https://${host}/users/signup/${approvalToken}`;
+  const rejectionURL = `https://${host}/users/signup/${rejectionToken}`;
 
   const data = {
     to: 'info@partitasmusic.com',
@@ -41,7 +41,7 @@ function sendStatusToUser(user, host) {
       process.env.RESET_TOKEN,
       { expiresIn: '1w' }
     );
-    const approvalURL = `http://${host}/users/set-password/${token}`;
+    const approvalURL = `https://${host}/users/set-password/${token}`;
 
     const data = {
       to: user.email,
@@ -72,7 +72,7 @@ function sendEmailWithToken(user, host) {
     { expiresIn: '15m' }
   );
 
-  const resetlURL = `http://${host}/users/set-password/${token}`;
+  const resetlURL = `https://${host}/users/set-password/${token}`;
 
   const data = {
     to: user.email,
