@@ -1,10 +1,12 @@
 const dotenv = require('dotenv').config();
-const User = require('../model/User');
+const User = require('../models/User');
 const router = require('express').Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const sendMail = require('../email/login');
 const createError = require('http-errors');
+const passport = require('passport');
+const { forwardAuthenticated } = require('../config/auth');
 
 // signup
 router.post('/signup', async (req, res, next) => {
@@ -24,8 +26,8 @@ router.post('/signup', async (req, res, next) => {
     savedUser = await user.save();
   } catch (err) {
     if (err.name === 'ValidationError' && err.errors.email.kind === 'unique') {
-      const error = { message: 'Email is already registered' };
-      return res.render('login', { error });
+      const errors = { message: 'Email is already registered' };
+      return res.render('login', { errors });
     } else {
       return next(err);
     }
@@ -39,31 +41,31 @@ router.post('/signup', async (req, res, next) => {
 
 // admin approves or rejects account request
 router.get('/signup/:token', async (req, res) => {
-  let error;
+  let errors;
   jwt.verify(req.params.token, process.env.STATUS_TOKEN, function (
     err,
     decoded
   ) {
     if (err) {
-      error = { message: 'Invalid or expired token' };
-      return res.render('status', { error });
+      errors = { message: 'Invalid or expired token' };
+      return res.render('status', { errors });
     } else {
       User.findById(decoded.id, async function (err, user) {
         if (err || user == null) {
-          error = { message: 'Error finding user' };
-          return res.render('status', { error });
+          errors = { message: 'Error finding user' };
+          return res.render('status', { errors });
         } else {
           if (user.status != 'pending') {
-            error = { message: 'User status is not pending' };
-            return res.render('status', { error });
+            errors = { message: 'User status is not pending' };
+            return res.render('status', { errors });
           }
         }
         try {
           user.status = decoded.status;
           await user.save();
         } catch (err) {
-          error = { message: 'Error saving user' };
-          return res.render('status', { error });
+          errors = { message: 'Error saving user' };
+          return res.render('status', { errors });
         }
         sendMail.sendStatusToUser(user, req.headers.host);
         res.status(200);
@@ -72,8 +74,8 @@ router.get('/signup/:token', async (req, res) => {
           return res.render('status', { success });
         }
         if (user.status == 'rejected') {
-          const error = { message: 'User rejected correctly' };
-          return res.render('status', { error });
+          const errors = { message: 'User rejected correctly' };
+          return res.render('status', { errors });
         }
         return;
       });
@@ -92,29 +94,29 @@ router.get('/set-password/:token', async (req, res) => {
 router.post('/set-password/:token', async (req, res) => {
   const password = req.body.password;
   const token = req.params.token;
-  let error;
+  let errors;
 
   jwt.verify(token, process.env.RESET_TOKEN, function (err, decoded) {
     if (err) {
-      error = { message: 'Invalid or expired token' };
+      errors = { message: 'Invalid or expired token' };
       return res.render('set', {
         token,
-        error,
+        errors,
       });
     } else {
       User.findById(decoded.id, async function (err, user) {
         if (err || user == null) {
-          error = { message: 'Error finding user' };
+          errors = { message: 'Error finding user' };
           return res.render('set', {
             token,
-            error,
+            errors,
           });
         } else {
           if (user.status == 'pending' || user.status == 'rejected') {
-            error = { message: 'User has never been approved' };
+            errors = { message: 'User has never been approved' };
             return res.render('set', {
               token,
-              error,
+              errors,
             });
           }
         }
@@ -125,10 +127,10 @@ router.post('/set-password/:token', async (req, res) => {
           user.status = 'activated';
           await user.save();
         } catch (err) {
-          error = { message: 'Error saving user' };
+          errors = { message: 'Error saving user' };
           return res.render('set', {
             token,
-            error,
+            errors,
           });
         }
         res.status(200);
@@ -140,16 +142,17 @@ router.post('/set-password/:token', async (req, res) => {
 });
 
 // login
+/*
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
-  const error = { message: 'User or password incorrect' };
+  const errors = { message: 'Email or password incorrect' };
 
   User.findOne({ email: email }, async function (err, user) {
     if (err || user == null) {
-      return res.render('login', { error });
+      return res.render('login', { errors });
     } else {
       if (user.status != 'activated') {
-        return res.render('login', { error });
+        return res.render('login', { errors });
       }
     }
     const match = await bcrypt.compare(password, user.password);
@@ -158,24 +161,40 @@ router.post('/login', async (req, res) => {
       const success = { message: `${user.name}!` };
       return res.render('home', { success });
     } else {
-      return res.render('login', { error });
+      return res.render('login', { errors });
     }
   });
+});
+*/
+// login
+router.post('/login', (req, res, next) => {
+  passport.authenticate('local', {
+    successRedirect: '/home',
+    failureRedirect: '/login',
+    failureFlash: true,
+  })(req, res, next);
+});
+
+// logout
+router.get('/logout', (req, res) => {
+  req.logout();
+  req.flash('flashSuccess', 'You are logged out');
+  res.redirect('/login');
 });
 
 // user requests password reset based on email address
 router.post('/reset-password', async (req, res) => {
   const email = req.body.email;
-  let error;
+  let errors;
 
   User.findOne({ email: email }, async function (err, user) {
     if (err || user == null) {
-      error = { message: 'Error finding user' };
-      return res.render('login', { error });
+      errors = { message: 'Error finding user' };
+      return res.render('login', { errors });
     } else {
-      if (user.status != 'activated') {
-        error = { message: 'User is not activated' };
-        return res.render('login', { error });
+      if (user.status == 'pending' || user.status == 'rejected') {
+        errors = { message: 'User is not activated' };
+        return res.render('login', { errors });
       }
     }
 

@@ -1,5 +1,19 @@
-<% if (typeof error != 'undefined') {%>
-<div class="alert" role="alert"><%= error.message %></div>
-<% } %> <% if (typeof success != 'undefined') {%>
+<% if (typeof errors != 'undefined') { %>
+<div class="alert" role="alert"><%= errors.message %></div>
+<% } %> 
+
+<% if (typeof success != 'undefined') { %>
 <div class="alert-success" role="alert"><%= success.message %></div>
+<% } %>
+
+<% if (flashError != '') { %>
+<div class="alert" role="alert"><%= flashError %></div>
+<% } %>
+
+<% if (flashSuccess != '') { %>
+<div class="alert-success" role="alert"><%= flashSuccess %></div>
+<% } %>
+
+<% if (error != '') { %>
+<div class="alert" role="alert"><%= error %></div>
 <% } %>

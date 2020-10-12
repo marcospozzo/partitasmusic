@@ -4,10 +4,17 @@ const PORT = process.env.PORT || 3000;
 const mongoose = require('mongoose');
 const dotenv = require('dotenv').config();
 const createError = require('http-errors');
+const passport = require('passport');
+const flash = require('connect-flash');
+const session = require('express-session');
 // const expressLayouts = require('express-ejs-layouts');
 
 // app.use(expressLayouts);
+
 app.set('view engine', 'ejs');
+
+// Passport Config
+require('./config/passport')(passport);
 
 // db connect
 mongoose
@@ -26,6 +33,28 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static('public'));
 app.use(express.static('views'));
+
+// session
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: true,
+    saveUninitialized: true,
+  })
+);
+
+// passport
+app.use(passport.initialize());
+app.use(passport.session());
+
+// flash
+app.use(flash());
+app.use(function (req, res, next) {
+  res.locals.flashSuccess = req.flash('flashSuccess');
+  res.locals.flashError = req.flash('flashError');
+  res.locals.error = req.flash('error');
+  next();
+});
 
 // middleware routes
 app.use('/', require('./routes/index'));

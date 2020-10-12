@@ -1,11 +1,18 @@
 const router = require('express').Router();
 
-router.get('/', (req, res) => {
-  res.render('index');
-});
+const { ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
 
-router.get('/login', (req, res) => {
-  res.render('login');
-});
+// index Page
+router.get('/', forwardAuthenticated, (req, res) => res.render('index'));
+
+// login Page
+router.get('/login', forwardAuthenticated, (req, res) => res.render('login'));
+
+// dashboard
+router.get('/home', ensureAuthenticated, (req, res) =>
+  res.render('home', {
+    user: req.user,
+  })
+);
 
 module.exports = router;

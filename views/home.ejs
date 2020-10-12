@@ -24,7 +24,7 @@
 							<!-- Header -->
 								<header id="header">
 									<!-- <a href="index.html" class="logo"><strong>Partitas Music</strong></a> -->
-									<a href="index.html" class="logo">
+									<a href="/home" class="logo">
 										<img src="/img/logo-pm.png" alt="logo" width="300">
 									</a>
 								</header>
@@ -33,7 +33,7 @@
 								<section id="banner">
 									<div class="content">
 										<header>
-											<h2>Hi, <%= success.message %><br />
+											<h2>Hi, <%= user.name %>.<br />
 											Welcome to Partitas Music!</h2>
 											<p>A community space of exchange centered on the guitar that will favor our growth as musicians.</p>
 										</header>
@@ -168,7 +168,7 @@
 										<h2>Menu</h2>
 									</header>
 									<ul>
-										<li><a href="#">Homepage</a></li>
+										<li><a href="/home">Homepage</a></li>
 										<li><a href="#">Forum</a></li>
 										<li><a href="#">The book</a></li>
 										<li><a href="#">Contribute</a></li>
@@ -193,6 +193,7 @@
 									</header>
 									<ul class="contact">
 										<li class="icon solid fa-envelope"><a href="#">info@partitasmusic.com</a></li>
+										<li class="icon solid fa-sign-out-alt"><a href="/users/logout">Logout</a></li>
 									</ul>
 								</section>
 
