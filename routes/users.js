@@ -155,8 +155,8 @@ router.post('/login', async (req, res) => {
     const match = await bcrypt.compare(password, user.password);
     if (match) {
       res.status(200);
-      const success = { message: `Hello ${user.name}!` };
-      return res.render('dashboard', { success });
+      const success = { message: `${user.name}!` };
+      return res.render('home', { success });
     } else {
       return res.render('login', { error });
     }

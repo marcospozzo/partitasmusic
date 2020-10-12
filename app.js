@@ -25,6 +25,7 @@ mongoose
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static('public'));
+app.use(express.static('views'));
 
 // middleware routes
 app.use('/', require('./routes/index'));
