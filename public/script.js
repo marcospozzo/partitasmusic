@@ -17,6 +17,10 @@ $('#go-to-login').click(function () {
   window.location.href = '/login';
 });
 
+$('.logo').click(function () {
+  window.location.href = '/';
+});
+
 $('#close').click(function () {
   window.close();
 });

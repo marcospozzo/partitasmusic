@@ -49,6 +49,10 @@ label.error {
       justify-self: center;
 }
 
+.logo:hover {
+  cursor: pointer;
+}
+
 .form, .home {
   background: #baa699;
   width: 100%;
