@@ -5,8 +5,10 @@ const { ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
 // index
 router.get('/', forwardAuthenticated, (req, res) => res.render('index'));
 
-// artist
-router.get('/artist', ensureAuthenticated, (req, res) => res.render('artist'));
+// profile
+router.get('/profile', ensureAuthenticated, (req, res) =>
+  res.render('profile')
+);
 
 // login
 router.get('/login', forwardAuthenticated, (req, res) => res.render('login'));
