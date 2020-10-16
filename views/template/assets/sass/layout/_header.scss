@@ -8,33 +8,35 @@
 
 #header {
   @include vendor('display', 'flex');
-  border-bottom: solid 5px _palette(accent);
-  padding: 2em 0 2em 0;
-  position: relative;
-  justify-content: center;
+  border-bottom: solid 8px _palette(accent);
+  padding: 1em 0 0em 0;
+  // position: relative;
 
   > * {
-    // @include vendor('flex', '1');
+    @include vendor('flex', '1');
     margin-bottom: 0;
   }
 
   .logo {
     border-bottom: 0;
-    color: inherit;
-    font-family: _font(family-heading);
-    font-size: 1.125em;
+    // color: inherit;
+    // font-family: _font(family-heading);
+    // font-size: 1.125em;
   }
 
-  .icons {
+  .text-header {
     text-align: right;
+    align-items: flex-end;
+    line-height: normal;
+    text-transform: uppercase;
   }
 
   @include breakpoint('<=xlarge') {
-    padding-top: 2em;
+    padding-top: 1em;
   }
 
   @include breakpoint('<=small') {
-    padding-top: 6.5em;
+    padding-top: 3.5em;
 
     .logo {
       font-size: 1.25em;
