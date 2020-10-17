@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 const sendMail = require('../email/login');
 const createError = require('http-errors');
 const passport = require('passport');
-const { forwardAuthenticated } = require('../config/auth');
+// const { forwardAuthenticated } = require('../config/auth');
 
 // signup
 router.post('/signup', async (req, res, next) => {
@@ -141,31 +141,6 @@ router.post('/set-password/:token', async (req, res) => {
   });
 });
 
-// login
-/*
-router.post('/login', async (req, res) => {
-  const { email, password } = req.body;
-  const errors = { message: 'Email or password incorrect' };
-
-  User.findOne({ email: email }, async function (err, user) {
-    if (err || user == null) {
-      return res.render('login', { errors });
-    } else {
-      if (user.status != 'activated') {
-        return res.render('login', { errors });
-      }
-    }
-    const match = await bcrypt.compare(password, user.password);
-    if (match) {
-      res.status(200);
-      const success = { message: `${user.name}!` };
-      return res.render('home', { success });
-    } else {
-      return res.render('login', { errors });
-    }
-  });
-});
-*/
 // login
 router.post('/login', (req, res, next) => {
   passport.authenticate('local', {
