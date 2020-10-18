@@ -40,7 +40,7 @@ $(function () {
       },
     },
     submitHandler: function () {
-      document.forms('set-form').submit();
+      document.forms['set-form'].submit();
     },
   });
 });
@@ -58,7 +58,7 @@ $(function () {
       },
     },
     submitHandler: function () {
-      document.forms('login-form').submit();
+      document.forms['login-form'].submit();
     },
   });
 });
@@ -73,7 +73,7 @@ $(function () {
       },
     },
     submitHandler: function () {
-      document.forms('reset-password-form').submit();
+      document.forms['reset-password-form'].submit();
     },
   });
 });
@@ -96,7 +96,7 @@ $(function () {
       },
     },
     submitHandler: function () {
-      document.forms('signup-form').submit();
+      document.forms['signup-form'].submit();
     },
   });
 });

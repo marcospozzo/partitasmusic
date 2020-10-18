@@ -2828,7 +2828,7 @@ button:disabled,
   width: 2em;
 }
 
-#search form input[type="text"] {
+#search form input[type='text'] {
   padding-right: 2.75em;
 }
 

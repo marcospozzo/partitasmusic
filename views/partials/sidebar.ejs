@@ -1,6 +1,5 @@
 <div id="sidebar">
     <div class="inner">
-
         <!-- Search -->
         <section id="search" class="alt">
             <form method="post" action="#">
@@ -14,12 +13,6 @@
                 <h2>Menu</h2>
             </header>
             <ul>
-                <li><a href="/home">Homepage</a></li>
-                <li><a href="#">Forum</a></li>
-                <li><a href="#">The book</a></li>
-                <li><a href="#">Contribute</a></li>
-                <li><a href="/template/elements.html">Elements</a></li>
-
                 <li>
                     <span class="opener">Profiles</span>
                     <ul>
@@ -29,24 +22,39 @@
                         <li><a href="/profile">Profile 4</a></li>
                     </ul>
                 </li>
+                <li><a href="/template/elements.html">Elements</a></li>
+                <li><a href="#">Forum</a></li>
+                <li><a href="#">The book</a></li>
+                <li><a href="#">Contribute</a></li>
+
             </ul>
         </nav>
 
         <!-- Section -->
+        <div id="aphorism"></div>
         <section>
-            <header class="major">
-                <h2>Contact us</h2>
-            </header>
             <ul class="contact">
-                <li class="icon solid fa-envelope"><a href="#">info@partitasmusic.com</a></li>
                 <li class="icon solid fa-sign-out-alt"><a href="/users/logout">Logout</a></li>
             </ul>
         </section>
 
-        <!-- Footer -->
-        <footer id="footer">
-            <p class="copyright">&copy; 2020 Partitas Music.</p>
-        </footer>
-
     </div>
 </div>
+
+<!-- aphorism fetch script-->
+<script>
+    aphorism()
+        .then((text) => {
+            document.getElementById('aphorism').innerText = text;
+        })
+        .catch((error) => {
+            console.log('error fetching aphorism');
+            console.error(error);
+        });
+
+    async function aphorism() {
+        const response = await fetch('/aphorism');
+        const text = await response.text();
+        return text;
+    }
+</script>
