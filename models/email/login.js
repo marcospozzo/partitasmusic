@@ -1,4 +1,4 @@
-const sendMail = require('../email/email');
+const sendMail = require('./email');
 const jwt = require('jsonwebtoken');
 
 function sendUserForValidation(user, host) {
