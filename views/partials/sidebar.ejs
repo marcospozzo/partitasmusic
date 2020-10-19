@@ -1,60 +1,66 @@
 <div id="sidebar">
-    <div class="inner">
-        <!-- Search -->
-        <section id="search" class="alt">
-            <form method="post" action="#">
-                <input type="text" name="query" id="query" placeholder="Search" />
-            </form>
-        </section>
+  <div class="inner">
+    <!-- Search -->
+    <section id="search" class="alt">
+      <form method="post" action="#">
+        <input type="text" name="query" id="query" placeholder="Search" />
+      </form>
+    </section>
 
-        <!-- Menu -->
-        <nav id="menu">
-            <header class="major">
-                <h2>Menu</h2>
-            </header>
-            <ul>
-                <li>
-                    <span class="opener">Profiles</span>
-                    <ul>
-                        <li><a href="/profile">Profile 1</a></li>
-                        <li><a href="/profile">Profile 2</a></li>
-                        <li><a href="/profile">Profile 3</a></li>
-                        <li><a href="/profile">Profile 4</a></li>
-                    </ul>
-                </li>
-                <li><a href="/elements.html">Elements</a></li>
-                <li><a href="#">Forum</a></li>
-                <li><a href="#">The book</a></li>
-                <li><a href="#">Contribute</a></li>
+    <!-- Menu -->
+    <nav id="menu">
+      <header class="major">
+        <h2>Menu</h2>
+      </header>
+      <ul>
+        <li>
+          <span class="opener">Profiles</span>
+          <ul>
+            <li><a href="/profile">Profile 1</a></li>
+            <li><a href="/profile">Profile 2</a></li>
+            <li><a href="/profile">Profile 3</a></li>
+            <li><a href="/profile">Profile 4</a></li>
+          </ul>
+        </li>
+        <li><a href="/elements.html">Elements</a></li>
+        <li><a href="#">Forum</a></li>
+        <li><a href="#">The book</a></li>
+        <li><a href="#">Contribute</a></li>
+      </ul>
+    </nav>
 
-            </ul>
-        </nav>
-
-        <!-- Section -->
-        <div id="aphorism"></div>
-        <section>
-            <ul class="contact">
-                <li class="icon solid fa-sign-out-alt"><a href="/users/logout">Logout</a></li>
-            </ul>
-        </section>
-
-    </div>
+    <!-- Section -->
+    <div id="aphorism"></div>
+    <section>
+      <ul class="contact">
+        <% if (user) { %>
+        <li class="icon solid fa-sign-out-alt">
+          <a href="/users/logout">Logout</a>
+        </li>
+        <% } else { %>
+        <li class="icon solid fa-sign-in-alt">
+          <a href="/login">Login</a>
+        </li>
+        <% } %>
+      </ul>
+    </section>
+  </div>
 </div>
 
 <!-- aphorism fetch script-->
 <script>
-    aphorism()
-        .then((text) => {
-            document.getElementById('aphorism').innerText = `"${text}"`;
-        })
-        .catch((error) => {
-            console.log('error fetching aphorism');
-            console.error(error);
-        });
+  aphorism()
+    .then((text) => {
+      document.getElementById('aphorism').innerText = `"${text}"`;
+    })
+    .catch((error) => {
+      console.log('error fetching aphorism');
+      console.error(error);
+    });
 
-    async function aphorism() {
-        const response = await fetch('/aphorism');
-        const text = await response.text();
-        return text;
-    }
+  async function aphorism() {
+    const response = await fetch('/aphorism');
+    const text = await response.text();
+    return text;
+  }
 </script>

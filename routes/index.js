@@ -3,22 +3,21 @@ const aphorisms = require('../models/aphorism/aphorisms');
 
 const { ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
 
-// index
-router.get('/', forwardAuthenticated, (req, res) => res.render('login'));
-
-// login
-router.get('/login', forwardAuthenticated, (req, res) => res.render('login'));
-
 // home
-router.get('/home', ensureAuthenticated, (req, res) =>
+router.get(['/', '/home'], (req, res) =>
   res.render('home', {
     user: req.user,
   })
 );
 
+// login
+router.get('/login', forwardAuthenticated, (req, res) => res.render('login'));
+
 // profile
 router.get('/profile', ensureAuthenticated, (req, res) =>
-  res.render('profile')
+  res.render('profile', {
+    user: req.user,
+  })
 );
 
 // aphorism
