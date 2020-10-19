@@ -2792,6 +2792,10 @@ button:disabled,
 }
 
 /* Sidebar */
+#aphorism {
+  font-style: italic;
+}
+
 #search form {
   text-decoration: none;
   position: relative;

@@ -6,6 +6,10 @@
 
 /* Sidebar */
 
+#aphorism {
+  font-style: italic;
+}
+
 #search {
   form {
     @include icon(false, solid);

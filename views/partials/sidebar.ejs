@@ -45,7 +45,7 @@
 <script>
     aphorism()
         .then((text) => {
-            document.getElementById('aphorism').innerText = text;
+            document.getElementById('aphorism').innerText = `"${text}"`;
         })
         .catch((error) => {
             console.log('error fetching aphorism');
