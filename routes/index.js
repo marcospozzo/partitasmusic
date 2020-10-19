@@ -4,7 +4,7 @@ const aphorisms = require('../models/aphorism/aphorisms');
 const { ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
 
 // index
-router.get('/', forwardAuthenticated, (req, res) => res.render('index'));
+router.get('/', forwardAuthenticated, (req, res) => res.render('login'));
 
 // login
 router.get('/login', forwardAuthenticated, (req, res) => res.render('login'));
