@@ -21,8 +21,8 @@ router.get('/profile', ensureAuthenticated, (req, res) =>
 );
 
 // aphorism
-router.get('/aphorism', (req, res) => {
-  const aphorism = aphorisms.getAphorismOfTheWeek();
+router.get('/aphorism', async (req, res) => {
+  const aphorism = await aphorisms.getAphorismOfTheDay();
   res.send(aphorism);
 });
 
