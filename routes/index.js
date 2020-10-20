@@ -4,7 +4,7 @@ const aphorisms = require('../models/aphorism/aphorisms');
 const { ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
 
 // home
-router.get(['/', '/home'], (req, res) =>
+router.get('/', (req, res) =>
   res.render('home', {
     user: req.user,
   })

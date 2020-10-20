@@ -90,7 +90,7 @@ $(function () {
         required: true,
         email: true,
       },
-      whois: {
+      whoIs: {
         required: true,
         maxlength: 500,
       },

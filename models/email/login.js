@@ -26,7 +26,7 @@ function sendUserForValidation(user, host) {
   const data = {
     to: 'info@partitasmusic.com',
     subject: `New account request by ${user.name}`,
-    text: `Dear Partitas: \n\nThere is a new account request: \nName: ${user.name} \nEmail: ${user.email} \nWho is: ${user.whois} \n\nClick on the following URL to APPROVE ${user.name}: ${approvalURL} \n\nClick on the following URL to REJECT ${user.name}: ${rejectionURL} \n\nBest regards.`,
+    text: `Dear Partitas: \n\nThere is a new account request: \nName: ${user.name} \nEmail: ${user.email} \nWho is: ${user.whoIs} \n\nClick on the following URL to APPROVE ${user.name}: ${approvalURL} \n\nClick on the following URL to REJECT ${user.name}: ${rejectionURL} \n\nBest regards.`,
     html: '',
   };
   sendMail(data).catch(console.error);

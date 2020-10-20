@@ -10,10 +10,10 @@ const passport = require('passport');
 
 // signup
 router.post('/signup', async (req, res, next) => {
-  const { name, email, whois } = req.body;
+  const { name, email, whoIs } = req.body;
   let savedUser;
 
-  if (!name || !email || !whois) {
+  if (!name || !email || !whoIs) {
     return next(createError(400, 'Missing fields'));
   }
 
@@ -21,7 +21,7 @@ router.post('/signup', async (req, res, next) => {
     const user = new User({
       name: name,
       email: email,
-      whois: whois,
+      whoIs: whoIs,
     });
     savedUser = await user.save();
   } catch (err) {
@@ -144,7 +144,7 @@ router.post('/set-password/:token', async (req, res) => {
 // login
 router.post('/login', (req, res, next) => {
   passport.authenticate('local', {
-    successRedirect: '/home',
+    successRedirect: '/',
     failureRedirect: '/login',
     failureFlash: true,
   })(req, res, next);

@@ -7,6 +7,7 @@ async function getAphorismOfTheDay() {
   if (!aphorism) {
     aphorism = await refreshAphorism();
   }
+
   const now = new Date(Date.now());
   const storedDate = new Date(aphorism[1]);
 
