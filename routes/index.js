@@ -14,7 +14,7 @@ router.get('/', (req, res) =>
 router.get('/login', forwardAuthenticated, (req, res) => res.render('login'));
 
 // profile
-router.get('/profile', ensureAuthenticated, (req, res) =>
+router.get('/profile', (req, res) =>
   res.render('profile', {
     user: req.user,
   })
