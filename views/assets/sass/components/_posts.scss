@@ -62,7 +62,7 @@
 
   @include breakpoint('xlarge-to-max') {
     article {
-      &:nth-child(3n + 1) {
+      &:nth-child(1) {
         &:before {
           display: none;
         }
@@ -100,7 +100,7 @@
 
   @include breakpoint('small-to-xlarge') {
     article {
-      &:nth-child(2n + 1) {
+      &:nth-child(1) {
         &:before {
           display: none;
         }

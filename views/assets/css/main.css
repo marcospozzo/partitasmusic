@@ -2656,10 +2656,10 @@ button:disabled,
 }
 
 @media screen and (min-width: 1681px) {
-  .posts article:nth-child(3n + 1):before {
+  .posts article:nth-child(1):before {
     display: none;
   }
-  .posts article:nth-child(3n + 1):after {
+  .posts article:nth-child(1):after {
     width: 100%;
   }
   .posts article:nth-last-child(1), .posts article:nth-last-child(2), .posts article:nth-last-child(3) {
@@ -2683,10 +2683,10 @@ button:disabled,
 }
 
 @media screen and (min-width: 481px) and (max-width: 1680px) {
-  .posts article:nth-child(2n + 1):before {
+  .posts article:nth-child(1):before {
     display: none;
   }
-  .posts article:nth-child(2n + 1):after {
+  .posts article:nth-child(1):after {
     width: 100%;
   }
   .posts article:nth-last-child(1), .posts article:nth-last-child(2) {
