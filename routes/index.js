@@ -20,6 +20,13 @@ router.get('/profile', ensureAuthenticated, (req, res) =>
   })
 );
 
+// profiles
+router.get('/profiles', (req, res) =>
+  res.render('profiles', {
+    user: req.user,
+  })
+);
+
 // aphorism
 router.get('/aphorism', async (req, res) => {
   const aphorism = await aphorisms.getAphorismOfTheDay();
