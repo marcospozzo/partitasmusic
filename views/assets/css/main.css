@@ -168,6 +168,9 @@ strong,
 b {
   color: #49423d;
   font-weight: 600;
+  font-size: 90%;
+  line-height: 150%;
+  display: block;
 }
 
 em,
@@ -269,6 +272,10 @@ blockquote {
   font-style: italic;
   margin: 0 0 2em 0;
   padding: 0.5em 0 0.5em 2em;
+}
+
+blockquote > q {
+  font-style: normal;
 }
 
 code {

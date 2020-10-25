@@ -55,6 +55,9 @@ strong,
 b {
   color: _palette(fg-bold);
   font-weight: _font(weight-bold);
+  font-size: 90%;
+  line-height: 150%;
+  display: block;
 }
 
 em,
@@ -153,6 +156,10 @@ blockquote {
   margin: 0 0 _size(element-margin) 0;
   padding: (_size(element-margin) / 4) 0 (_size(element-margin) / 4)
     _size(element-margin);
+
+  > q {
+    font-style: normal;
+  }
 }
 
 code {
