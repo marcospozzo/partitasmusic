@@ -34,6 +34,13 @@ router.get('/seven-guitar-craft-themes-book', (req, res) =>
   })
 );
 
+// about us
+router.get('/about-us', (req, res) =>
+  res.render('about-us', {
+    user: req.user,
+  })
+);
+
 // aphorism
 router.get('/aphorism', async (req, res) => {
   const aphorism = await aphorisms.getAphorismOfTheDay();
