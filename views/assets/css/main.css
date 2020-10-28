@@ -2694,7 +2694,7 @@ button:disabled,
     display: none;
   }
   .posts article:nth-child(1):after {
-    width: 100%;
+    display: none;
   }
   .posts article:nth-last-child(1), .posts article:nth-last-child(2) {
     margin-bottom: 0;
