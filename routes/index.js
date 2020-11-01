@@ -1,5 +1,7 @@
 const router = require('express').Router();
 const aphorisms = require('../models/aphorism/aphorisms');
+const createError = require('http-errors');
+const sendMail = require('../models/email/contact');
 
 const { ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
 
@@ -27,7 +29,7 @@ router.get('/profiles', (req, res) =>
   })
 );
 
-// seven
+// seven guitar craft themes book
 router.get('/seven-guitar-craft-themes-book', (req, res) =>
   res.render('seven', {
     user: req.user,
@@ -40,6 +42,28 @@ router.get('/about-us', (req, res) =>
     user: req.user,
   })
 );
+
+// contact
+router.get('/contact', (req, res) =>
+  res.render('contact', {
+    user: req.user,
+  })
+);
+
+// contact form
+router.post('/contact', (req, res, next) => {
+  const { name, email, message } = req.body;
+
+  if (!name || !email || !message) {
+    return next(createError(400, 'Missing fields'));
+  }
+
+  sendMail.sendContactForm(name, email, message);
+
+  res.render('home', {
+    user: req.user,
+  });
+});
 
 // aphorism
 router.get('/aphorism', async (req, res) => {

@@ -1659,12 +1659,18 @@ label {
   margin: 0 0 1em 0;
 }
 
-input[type="text"],
-input[type="password"],
-input[type="email"],
-input[type="tel"],
-input[type="search"],
-input[type="url"],
+label.error {
+  font-style: italic;
+  font-size: 0.8em;
+  text-align: center;
+}
+
+input[type='text'],
+input[type='password'],
+input[type='email'],
+input[type='tel'],
+input[type='search'],
+input[type='url'],
 select,
 textarea {
   -moz-appearance: none;
@@ -1673,36 +1679,37 @@ textarea {
   appearance: none;
   background: #e9e5de;
   border: none;
-  border: solid 1px rgba(210, 215, 217, 0.75);
+  border: solid 1px #baa699;
   color: inherit;
   display: block;
   outline: 0;
   padding: 0 1em;
   text-decoration: none;
   width: 100%;
+  resize: none;
 }
 
-input[type="text"]:invalid,
-input[type="password"]:invalid,
-input[type="email"]:invalid,
-input[type="tel"]:invalid,
-input[type="search"]:invalid,
-input[type="url"]:invalid,
+input[type='text']:invalid,
+input[type='password']:invalid,
+input[type='email']:invalid,
+input[type='tel']:invalid,
+input[type='search']:invalid,
+input[type='url']:invalid,
 select:invalid,
 textarea:invalid {
   -webkit-box-shadow: none;
           box-shadow: none;
 }
 
-input[type="text"]:focus,
-input[type="password"]:focus,
-input[type="email"]:focus,
-input[type="tel"]:focus,
-input[type="search"]:focus,
-input[type="url"]:focus,
+input[type='text']:focus,
+input[type='password']:focus,
+input[type='email']:focus,
+input[type='tel']:focus,
+input[type='search']:focus,
+input[type='url']:focus,
 select:focus,
 textarea:focus {
-  border-color: #baa699;
+  border-color: rgba(210, 215, 217, 0.75);
   -webkit-box-shadow: 0 0 0 1px #baa699;
           box-shadow: 0 0 0 1px #baa699;
 }
@@ -1730,12 +1737,12 @@ select::-ms-expand {
   display: none;
 }
 
-input[type="text"],
-input[type="password"],
-input[type="email"],
-input[type="tel"],
-input[type="search"],
-input[type="url"],
+input[type='text'],
+input[type='password'],
+input[type='email'],
+input[type='tel'],
+input[type='search'],
+input[type='url'],
 select {
   height: 2.75em;
 }
@@ -1744,8 +1751,8 @@ textarea {
   padding: 0.75em 1em;
 }
 
-input[type="checkbox"],
-input[type="radio"] {
+input[type='checkbox'],
+input[type='radio'] {
   -moz-appearance: none;
   -webkit-appearance: none;
   -ms-appearance: none;
@@ -1758,8 +1765,8 @@ input[type="radio"] {
   z-index: -1;
 }
 
-input[type="checkbox"] + label,
-input[type="radio"] + label {
+input[type='checkbox'] + label,
+input[type='radio'] + label {
   text-decoration: none;
   color: #7f888f;
   cursor: pointer;
@@ -1771,8 +1778,8 @@ input[type="radio"] + label {
   position: relative;
 }
 
-input[type="checkbox"] + label:before,
-input[type="radio"] + label:before {
+input[type='checkbox'] + label:before,
+input[type='radio'] + label:before {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   display: inline-block;
@@ -1785,8 +1792,8 @@ input[type="radio"] + label:before {
   font-weight: 900;
 }
 
-input[type="checkbox"] + label:before,
-input[type="radio"] + label:before {
+input[type='checkbox'] + label:before,
+input[type='radio'] + label:before {
   background: #e9e5de;
   border: solid 1px rgba(210, 215, 217, 0.75);
   content: '';
@@ -1801,43 +1808,43 @@ input[type="radio"] + label:before {
   width: 2.0625em;
 }
 
-input[type="checkbox"]:checked + label:before,
-input[type="radio"]:checked + label:before {
+input[type='checkbox']:checked + label:before,
+input[type='radio']:checked + label:before {
   background: #49423d;
   border-color: #49423d;
   color: #e9e5de;
   content: '\f00c';
 }
 
-input[type="checkbox"]:focus + label:before,
-input[type="radio"]:focus + label:before {
+input[type='checkbox']:focus + label:before,
+input[type='radio']:focus + label:before {
   border-color: #baa699;
   -webkit-box-shadow: 0 0 0 1px #baa699;
           box-shadow: 0 0 0 1px #baa699;
 }
 
-input[type="radio"] + label:before {
+input[type='radio'] + label:before {
   border-radius: 100%;
 }
 
 ::-webkit-input-placeholder {
   color: #9fa3a6 !important;
-  opacity: 1.0;
+  opacity: 1;
 }
 
 :-moz-placeholder {
   color: #9fa3a6 !important;
-  opacity: 1.0;
+  opacity: 1;
 }
 
 ::-moz-placeholder {
   color: #9fa3a6 !important;
-  opacity: 1.0;
+  opacity: 1;
 }
 
 :-ms-input-placeholder {
   color: #9fa3a6 !important;
-  opacity: 1.0;
+  opacity: 1;
 }
 
 /* Box */

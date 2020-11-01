@@ -100,3 +100,26 @@ $(function () {
     },
   });
 });
+
+// contact form validation
+$(function () {
+  $('#contact-form').validate({
+    rules: {
+      name: {
+        required: true,
+        maxlength: 25,
+      },
+      email: {
+        required: true,
+        email: true,
+      },
+      message: {
+        required: true,
+        maxlength: 500,
+      },
+    },
+    submitHandler: function () {
+      document.forms['contact-form'].submit();
+    },
+  });
+});
