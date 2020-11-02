@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<!--
+	Editorial by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+  <head>
+    <title>Partitas Music | Picks & Strings</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, user-scalable=no"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+      integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+      crossorigin=""
+    />
+    <link rel="icon" type="image/png" href="/img/favicon-PM-orange.png" />
+    <link rel="stylesheet" href="./assets/css/main.css" />
+    <script
+      src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+      integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+      crossorigin=""
+    ></script>
+    <style>
+      #mapid {
+        width: 50%;
+        height: 300px;
+        margin-left: 50px;
+        border-radius: 5px;
+      }
+    </style>
+  </head>
+  <body class="is-preload">
+    <!-- Wrapper -->
+    <div id="wrapper">
+      <!-- Main -->
+      <div id="main">
+        <div class="inner">
+          <!-- Header -->
+          <%- include('partials/header'); %>
+
+          <!-- Banner -->
+          <section id="banner">
+            <div class="content">
+              <header class="major">
+                <h2>Picks & Strings</h2>
+              </header>
+              <p>
+                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ipsum
+                consectetur odit ea quaerat alias quisquam non perferendis
+                officia inventore vitae dicta cupiditate provident, perspiciatis
+                maiores! Impedit maxime aperiam molestiae iusto odio, mollitia
+                modi rem dolores neque qui ullam doloribus sapiente enim
+                similique beatae sequi cupiditate dolore ipsam consequatur
+                numquam quam.
+              </p>
+            </div>
+
+            <!-- Make sure you put this AFTER Leaflet's CSS -->
+            <div id="mapid"></div>
+          </section>
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <%- include('partials/sidebar'); %>
+    </div>
+
+    <!-- Scripts -->
+    <%- include('partials/scripts'); %>
+    <script src="/map.js"></script>
+  </body>
+</html>

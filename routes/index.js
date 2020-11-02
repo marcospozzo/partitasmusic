@@ -85,4 +85,11 @@ router.get('/contribute', (req, res) =>
   })
 );
 
+// picks and strings
+router.get('/picks-and-strings', (req, res) =>
+  res.render('picks-and-strings', {
+    user: req.user,
+  })
+);
+
 module.exports = router;
