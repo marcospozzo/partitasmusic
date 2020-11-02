@@ -71,4 +71,11 @@ router.get('/aphorism', async (req, res) => {
   res.send(aphorism);
 });
 
+// aphorisms
+router.get('/aphorisms', (req, res) =>
+  res.render('aphorisms', {
+    user: req.user,
+  })
+);
+
 module.exports = router;
