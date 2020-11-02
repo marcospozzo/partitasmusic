@@ -78,4 +78,11 @@ router.get('/aphorisms', (req, res) =>
   })
 );
 
+// contribute
+router.get('/contribute', (req, res) =>
+  res.render('contribute', {
+    user: req.user,
+  })
+);
+
 module.exports = router;
