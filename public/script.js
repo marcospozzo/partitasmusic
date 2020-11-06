@@ -123,3 +123,26 @@ $(function () {
     },
   });
 });
+
+// login modal
+// when the user clicks on the button, open the modal
+$('#myBtn').click(function () {
+  $('#myModal').show();
+});
+
+// when the user clicks on <span> (x), close the modal
+$('.close').click(function () {
+  $('#myModal').hide();
+});
+
+// when the user clicks anywhere outside of the modal, close it
+$(window).click(function (event) {
+  if (event.target == modal) {
+    $('#myModal').hide();
+  }
+});
+
+// when the user presses esc key, close the modal
+$(document).keyup(function (e) {
+  if (e.keyCode === 27) $('#myModal').hide(); // esc key
+});
