@@ -136,6 +136,7 @@ $('.close').click(function () {
 });
 
 // when the user clicks anywhere outside of the modal, close it
+const modal = document.getElementById('myModal');
 $(window).click(function (event) {
   if (event.target == modal) {
     $('#myModal').hide();
