@@ -36,21 +36,27 @@
               </header>
               <form id="contact-form" method="post" action="/contact">
                 <div class="row gtr-uniform">
-                  <div class="col-6 col-12-xsmall">
+                  <div class="col-5 col-12-xsmall">
                     <input
                       type="text"
                       name="name"
                       id="name"
-                      value=""
+                      <% if (user) { %> 
+                      value="<%= user.name %>" 
+                      readonly="readonly"
+                      <% } %>
                       placeholder="Name"
                     />
                   </div>
-                  <div class="col-6 col-12-xsmall">
+                  <div class="col-7 col-12-xsmall">
                     <input
                       type="email"
                       name="email"
                       id="email"
-                      value=""
+                      <% if (user) { %> 
+                        value="<%= user.email %>" 
+                        readonly="readonly"
+                      <% } %>
                       placeholder="Email"
                     />
                   </div>
