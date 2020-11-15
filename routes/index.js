@@ -67,7 +67,7 @@ router.post('/contact', (req, res, next) => {
 
 // aphorism
 router.get('/aphorism', async (req, res) => {
-  const aphorism = await aphorisms.getAphorismOfTheDay();
+  const aphorism = aphorisms.getAphorismOfTheDay();
   res.send(aphorism);
 });
 

@@ -1,25 +1,31 @@
 const aphorisms = require('./aphorisms.json');
-const storage = require('node-persist');
+const fs = require('fs');
+const aphorismPath = 'models/aphorism/aphorismOfTheDay.json';
 
-async function getAphorismOfTheDay() {
-  await storage.init({ dir: 'models/aphorism/storage' });
-  let aphorism = await storage.getItem('aphorism');
-  if (!aphorism) {
-    aphorism = await refreshAphorism();
-  }
-
+function getAphorismOfTheDay() {
+  const aphorismData = fs.readFileSync(aphorismPath);
+  let aphorism = JSON.parse(aphorismData);
   const now = new Date(Date.now());
-  const storedDate = new Date(aphorism[1]);
+  const storedDate = new Date(aphorism.timestamp);
 
   if (!sameDay(now, storedDate)) {
-    aphorism = await refreshAphorism();
+    aphorism = refreshAphorism();
   }
-  return aphorism[0];
+
+  return aphorism.aphorismOfTheDay;
 }
 
-async function refreshAphorism() {
-  await storage.setItem('aphorism', [getRandomAphorism(), Date.now()]);
-  return await storage.getItem('aphorism');
+function refreshAphorism() {
+  const aphorism = {};
+
+  aphorism.timestamp = Date.now();
+  aphorism.aphorismOfTheDay = getRandomAphorism();
+
+  const data = JSON.stringify(aphorism);
+
+  fs.writeFileSync(aphorismPath, data);
+
+  return aphorism;
 }
 
 function getRandomAphorism() {
