@@ -1,2 +1,3 @@
 # Ignore all ejs files:
-*.ejs
+contact.ejs
+contribute.ejs
