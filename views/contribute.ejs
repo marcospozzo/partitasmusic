@@ -30,102 +30,20 @@
               <header class="major">
                 <h2>Contribute</h2>
               </header>
-              <form id="contact-form" method="post" action="#">
-                <div class="row gtr-uniform">
-                  <div class="col-5 col-12-xsmall">
-                    <input
-                      type="text"
-                      name="name"
-                      id="name"
-                      <% if (user) { %> 
-                      value="<%= user.name %>" 
-                      readonly="readonly"
-                      <% } %>
-                      placeholder="Your name"
-                    />
-                  </div>
-                  <div class="col-7 col-12-xsmall">
-                    <input
-                      type="email"
-                      name="email"
-                      id="email"
-                      <% if (user) { %> 
-                        value="<%= user.email %>" 
-                        readonly="readonly"
-                      <% } %>
-                      placeholder="Your email"
-                    />
-                  </div>
+              <p>You can send us studying material to share
+                with the community. Please get in touch and we
+                will reach out to you soon. Thank you!
+              </p>
 
-                  <div class="col-7 col-12-xsmall">
-                    <input
-                      type="text"
-                      name="title"
-                      id="title"
-                      placeholder="Name of the piece"
-                    />
-                  </div>
-                  <div class="col-5 col-12-xsmall">
-                    <input
-                      type="text"
-                      name="country"
-                      id="country"
-                      placeholder="Country"
-                    />
-                  </div>
+            <!-- Contact form -->
+            <%- include('partials/contact-form'); %>
 
-                  <div class="col-6 col-12-xsmall">
-                    <input
-                      type="text"
-                      name="composer"
-                      id="composer"
-                      placeholder="Composed by"
-                    />
-                  </div>
-                  <div class="col-6 col-12-xsmall">
-                    <input
-                      type="text"
-                      name="arranger"
-                      id="arranger"
-                      placeholder="Arranged by"
-                    />
-                  </div>
+            <ul class="actions">
+              <li>
+                <a href="/profiles" class="button primary">Become a Patreon</a>
+              </li>
+            </ul>
 
-                  <div class="col-12">
-                    <input
-                      type="text"
-                      name="description"
-                      id="description"
-                      placeholder="Description"
-                    />
-                  </div>
-
-                  <div class="col-12">
-                    <ul class="actions">
-                      <li>
-                        <input
-                          type="file"
-                          value="Upload files"
-                          class="button icon solid fa-upload"
-                        />
-                      </li>
-                    </ul>
-                  </div>
-
-                  <!-- Break -->
-                  <div class="col-12">
-                    <ul class="actions">
-                      <li>
-                        <input
-                          type="submit"
-                          value="Submit contribution"
-                          class="primary"
-                        />
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </form>
             </div>
             <span class="image object">
               <img src="./images/contact.png" alt="" />

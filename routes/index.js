@@ -85,6 +85,13 @@ router.get('/contribute', (req, res) =>
   })
 );
 
+// contribute form
+router.get('/contribute-form', ensureAuthenticated, (req, res) =>
+  res.render('contribute-form', {
+    user: req.user,
+  })
+);
+
 // picks and strings
 router.get('/picks-and-strings', (req, res) =>
   res.render('picks-and-strings', {

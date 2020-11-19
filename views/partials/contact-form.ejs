@@ -1,0 +1,50 @@
+<form id="contact-form" method="post" action="/contact">
+<div class="row gtr-uniform">
+    <div class="col-5 col-12-xsmall">
+    <input
+        type="text"
+        name="name"
+        id="name"
+        <% if (user) { %> 
+        value="<%= user.name %>" 
+        readonly="readonly"
+        <% } %>
+        placeholder="Name"
+    />
+    </div>
+    <div class="col-7 col-12-xsmall">
+    <input
+        type="email"
+        name="email"
+        id="email"
+        <% if (user) { %> 
+        value="<%= user.email %>" 
+        readonly="readonly"
+        <% } %>
+        placeholder="Email"
+    />
+    </div>
+
+    <!-- Break -->
+    <div class="col-12">
+    <textarea
+        name="message"
+        id="message"
+        placeholder="Message"
+        rows="6"
+    ></textarea>
+    </div>
+    <!-- Break -->
+    <div class="col-12">
+    <ul class="actions">
+        <li>
+        <input
+            type="submit"
+            value="Send Message"
+            class="primary"
+        />
+        </li>
+    </ul>
+    </div>
+</div>
+</form>

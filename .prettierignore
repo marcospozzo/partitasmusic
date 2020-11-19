@@ -1,3 +1,4 @@
-# Ignore all ejs files:
 contact.ejs
+contact-form.ejs
 contribute.ejs
+contribute-form.ejs
