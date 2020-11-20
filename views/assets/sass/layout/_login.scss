@@ -1,6 +1,3 @@
-@import url(https://fonts.googleapis.com/css?family=Roboto:300);
-@import './variables.scss';
-
 .login-page {
   width: 360px;
   padding: 8% 0 0;
@@ -51,7 +48,7 @@ label.error {
 .form {
   // z-index: 1;
   // max-width: 360px;
-  background: $backgroundHighlight;
+  background: _palette(accent);
   width: 100%;
   margin: 0 auto 100px;
   // padding: 45px;
@@ -85,11 +82,12 @@ ul {
 
 .form input,
 .form textarea {
-  font-family: 'Roboto', sans-serif;
+  font-family: _font(login), sans-serif;
   outline: 0;
-  background: $backgroundColor;
+  background: _palette(bg);
   width: 100%;
   // width: 400px;
+  height: 3.3em;
   max-width: 100%;
   min-width: 100%;
   border: 0;
@@ -106,10 +104,10 @@ textarea {
 }
 
 .form button {
-  font-family: 'Roboto', sans-serif;
+  font-family: _font(login), sans-serif;
   text-transform: uppercase;
   outline: 0;
-  background: $colorHighlight;
+  background: _palette(naranja);
   width: 100%;
   border: 0;
   padding: 15px;
@@ -123,7 +121,7 @@ textarea {
 .form button:hover,
 .form button:active,
 .form button:focus {
-  background: $colorHighlightActive;
+  background: _palette(naranja-accent);
 }
 .form .message {
   margin: 15px 0 0;
@@ -195,26 +193,18 @@ textarea {
   color: #ef3b3a;
 }
 
-body {
+#login-body {
   width: 100vw;
   height: 100vh;
   display: flex;
   justify-content: center;
   align-content: center;
 
-  background: $backgroundColor; /* fallback for old browsers */
-  background: -webkit-linear-gradient(
-    right,
-    $backgroundColor,
-    $backgroundHighlight
-  );
-  background: -moz-linear-gradient(
-    right,
-    $backgroundColor,
-    $backgroundHighlight
-  );
-  background: -o-linear-gradient(right, $backgroundColor, $backgroundHighlight);
-  background: linear-gradient(to left, $backgroundColor, $backgroundHighlight);
+  background: _palette(bg); /* fallback for old browsers */
+  background: -webkit-linear-gradient(right, _palette(bg), _palette(accent));
+  background: -moz-linear-gradient(right, _palette(bg), _palette(accent));
+  background: -o-linear-gradient(right, _palette(bg), _palette(accent));
+  background: linear-gradient(to left, _palette(bg), _palette(accent));
   font-family: 'Roboto', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

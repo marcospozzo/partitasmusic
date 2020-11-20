@@ -6,6 +6,7 @@
 @import 'libs/html-grid';
 @import url('fontawesome-all.min.css');
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,600,400italic,600italic|Roboto+Slab:400,700');
+@import url(https://fonts.googleapis.com/css?family=Roboto:300);
 
 /*
 	Editorial by HTML5 UP
@@ -74,6 +75,7 @@
 
 // Layout.
 
+@import 'layout/login';
 @import 'layout/wrapper';
 @import 'layout/main';
 @import 'layout/sidebar';
