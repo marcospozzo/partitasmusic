@@ -3,8 +3,15 @@ const fs = require('fs');
 const aphorismPath = 'models/aphorism/aphorismOfTheDay.json';
 
 function getAphorismOfTheDay() {
+
+  let aphorism;
+
+  if (!fs.existsSync(aphorismPath)) {
+    aphorism = refreshAphorism();
+  }
+
   const aphorismData = fs.readFileSync(aphorismPath);
-  let aphorism = JSON.parse(aphorismData);
+  aphorism = JSON.parse(aphorismData);
   const now = new Date(Date.now());
   const storedDate = new Date(aphorism.timestamp);
 
