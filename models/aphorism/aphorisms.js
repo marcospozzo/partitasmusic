@@ -1,9 +1,8 @@
-const aphorisms = require('./aphorisms.json');
-const fs = require('fs');
-const aphorismPath = 'models/aphorism/aphorismOfTheDay.json';
+const aphorisms = require("./aphorisms.json");
+const fs = require("fs");
+const aphorismPath = "models/aphorism/aphorismOfTheDay.json";
 
 function getAphorismOfTheDay() {
-
   let aphorism;
 
   if (!fs.existsSync(aphorismPath)) {
