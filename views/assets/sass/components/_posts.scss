@@ -9,21 +9,21 @@
 .posts {
   $gutter: (_size(gutter) * 2);
 
-  @include vendor('display', 'flex');
+  @include vendor("display", "flex");
   //   @include vendor('flex-wrap', 'wrap');
   margin: 0 0 _size(element-margin) ($gutter * -1);
   width: calc(100% + #{$gutter});
 
   article {
-    @include vendor('flex-grow', '0');
-    @include vendor('flex-shrink', '1');
+    @include vendor("flex-grow", "0");
+    @include vendor("flex-shrink", "1");
     margin: 0 0 $gutter $gutter;
     position: relative;
     width: calc(#{(100% / 3)} - #{$gutter});
 
     &:before {
       background: _palette(border);
-      content: '';
+      content: "";
       display: block;
       height: calc(100% + #{$gutter});
       left: ($gutter * -0.5);
@@ -35,7 +35,7 @@
     &:after {
       background: _palette(border);
       bottom: ($gutter * -0.5);
-      content: '';
+      content: "";
       display: block;
       height: 1px;
       position: absolute;
@@ -49,7 +49,7 @@
 
     .image {
       display: block;
-      margin: 0 0 _size(element-margin) 0;
+      margin: 0 0 1em 0;
       //   overflow: hidden;
       border-radius: 50%;
 
@@ -58,9 +58,21 @@
         width: 100%;
       }
     }
+
+    .title-header {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      margin-bottom: 10px;
+
+      h3 {
+        margin: 0px;
+        color: black;
+      }
+    }
   }
 
-  @include breakpoint('xlarge-to-max') {
+  @include breakpoint("xlarge-to-max") {
     article {
       &:nth-child(1) {
         &:before {
@@ -88,7 +100,7 @@
     }
   }
 
-  @include breakpoint('<=xlarge') {
+  @include breakpoint("<=xlarge") {
     article {
       width: calc(50% - #{$gutter});
 
@@ -98,7 +110,7 @@
     }
   }
 
-  @include breakpoint('small-to-xlarge') {
+  @include breakpoint("small-to-xlarge") {
     article {
       &:nth-child(1) {
         &:before {
@@ -126,7 +138,7 @@
     }
   }
 
-  @include breakpoint('<=small') {
+  @include breakpoint("<=small") {
     $gutter: _size(gutter) * 1.5;
 
     margin: 0 0 _size(element-margin) ($gutter * -1);
@@ -152,7 +164,7 @@
     }
   }
 
-  @include breakpoint('<=xsmall') {
+  @include breakpoint("<=xsmall") {
     $gutter: _size(gutter) * 1.5;
 
     margin: 0 0 _size(element-margin) 0;
