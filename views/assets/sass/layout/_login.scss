@@ -87,7 +87,7 @@ ul {
   background: _palette(bg);
   width: 100%;
   // width: 400px;
-  height: 3.3em;
+  // height: 4rem;
   max-width: 100%;
   min-width: 100%;
   border: 0;
@@ -110,7 +110,8 @@ textarea {
   background: _palette(naranja);
   width: 100%;
   border: 0;
-  padding: 15px;
+  // padding: 15px;
+  line-height: 0;
   margin-top: 15px;
   color: #ffffff;
   font-size: 14px;
@@ -134,7 +135,8 @@ textarea {
 }
 
 .form .message a:hover {
-  text-decoration: underline;
+  color: _palette(fg-bold) !important;
+  border-bottom-color: _palette(fg-bold);
 }
 
 .first-pair {
@@ -166,7 +168,7 @@ textarea {
 }
 .container:before,
 .container:after {
-  content: '';
+  content: "";
   display: block;
   clear: both;
 }
@@ -205,7 +207,7 @@ textarea {
   background: -moz-linear-gradient(right, _palette(bg), _palette(accent));
   background: -o-linear-gradient(right, _palette(bg), _palette(accent));
   background: linear-gradient(to left, _palette(bg), _palette(accent));
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
