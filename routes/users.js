@@ -10,18 +10,20 @@ const passport = require("passport");
 
 // signup
 router.post("/signup", async (req, res, next) => {
-  const { name, email, whoIs } = req.body;
+  const { name, email, password } = req.body;
   let savedUser;
 
-  if (!name || !email || !whoIs) {
+  if (!name || !email || !password) {
     return next(createError(400, "Missing fields"));
   }
+
+  const hashedPassword = await bcrypt.hash(password, 10);
 
   try {
     const user = new User({
       name: name,
       email: email,
-      whoIs: whoIs,
+      password: hashedPassword,
     });
     savedUser = await user.save();
   } catch (err) {
@@ -33,60 +35,15 @@ router.post("/signup", async (req, res, next) => {
     }
   }
 
-  // sendMail.sendUserForValidation(savedUser, req.headers.host);
+  sendMail.notifyAccountCreation(savedUser);
   res.status(200);
   req.flash("flashSuccess", "Account created");
   res.redirect("/login");
 });
 
-// admin approves or rejects account request
-router.get("/signup/:token", async (req, res) => {
-  let errors;
-  jwt.verify(
-    req.params.token,
-    process.env.STATUS_TOKEN,
-    function (err, decoded) {
-      if (err) {
-        errors = { message: "Invalid or expired token" };
-        return res.render("status", { errors });
-      } else {
-        User.findById(decoded.id, async function (err, user) {
-          if (err || user == null) {
-            errors = { message: "Error finding user" };
-            return res.render("status", { errors });
-          } else {
-            if (user.status != "pending") {
-              errors = { message: "User status is not pending" };
-              return res.render("status", { errors });
-            }
-          }
-          try {
-            user.status = decoded.status;
-            await user.save();
-          } catch (err) {
-            errors = { message: "Error saving user" };
-            return res.render("status", { errors });
-          }
-          sendMail.sendStatusToUser(user, req.headers.host);
-          res.status(200);
-          if (user.status == "approved") {
-            const success = { message: "User approved correctly" };
-            return res.render("status", { success });
-          }
-          if (user.status == "rejected") {
-            const errors = { message: "User rejected correctly" };
-            return res.render("status", { errors });
-          }
-          return;
-        });
-      }
-    }
-  );
-});
-
 // load set password view with token as parameter
 router.get("/set-password/:token", async (req, res) => {
-  res.render("set", {
+  res.render("set-password", {
     token: req.params.token,
   });
 });
@@ -100,7 +57,7 @@ router.post("/set-password/:token", async (req, res) => {
   jwt.verify(token, process.env.RESET_TOKEN, function (err, decoded) {
     if (err) {
       errors = { message: "Invalid or expired token" };
-      return res.render("set", {
+      return res.render("set-password", {
         token,
         errors,
       });
@@ -108,28 +65,19 @@ router.post("/set-password/:token", async (req, res) => {
       User.findById(decoded.id, async function (err, user) {
         if (err || user == null) {
           errors = { message: "Error finding user" };
-          return res.render("set", {
+          return res.render("set-password", {
             token,
             errors,
           });
-        } else {
-          if (user.status == "pending" || user.status == "rejected") {
-            errors = { message: "User has never been approved" };
-            return res.render("set", {
-              token,
-              errors,
-            });
-          }
         }
 
         try {
           const hashedPassword = await bcrypt.hash(password, 10);
           user.password = hashedPassword;
-          user.status = "activated";
           await user.save();
         } catch (err) {
           errors = { message: "Error saving user" };
-          return res.render("set", {
+          return res.render("set-password", {
             token,
             errors,
           });
@@ -167,11 +115,6 @@ router.post("/reset-password", async (req, res) => {
     if (err || user == null) {
       errors = { message: "Error finding user" };
       return res.render("login", { errors });
-    } else {
-      if (user.status == "pending" || user.status == "rejected") {
-        errors = { message: "User is not activated" };
-        return res.render("login", { errors });
-      }
     }
 
     sendMail.sendEmailWithToken(user, req.headers.host);
