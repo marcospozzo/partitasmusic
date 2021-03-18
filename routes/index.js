@@ -67,9 +67,7 @@ router.post("/contact", (req, res, next) => {
 
   sendMail.sendContactForm(name, email, message);
 
-  res.render("home", {
-    user: req.user,
-  });
+  res.redirect("/");
 });
 
 // aphorism
