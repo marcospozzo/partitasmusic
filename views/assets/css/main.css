@@ -2237,6 +2237,16 @@ ul.pagination li:last-child {
 }
 
 /* Table */
+.contributors {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-line-pack: start;
+      align-content: flex-start;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+}
+
 .table-wrapper {
   -webkit-overflow-scrolling: touch;
   overflow-x: auto;

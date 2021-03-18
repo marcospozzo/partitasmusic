@@ -109,12 +109,11 @@ router.get("/logout", (req, res) => {
 // user requests password reset based on email address
 router.post("/reset-password", async (req, res) => {
   const email = req.body.email;
-  let errors;
 
   User.findOne({ email: email }, async function (err, user) {
     if (err || user == null) {
-      errors = { message: "Error finding user" };
-      return res.render("login", { errors });
+      req.flash("flashError", "Error finding user");
+      return res.redirect("/login");
     }
 
     sendMail.sendEmailWithToken(user, req.headers.host);
