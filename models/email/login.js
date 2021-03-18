@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 
 function notifyAccountCreation(user) {
   const data = {
-    to: "info@partitasmusic.com",
+    to: "partitasmusic@gmail.com",
     subject: `[New account] ${user.name}`,
     text: `Dear Partitas: \n\nThere was a new account creation: \nName: ${user.name} \nEmail: ${user.email} \n\nBest regards.`,
     html: "",
