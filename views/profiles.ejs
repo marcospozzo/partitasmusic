@@ -32,25 +32,22 @@
           <!-- Section -->
           <section>
             <header class="major">
-              <h2>Recent Contributions</h2>
+              <h2>Contributions</h2>
             </header>
             <div class="posts">
               <article>
-                <a href="/profile" class="image"
-                  ><img src="./images/image1.jpeg" alt=""
-                /></a>
-                <div class="title-header">
-                  <h3>Artist 1</h3>
-                  <h4>UK</h4>
+                <div class="image">
+                  <img id="artist-1-pic" src="./images/image1.jpeg" alt="" />
                 </div>
-                <h3>Piece name</h3>
-                <p>
-                  Aenean ornare velit lacus, ac varius enim lorem ullamcorper
-                  dolore. Proin aliquam facilisis ante interdum. Sed nulla amet
-                  lorem feugiat tempus aliquam.
-                </p>
+                <div class="title-header">
+                  <h3 id="artist-1-name"></h3>
+                  <h4 id="artist-1-country"></h4>
+                </div>
+                <h3 id="artist-1-title"></h3>
+                <p id="artist-1-description"></p>
                 <form
-                  action="/login"
+                  id="artist-1-score"
+                  action=""
                   style="width: 100%"
                   method="GET"
                   class="button primary icon solid fa-download"
@@ -62,7 +59,10 @@
                   preload="none"
                   class="mobile-audio"
                   controls=""
-                ></audio>
+                >
+                  <source src="horse.mp3" type="audio/mpeg" />
+                  Your browser does not support the audio tag.
+                </audio>
               </article>
               <article>
                 <a href="/profile" class="image"
@@ -133,5 +133,31 @@
 
     <!-- Scripts -->
     <%- include('partials/scripts'); %>
+
+    <script>
+      getContributors()
+        .then((json) => {
+          document.getElementById("artist-1-pic").src = json.profilePictureUrl;
+          document.getElementById("artist-1-name").textContent = json.name;
+          document.getElementById("artist-1-country").textContent =
+            json.country;
+          document.getElementById("artist-1-title").textContent = json.title;
+          document.getElementById("artist-1-description").textContent =
+            json.description;
+          document.getElementById(
+            "artist-1-score"
+          ).action = `/api/scores/${json._id}`;
+        })
+        .catch((error) => {
+          console.log("error fetching contributors");
+          console.error(error);
+        });
+
+      async function getContributors() {
+        const response = await fetch("/api");
+        const json = await response.json();
+        return json;
+      }
+    </script>
   </body>
 </html>

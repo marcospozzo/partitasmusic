@@ -2,6 +2,7 @@ const router = require("express").Router();
 const aphorisms = require("../models/aphorism/aphorisms");
 const createError = require("http-errors");
 const sendMail = require("../models/email/contact");
+const Contribution = require("../models/Contribution");
 
 const { ensureAuthenticated, forwardAuthenticated } = require("../config/auth");
 
@@ -103,5 +104,20 @@ router.get("/picks-and-strings", (req, res) =>
     user: req.user,
   })
 );
+
+// api
+router.get("/api", (req, res) => {
+  Contribution.find({}, function (err, contributors) {
+    res.send(contributors[0]);
+  });
+});
+
+// scores
+router.get("/api/scores/:id", (req, res) => {
+  const id = req.params.id;
+  Contribution.findById(id, function (err, contribution) {
+    res.send(contributors[0]);
+  });
+});
 
 module.exports = router;

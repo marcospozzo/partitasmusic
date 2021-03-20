@@ -12,7 +12,11 @@
       name="viewport"
       content="width=device-width, initial-scale=1, user-scalable=no"
     />
-    <link rel="icon" type="image/png" href="./images/branding/favicon-PM-orange.png" />
+    <link
+      rel="icon"
+      type="image/png"
+      href="./images/branding/favicon-PM-orange.png"
+    />
     <link rel="stylesheet" href="./assets/css/main.css" />
   </head>
   <body class="is-preload">
@@ -30,14 +34,34 @@
               <header class="major">
                 <h2>Contribute</h2>
               </header>
-              <p>You can send us your music to be shared
-                with the community. Please get in touch and we
-                will reach out to you soon. Thank you!
+              <p>
+                You can send us your music to be shared with the community.
+                Please get in touch and we will reach out to you soon. Thank
+                you!
               </p>
 
-            <!-- Contact form -->
-            <%- include('partials/contact-form'); %>
+              <!-- Contact form -->
+              <%- include('partials/contact-form'); %>
 
+              <p>You can also support Partitas Music by becoming a Patreon.</p>
+
+              <ul class="actions">
+                <li>
+                  <a href="/profiles" target="_blank" class="button primary"
+                    >Become a Patreon</a
+                  >
+                </li>
+              </ul>
+
+              <p>
+                This website is an open source project. You can contribute with
+                code by resolving an issue
+                <a
+                  href="https://github.com/marcospozzo/partitasmusic/issues"
+                  target="_blank"
+                  >here</a
+                >.
+              </p>
             </div>
             <span class="image object">
               <img src="./images/contribute.png" alt="music score with notes" />
