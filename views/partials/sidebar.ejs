@@ -1,8 +1,8 @@
 <div id="sidebar">
   <div class="inner">
     <!-- Search -->
-    <!--     
-    <section id="search" class="alt">
+
+    <!-- <section id="search" class="alt">
       <form method="post" action="#">
         <input type="text" name="query" id="query" placeholder="Search" />
       </form>
@@ -10,9 +10,6 @@
 
     <!-- Menu -->
     <nav id="menu">
-      <header class="major">
-        <h2>Menu</h2>
-      </header>
       <ul>
         <li><a href="/contributors">music</a></li>
         <li><a href="/picks-and-strings">picks & strings</a></li>
@@ -28,19 +25,17 @@
     </a>
 
     <!-- Login / Logout -->
-    <section>
-      <ul class="contact">
-        <% if (user) { %>
-        <li class="icon solid fa-sign-out-alt">
-          <a href="/users/logout">Logout</a>
-        </li>
-        <% } else { %>
-        <li class="icon solid fa-sign-in-alt">
-          <a href="/login">Login</a>
-        </li>
-        <% } %>
-      </ul>
-    </section>
+    <ul class="contact">
+      <% if (user) { %>
+      <li class="icon solid fa-sign-out-alt">
+        <a href="/users/logout">Logout</a>
+      </li>
+      <% } else { %>
+      <li class="icon solid fa-sign-in-alt">
+        <a href="/login">Login</a>
+      </li>
+      <% } %>
+    </ul>
   </div>
 </div>
 
@@ -48,7 +43,7 @@
 <script>
   aphorism()
     .then((text) => {
-      document.getElementById("aphorism").innerText = `"${text}"`;
+      document.getElementById("aphorism").textContent = `"${text}"`;
     })
     .catch((error) => {
       console.log("error fetching aphorism");

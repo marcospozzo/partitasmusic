@@ -51,9 +51,10 @@
       display: block;
       margin: 0 0 1em 0;
       //   overflow: hidden;
-      border-radius: 50%;
+      // border-radius: 50%;
 
       img {
+        border-radius: 50%;
         display: block;
         width: 100%;
       }

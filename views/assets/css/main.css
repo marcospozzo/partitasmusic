@@ -2128,6 +2128,8 @@ ul.icons li .icon:before {
 ul.contact {
   list-style: none;
   padding: 0;
+  position: fixed;
+  bottom: 6em;
 }
 
 ul.contact li {
@@ -2675,10 +2677,10 @@ button:disabled,
 .posts article .image {
   display: block;
   margin: 0 0 1em 0;
-  border-radius: 50%;
 }
 
 .posts article .image img {
+  border-radius: 50%;
   display: block;
   width: 100%;
 }
@@ -3152,7 +3154,6 @@ textarea {
 /* Sidebar */
 #aphorism {
   font-style: italic;
-  height: 100px;
 }
 
 #search form {
@@ -3177,7 +3178,7 @@ textarea {
   -webkit-transform: scaleX(-1);
   transform: scaleX(-1);
   color: #7f888f;
-  content: '\f002';
+  content: "\f002";
   cursor: default;
   display: block;
   font-size: 1.5em;
@@ -3191,7 +3192,7 @@ textarea {
   width: 2em;
 }
 
-#search form input[type='text'] {
+#search form input[type="text"] {
   padding-right: 2.75em;
 }
 
@@ -3223,6 +3224,7 @@ textarea {
   padding: 2.22222em 2.22222em 2.44444em 2.22222em ;
   position: relative;
   width: 26em;
+  margin-top: 5em;
 }
 
 #sidebar > .inner > * {
@@ -3284,7 +3286,7 @@ textarea {
 }
 
 #sidebar .toggle:before {
-  content: '\f0c9';
+  content: "\f0c9";
   font-size: 2rem;
   height: inherit;
   left: 0;
@@ -3351,7 +3353,7 @@ textarea {
     top: 0;
   }
   #sidebar > .inner:after {
-    content: '';
+    content: "";
     display: block;
     height: 4em;
     width: 100%;
@@ -3383,7 +3385,7 @@ textarea {
   }
   #sidebar .toggle:after {
     background: rgba(222, 225, 226, 0.75);
-    content: '';
+    content: "";
     height: 3.5em;
     left: 1em;
     position: absolute;
