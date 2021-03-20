@@ -105,19 +105,4 @@ router.get("/picks-and-strings", (req, res) =>
   })
 );
 
-// api
-router.get("/api", (req, res) => {
-  Contribution.find({}, function (err, contributors) {
-    res.send(contributors[0]);
-  });
-});
-
-// scores
-router.get("/api/scores/:id", (req, res) => {
-  const id = req.params.id;
-  Contribution.findById(id, function (err, contribution) {
-    res.send(contributors[0]);
-  });
-});
-
 module.exports = router;

@@ -55,19 +55,19 @@ GET http://localhost:3000/aphorism
 
 ###
 
-POST http://localhost:3000/users/create-contribution
+POST http://localhost:3000/api/create-contribution
 content-type: application/json
 
 {
     "name": "Luis Cagnolo",
     "country": "Argentina",
-    "bio": "Marc bio",
-    "profilePictureUrl": "./images/collage-partitas.jpg",
+    "bio": "Cagnolo bio",
+    "profilePictureUrl": "cagnolo.jpg",
     "contactUrl": "https://testurl.com",
     "donateUrl": "https://testurl.com",
     "composers": "Luis Cagnolo",
     "title": "Maratón",
     "description": "Recorded live by The League of Crafty Guitarists, 2015",
-    "audioUrl": "https://testurl.com",
-    "scoreUrl": "https://testurl.com"
+    "audioUrl": "07-Maraton.mp3",
+    "scoreUrl": "Maraton - Partitura completa.pdf"
 }

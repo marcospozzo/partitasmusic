@@ -20,7 +20,7 @@ function sendEmailWithToken(user, host) {
     { expiresIn: "15m" }
   );
 
-  const resetlURL = `https://${host}/users/set-password/${token}`;
+  const resetlURL = `http://${host}/users/set-password/${token}`;
 
   const data = {
     to: user.email,

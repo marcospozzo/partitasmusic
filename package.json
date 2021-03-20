@@ -9,8 +9,9 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
+    "aws-sdk": "^2.868.0",
     "bcrypt": "^5.0.1",
     "connect-flash": "^0.1.1",
     "dotenv": "^8.2.0",
@@ -27,7 +28,6 @@
     "passport-local": "^1.0.0"
   },
   "devDependencies": {
-    "aws-sdk": "^2.865.0",
     "nodemon": "^2.0.7"
   }
 }

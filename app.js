@@ -58,6 +58,7 @@ app.use(function (req, res, next) {
 
 // middleware routes
 app.use("/", require("./routes/index"));
+app.use("/api", require("./routes/api"));
 app.use("/users", require("./routes/users"));
 
 // 404 handler

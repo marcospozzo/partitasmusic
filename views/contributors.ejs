@@ -110,8 +110,8 @@
 
     <script>
       getContributors()
-        .then((text) => {
-          document.getElementById("artist-1").textContent = text;
+        .then((json) => {
+          document.getElementById("artist-1").textContent = json.name;
         })
         .catch((error) => {
           console.log("error fetching contributors");
@@ -120,8 +120,8 @@
 
       async function getContributors() {
         const response = await fetch("/api");
-        const text = await response.text();
-        return text;
+        const json = await response.json();
+        return json;
       }
     </script>
   </body>

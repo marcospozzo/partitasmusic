@@ -45,24 +45,25 @@
                 </div>
                 <h3 id="artist-1-title"></h3>
                 <p id="artist-1-description"></p>
-                <form
-                  id="artist-1-score"
-                  action=""
-                  style="width: 100%"
-                  method="GET"
-                  class="button primary icon solid fa-download"
-                >
-                  download score
-                </form>
                 <audio
+                  id="artist-1-audio"
                   style="width: 100%"
                   preload="none"
                   class="mobile-audio"
                   controls=""
                 >
-                  <source src="horse.mp3" type="audio/mpeg" />
+                  <source src="" type="audio/mpeg" />
                   Your browser does not support the audio tag.
                 </audio>
+                <a id="artist-1-score" href="" target="_blank">
+                  <button
+                    style="width: 100%"
+                    class="button primary icon solid fa-download"
+                    type="submit"
+                  >
+                    download score
+                  </button>
+                </a>
               </article>
               <article>
                 <a href="/profile" class="image"
@@ -144,9 +145,8 @@
           document.getElementById("artist-1-title").textContent = json.title;
           document.getElementById("artist-1-description").textContent =
             json.description;
-          document.getElementById(
-            "artist-1-score"
-          ).action = `/api/scores/${json._id}`;
+          document.getElementById("artist-1-score").href = json.scoreUrl;
+          document.getElementById("artist-1-audio").src = json.audioUrl;
         })
         .catch((error) => {
           console.log("error fetching contributors");
