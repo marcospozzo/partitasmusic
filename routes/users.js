@@ -1,6 +1,5 @@
 const dotenv = require("dotenv").config();
 const User = require("../models/User");
-const Contribution = require("../models/Contribution");
 const router = require("express").Router();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -122,45 +121,6 @@ router.post("/reset-password", async (req, res) => {
     req.flash("flashSuccess", "Follow email instructions");
     res.redirect("/login");
   });
-});
-
-// create-contribution
-router.post("/create-contribution", async (req, res, next) => {
-  const {
-    name,
-    country,
-    bio,
-    profilePictureUrl,
-    contactUrl,
-    donateUrl,
-    composers,
-    title,
-    description,
-    audioUrl,
-    scoreUrl,
-  } = req.body;
-  let savedContribution;
-
-  try {
-    const contribution = new Contribution({
-      name: name,
-      country: country,
-      bio: bio,
-      profilePictureUrl: profilePictureUrl,
-      contactUrl: contactUrl,
-      donateUrl: donateUrl,
-      composers: composers,
-      title: title,
-      description: description,
-      audioUrl: audioUrl,
-      scoreUrl: scoreUrl,
-    });
-    savedContribution = await contribution.save();
-  } catch (err) {
-    return next(err);
-  }
-
-  res.sendStatus(200);
 });
 
 module.exports = router;

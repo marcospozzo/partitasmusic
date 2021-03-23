@@ -3,6 +3,7 @@ const aphorisms = require("../models/aphorism/aphorisms");
 const createError = require("http-errors");
 const sendMail = require("../models/email/contact");
 const Contribution = require("../models/Contribution");
+const api = require("./api");
 
 const { ensureAuthenticated, forwardAuthenticated } = require("../config/auth");
 
@@ -24,11 +25,14 @@ router.get("/profile", (req, res) =>
 );
 
 // profiles
-router.get("/profiles", (req, res) =>
+router.get("/profiles/:id", async (req, res) => {
+  const rawContributors = await api.getThreeContributors(req.params.id);
+  const contributors = await api.getSignedContributors(rawContributors);
   res.render("profiles", {
     user: req.user,
-  })
-);
+    contributors: contributors,
+  });
+});
 
 // contributors
 router.get("/contributors", (req, res) =>

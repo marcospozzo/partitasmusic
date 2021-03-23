@@ -59,15 +59,13 @@ POST http://localhost:3000/api/create-contribution
 content-type: application/json
 
 {
-    "name": "Luis Cagnolo",
-    "country": "Argentina",
-    "bio": "Cagnolo bio",
-    "profilePictureUrl": "cagnolo.jpg",
-    "contactUrl": "https://testurl.com",
-    "donateUrl": "https://testurl.com",
-    "composers": "Luis Cagnolo",
-    "title": "Maratón",
-    "description": "Recorded live by The League of Crafty Guitarists, 2015",
-    "audioUrl": "07-Maraton.mp3",
-    "scoreUrl": "Maraton - Partitura completa.pdf"
+    "picture": "lams.jpg",
+    "name": "Bert Lams",
+    "country": "Belgium/USA",
+    "title": "Asturias",
+    "description": "One of the most performed pieces worldwide since the late 80’s. Recorded live in Tokyo by The Robert Fripp String Quintet, November 1992",
+    "contact": "",
+    "audio": "Asturias-Lams-RFSQ.mp3",
+    "score": "Asturias-LAMS.pdf",
+    "path": "bert-lams"
 }

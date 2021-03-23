@@ -2,58 +2,48 @@ const mongoose = require("mongoose");
 
 const UserSchema = new mongoose.Schema(
   {
+    picture: {
+      type: String,
+      max: 512,
+      required: true,
+    },
     name: {
       type: String,
-      required: true,
       max: 100,
+      required: true,
     },
     country: {
       type: String,
-      required: true,
       max: 50,
-    },
-    bio: {
-      type: String,
-      max: 2048,
       required: true,
-    },
-    profilePictureUrl: {
-      type: String,
-      max: 1024,
-      required: true,
-    },
-    contactUrl: {
-      type: String,
-      max: 1024,
-      required: true,
-    },
-    donateUrl: {
-      type: String,
-      max: 1024,
-    },
-    composers: {
-      type: String,
-      required: true,
-      max: 100,
     },
     title: {
       type: String,
+      max: 100,
       required: true,
-      max: 50,
     },
     description: {
       type: String,
-      max: 20,
-      required: true,
-    },
-    audioUrl: {
-      type: String,
       max: 1024,
       required: true,
     },
-    scoreUrl: {
+    contact: {
       type: String,
-      max: 1024,
+      max: 512,
+    },
+    audio: {
+      type: String,
+      max: 512,
+      required: true,
+    },
+    score: {
+      type: String,
+      max: 512,
+      required: true,
+    },
+    path: {
+      type: String,
+      max: 512,
       required: true,
     },
   },

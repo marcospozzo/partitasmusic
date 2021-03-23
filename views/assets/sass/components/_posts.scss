@@ -37,7 +37,7 @@
       bottom: ($gutter * -0.5);
       content: "";
       display: block;
-      height: 1px;
+      height: 0px; // hiding 1px line by setting it to 0px
       position: absolute;
       right: 0;
       width: calc(100% + #{$gutter});
@@ -64,12 +64,16 @@
       display: flex;
       align-items: center;
       flex-direction: column;
-      margin-bottom: 10px;
+      margin-bottom: 1em;
 
       h3 {
         margin: 0px;
         color: black;
       }
+    }
+
+    audio {
+      margin-bottom: 1em;
     }
   }
 

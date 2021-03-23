@@ -1,0 +1,29 @@
+<article>
+  <div class="image">
+    <img src="<%= contributor.picture %>" alt="" />
+  </div>
+  <div class="title-header">
+    <h3><%= contributor.name %></h3>
+    <h4><%= contributor.country %></h4>
+  </div>
+  <h3><%= contributor.title %></h3>
+  <p><%= contributor.description %></p>
+  <audio
+    style="width: 100%"
+    preload="none"
+    class="mobile-audio"
+    controls=""
+  >
+    <source src="<%= contributor.audio %>" type="audio/mpeg" />
+    This browser does not support the audio tag.
+  </audio>
+  <a href="<%= contributor.score %>" target="_blank">
+    <button
+      style="width: 100%"
+      class="button primary icon solid fa-download"
+      type="submit"
+    >
+      download score
+    </button>
+  </a>
+</article>

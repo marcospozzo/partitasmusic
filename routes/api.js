@@ -10,78 +10,67 @@ AWS.config.update({
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
 });
 const myBucket = "partitasmusic";
-const signedUrlExpireSeconds = 60 * 5;
+const signedUrlExpireSeconds = 60 * 60 * 12; // 12 hours
 
-// /api
-router.get("/", (req, res) => {
-  Contribution.find({}, function (err, contributors) {
+function getThreeContributors(id) {
+  return Contribution.find({}, async function (err, contributors) {
     if (err) {
       console.error(err);
     }
-    const contributor = contributors[0];
-    contributor.profilePictureUrl = getS3TempUrl(
-      `profile-pictures/${contributor.profilePictureUrl}`
-    );
-    contributor.audioUrl = getS3TempUrl(`audio/${contributor.audioUrl}`);
-    contributor.scoreUrl = getS3TempUrl(`scores/${contributor.scoreUrl}`);
-    res.send(contributor);
-  });
-});
-
-function getS3TempUrl(key) {
-  const url = s3.getSignedUrl("getObject", {
-    Bucket: myBucket,
-    Key: key,
-    Expires: signedUrlExpireSeconds,
-  });
-  return url;
+  }).exec();
 }
 
-// scores
-router.get("/scores/:id", (req, res) => {
-  const id = req.params.id;
-  Contribution.findById(id, function (err, contribution) {
-    res.send(contributors[0]);
-  });
-});
+async function getSignedContributors(contributors) {
+  for (contributor of contributors) {
+    const path = contributor.path;
+    contributor.picture = await getS3TempUrl(path, contributor.picture);
+    contributor.audio = await getS3TempUrl(path, contributor.audio);
+    contributor.score = await getS3TempUrl(path, contributor.score);
+  }
+  return contributors;
+}
 
-// create-contribution
+function getS3TempUrl(path, key) {
+  return s3.getSignedUrlPromise("getObject", {
+    Bucket: myBucket,
+    Key: `${path}/${key}`,
+    Expires: signedUrlExpireSeconds,
+  });
+}
+
 router.post("/create-contribution", async (req, res, next) => {
   const {
+    picture,
     name,
     country,
-    bio,
-    profilePictureUrl,
-    contactUrl,
-    donateUrl,
-    composers,
     title,
     description,
-    audioUrl,
-    scoreUrl,
+    contact,
+    audio,
+    score,
+    path,
   } = req.body;
   let savedContribution;
 
   try {
     const contribution = new Contribution({
+      picture: picture,
       name: name,
       country: country,
-      bio: bio,
-      profilePictureUrl: profilePictureUrl,
-      contactUrl: contactUrl,
-      donateUrl: donateUrl,
-      composers: composers,
       title: title,
       description: description,
-      audioUrl: audioUrl,
-      scoreUrl: scoreUrl,
+      contact: contact,
+      audio: audio,
+      score: score,
+      path: path,
     });
     savedContribution = await contribution.save();
   } catch (err) {
     return next(err);
   }
-
   res.sendStatus(200);
 });
 
 module.exports = router;
+module.exports.getThreeContributors = getThreeContributors;
+module.exports.getSignedContributors = getSignedContributors;
