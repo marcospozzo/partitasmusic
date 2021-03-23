@@ -55,17 +55,27 @@ GET http://localhost:3000/aphorism
 
 ###
 
+POST http://localhost:3000/api/create-contributor
+content-type: application/json
+
+{
+    "picture": "cagnolo.jpg",
+    "name": "Luis Cagnolo",
+    "country": "Argentina",
+    "contact": "lmcagnolo@gmail.com",
+    "category": "individual",
+    "path": "luis-cagnolo"
+}
+
+###
+
 POST http://localhost:3000/api/create-contribution
 content-type: application/json
 
 {
-    "picture": "lams.jpg",
-    "name": "Bert Lams",
-    "country": "Belgium/USA",
-    "title": "Asturias",
-    "description": "One of the most performed pieces worldwide since the late 80’s. Recorded live in Tokyo by The Robert Fripp String Quintet, November 1992",
-    "contact": "",
-    "audio": "Asturias-Lams-RFSQ.mp3",
-    "score": "Asturias-LAMS.pdf",
-    "path": "bert-lams"
+    "title": "Maratón",
+    "description": "Fast Tempo. Written in October 2014. Recorded live by The League of Crafty Guitarists, 2015.",
+    "audio": "07-Maraton.mp3",
+    "score": "Maraton-2021.pdf",
+    "path": "luis-cagnolo"
 }

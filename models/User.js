@@ -1,10 +1,6 @@
 const mongoose = require("mongoose");
 const uniqueValidator = require("mongoose-unique-validator");
 
-function toLower(text) {
-  return text.toLowerCase();
-}
-
 const UserSchema = new mongoose.Schema(
   {
     name: {
@@ -14,10 +10,10 @@ const UserSchema = new mongoose.Schema(
     },
     email: {
       type: String,
+      lowercase: true,
       required: true,
       unique: true,
       max: 50,
-      set: toLower,
     },
     password: {
       type: String,

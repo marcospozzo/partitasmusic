@@ -2,24 +2,28 @@ const mongoose = require("mongoose");
 
 const UserSchema = new mongoose.Schema(
   {
-    title: {
+    picture: {
+      type: String,
+      max: 512,
+      required: true,
+    },
+    name: {
       type: String,
       max: 100,
       required: true,
     },
-    description: {
+    country: {
       type: String,
-      max: 1024,
+      max: 50,
       required: true,
     },
-    audio: {
+    contact: {
       type: String,
       max: 512,
-      required: true,
     },
-    score: {
+    category: {
       type: String,
-      max: 512,
+      enum: ["ensemble", "individual"],
       required: true,
     },
     path: {
@@ -31,5 +35,5 @@ const UserSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Contribution = mongoose.model("Contribution", UserSchema);
-module.exports = Contribution;
+const Contributor = mongoose.model("Contributor", UserSchema);
+module.exports = Contributor;

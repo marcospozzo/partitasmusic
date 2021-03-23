@@ -2,7 +2,6 @@ const router = require("express").Router();
 const aphorisms = require("../models/aphorism/aphorisms");
 const createError = require("http-errors");
 const sendMail = require("../models/email/contact");
-const Contribution = require("../models/Contribution");
 const api = require("./api");
 
 const { ensureAuthenticated, forwardAuthenticated } = require("../config/auth");
