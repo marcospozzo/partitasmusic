@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const random = require("mongoose-simple-random");
 
 const UserSchema = new mongoose.Schema(
   {
@@ -21,6 +22,10 @@ const UserSchema = new mongoose.Schema(
       type: String,
       max: 512,
     },
+    donate: {
+      type: String,
+      max: 512,
+    },
     category: {
       type: String,
       enum: ["ensemble", "individual"],
@@ -35,5 +40,6 @@ const UserSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+UserSchema.plugin(random);
 const Contributor = mongoose.model("Contributor", UserSchema);
 module.exports = Contributor;

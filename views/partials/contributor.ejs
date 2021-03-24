@@ -6,18 +6,28 @@
     <h3><%= contributor.name %></h3>
     <h4><%= contributor.country %></h4>
   </div>
-  <h3><%= contributor.title %></h3>
-  <p><%= contributor.description %></p>
+  <h3><%= contribution.title %></h3>
+  <p><%= contribution.description %></p>
+  <p>
+    <% if (contributor.contact) { %> 
+      <span>Contact: </span><a href="<%= contributor.contact %>" target="_blank"><%= contributor.contact %></a>
+    <% } %>
+    <% if (contributor.donate) { %> 
+      <br>
+      <span>Donate: </span><a href="<%= contributor.donate %>" target="_blank"><%= contributor.donate %></a>
+    <% } %>
+  </p>
+          
   <audio
     style="width: 100%"
     preload="none"
     class="mobile-audio"
     controls=""
   >
-    <source src="<%= contributor.audio %>" type="audio/mpeg" />
+    <source src="<%= contribution.audio %>" type="audio/mpeg" />
     This browser does not support the audio tag.
   </audio>
-  <a href="<%= contributor.score %>" target="_blank">
+  <a href="<%= contribution.score %>" target="_blank">
     <button
       style="width: 100%"
       class="button primary icon solid fa-download"

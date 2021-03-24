@@ -59,12 +59,13 @@ POST http://localhost:3000/api/create-contributor
 content-type: application/json
 
 {
-    "picture": "cagnolo.jpg",
-    "name": "Luis Cagnolo",
-    "country": "Argentina",
-    "contact": "lmcagnolo@gmail.com",
-    "category": "individual",
-    "path": "luis-cagnolo"
+    "picture": "cgtbio.jpg",
+    "name": "California Guitar Trio",
+    "country": "Belgium-USA-Japan",
+    "contact": "https://cgtrio.com/",
+    "donate": "https://donate-demo-url.com",
+    "category": "ensemble",
+    "path": "california-guitar-trio"
 }
 
 ###
@@ -73,9 +74,9 @@ POST http://localhost:3000/api/create-contribution
 content-type: application/json
 
 {
-    "title": "Maratón",
-    "description": "Fast Tempo. Written in October 2014. Recorded live by The League of Crafty Guitarists, 2015.",
-    "audio": "07-Maraton.mp3",
-    "score": "Maraton-2021.pdf",
-    "path": "luis-cagnolo"
+    "title": "Yamanashi Blues",
+    "description": "The classic hit by the most prominent professional spinoff of the early GC years. Check their website!",
+    "audio": "Yamanashi Blues.mp3",
+    "score": "CGT-yamanashi-blues.pdf",
+    "path": "california-guitar-trio"
 }

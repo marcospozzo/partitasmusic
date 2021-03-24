@@ -16,23 +16,6 @@ router.get("/", (req, res) =>
 // login
 router.get("/login", forwardAuthenticated, (req, res) => res.render("login"));
 
-// profile
-router.get("/profile", (req, res) =>
-  res.render("profile", {
-    user: req.user,
-  })
-);
-
-// profiles
-router.get("/profiles/:id", async (req, res) => {
-  const rawContributors = await api.getThreeContributors(req.params.id);
-  const contributors = await api.getSignedContributors(rawContributors);
-  res.render("profiles", {
-    user: req.user,
-    contributors: contributors,
-  });
-});
-
 // contributors
 router.get("/contributors", (req, res) =>
   res.render("contributors", {
@@ -94,18 +77,55 @@ router.get("/contribute", (req, res) =>
   })
 );
 
-// contribute form
-router.get("/contribute-form", ensureAuthenticated, (req, res) =>
-  res.render("contribute-form", {
-    user: req.user,
-  })
-);
-
 // picks and strings
 router.get("/picks-and-strings", (req, res) =>
   res.render("picks-and-strings", {
     user: req.user,
   })
 );
+
+// contributions
+router.get("/contributions/:path", async (req, res) => {
+  try {
+    const pathOne = req.params.path;
+    let contributorOne = await api.getContributor(pathOne);
+    let contributionOne = await api.getContributions(pathOne);
+    contributorOne = await api.getSignedContributor(contributorOne);
+    contributionOne = await api.getSignedContributions(contributionOne);
+    const firstContributor = {};
+    firstContributor.contributor = contributorOne;
+    firstContributor.contribution = contributionOne[0];
+
+    const twoContributors = await api.getTwoRandomContributorExcept(pathOne);
+
+    const pathTwo = twoContributors[0].path;
+    let contributorTwo = await api.getContributor(pathTwo);
+    let contributionTwo = await api.getContributions(pathTwo);
+    contributorTwo = await api.getSignedContributor(contributorTwo);
+    contributionTwo = await api.getSignedContributions(contributionTwo);
+    const secondContributor = {};
+    secondContributor.contributor = contributorTwo;
+    secondContributor.contribution = contributionTwo[0];
+
+    const pathThree = twoContributors[1].path;
+    let contributorThree = await api.getContributor(pathThree);
+    let contributionThree = await api.getContributions(pathThree);
+    contributorThree = await api.getSignedContributor(contributorThree);
+    contributionThree = await api.getSignedContributions(contributionThree);
+    const thirdContributor = {};
+    thirdContributor.contributor = contributorThree;
+    thirdContributor.contribution = contributionThree[0];
+
+    res.render("contributions", {
+      user: req.user,
+      firstContributor,
+      secondContributor,
+      thirdContributor,
+    });
+  } catch (error) {
+    console.error(error);
+    createError(400, "Error");
+  }
+});
 
 module.exports = router;

@@ -2,8 +2,6 @@ const dotenv = require("dotenv").config();
 const Contribution = require("../models/Contribution");
 const Contributor = require("../models/Contributor");
 const router = require("express").Router();
-const passport = require("passport");
-// const { forwardAuthenticated } = require('../config/auth');
 const AWS = require("aws-sdk");
 const s3 = new AWS.S3();
 AWS.config.update({
@@ -13,22 +11,47 @@ AWS.config.update({
 const myBucket = "partitasmusic";
 const signedUrlExpireSeconds = 60 * 60 * 12; // 12 hours
 
-function getThreeContributors(id) {
-  return Contribution.find({}, async function (err, contributors) {
+async function getContributor(path) {
+  return Contributor.findOne({ path: path }, function (err, contributor) {
     if (err) {
       console.error(err);
     }
   }).exec();
 }
 
-async function getSignedContributors(contributors) {
-  for (contributor of contributors) {
-    const path = contributor.path;
-    contributor.picture = await getS3TempUrl(path, contributor.picture);
-    contributor.audio = await getS3TempUrl(path, contributor.audio);
-    contributor.score = await getS3TempUrl(path, contributor.score);
+async function getContributions(path) {
+  return Contribution.find({ path: path }, function (err, contribution) {
+    if (err) {
+      console.error(err);
+    }
+  }).exec();
+}
+
+async function getTwoRandomContributorExcept(path) {
+  const filter = { path: { $nin: [path] } };
+
+  return new Promise((resolve, reject) => {
+    Contributor.findRandom(filter, {}, { limit: 2 }, function (err, result) {
+      return err ? reject(err) : resolve(result);
+    });
+  });
+}
+
+async function getSignedContributions(contributions) {
+  for (contribution of contributions) {
+    const path = contribution.path;
+    contribution.audio = await getS3TempUrl(path, contribution.audio);
+    contribution.score = await getS3TempUrl(path, contribution.score);
   }
-  return contributors;
+  return contributions;
+}
+
+async function getSignedContributor(contributor) {
+  contributor.picture = await getS3TempUrl(
+    contributor.path,
+    contributor.picture
+  );
+  return contributor;
 }
 
 function getS3TempUrl(path, key) {
@@ -59,7 +82,7 @@ router.post("/create-contribution", async (req, res, next) => {
 });
 
 router.post("/create-contributor", async (req, res, next) => {
-  const { picture, name, country, contact, category, path } = req.body;
+  const { picture, name, country, contact, donate, category, path } = req.body;
   let savedContributor;
 
   try {
@@ -68,6 +91,7 @@ router.post("/create-contributor", async (req, res, next) => {
       name: name,
       country: country,
       contact: contact,
+      donate: donate,
       category: category,
       path: path,
     });
@@ -79,5 +103,8 @@ router.post("/create-contributor", async (req, res, next) => {
 });
 
 module.exports = router;
-module.exports.getThreeContributors = getThreeContributors;
-module.exports.getSignedContributors = getSignedContributors;
+module.exports.getContributor = getContributor;
+module.exports.getContributions = getContributions;
+module.exports.getSignedContributor = getSignedContributor;
+module.exports.getSignedContributions = getSignedContributions;
+module.exports.getTwoRandomContributorExcept = getTwoRandomContributorExcept;

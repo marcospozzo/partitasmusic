@@ -60,10 +60,9 @@
                   <tbody>
                     <tr>
                       <td>
-                        <a
-                          href="/profiles/60589b0d4a9cec1acbff285f"
-                          id="artist-1"
-                        ></a>
+                        <a href="/contributions/luis-cagnolo" id="artist-1"
+                          >Luis Cagnolo</a
+                        >
                       </td>
                     </tr>
                     <tr>
@@ -98,22 +97,5 @@
 
     <!-- Scripts -->
     <%- include('partials/scripts'); %>
-
-    <script>
-      getContributors()
-        .then((json) => {
-          document.getElementById("artist-1").textContent = json.name;
-        })
-        .catch((error) => {
-          console.log("error fetching contributors");
-          console.error(error);
-        });
-
-      async function getContributors() {
-        const response = await fetch("/api");
-        const json = await response.json();
-        return json;
-      }
-    </script>
   </body>
 </html>

@@ -22,10 +22,14 @@
             <header class="major">
               <h2>Contributions</h2>
             </header>
-            <div class="posts">
-              <% contributors.forEach(function(contributor){ %>
-                <%- include('partials/contributor', {contributor: contributor}); %>
-              <% }); %>
+            <div class="posts">   
+
+              <%- include('partials/contributor', {contributor: firstContributor.contributor, contribution: firstContributor.contribution}); %>
+            
+              <%- include('partials/contributor', {contributor: secondContributor.contributor, contribution: secondContributor.contribution}); %>
+           
+              <%- include('partials/contributor', {contributor: thirdContributor.contributor, contribution: thirdContributor.contribution}); %>
+
             </div>
           </section>
         </div>
