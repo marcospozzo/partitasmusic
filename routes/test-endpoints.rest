@@ -60,14 +60,14 @@ content-type: application/json
 Authorization: {{$dotenv SESSION_SECRET}}
 
 {
-    "name": "ZUM",
-    "sort": "ZUM",
-    "picture": "ZUM.jpg",
-    "country": "Argentina/Japan",
-    "contact": "https://www.zumguitars.com",
-    "donate": "https://www.patreon.com/ZumGuitars",
-    "category": "group",
-    "path": "zum"
+    "name": "Tywi Roberts",
+    "sort": "Roberts",
+    "picture": "roberts.jpg",
+    "country": "UK",
+    "contact": "https://www.tywihywel.com",
+    "donate": "",
+    "category": "individual",
+    "path": "tywi-roberts"
 }
 
 ###
@@ -77,9 +77,9 @@ content-type: application/json
 Authorization: {{$dotenv SESSION_SECRET}}
 
 {
-    "title": "Broken Funk",
-    "description": "Shinkuro Matsuura, Luciano Pietrafesa and Fumihito Hatano’s main driving force is in the “Funk-Prog” style. Check their website!",
-    "audio": "Broken Funk.mp3",
-    "score": "Broken Funk.pdf",
-    "path": "zum"
+    "title": "Liberal Knowledge",
+    "description": "Written for three to five guitars, July 2020.",
+    "audio": "Tywi JH Roberts - Liberal Knowledge.mp3",
+    "score": "Tywi JH Roberts - Liberal Knowledge - Score in C.pdf",
+    "path": "tywi-roberts"
 }

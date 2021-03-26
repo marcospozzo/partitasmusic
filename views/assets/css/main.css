@@ -2341,6 +2341,7 @@ button,
   text-decoration: none;
   text-transform: uppercase;
   white-space: nowrap;
+  outline: none;
 }
 
 input[type="submit"]:hover,
@@ -2706,6 +2707,7 @@ button:disabled,
 
 .posts article audio {
   margin-bottom: 1em;
+  outline: none;
 }
 
 @media screen and (min-width: 1681px) {
