@@ -17,11 +17,20 @@ router.get("/", (req, res) =>
 router.get("/login", forwardAuthenticated, (req, res) => res.render("login"));
 
 // contributors
-router.get("/contributors", (req, res) =>
-  res.render("contributors", {
-    user: req.user,
-  })
-);
+router.get("/contributors", async (req, res) => {
+  try {
+    const groups = await api.getGroupContributors();
+    const individuals = await api.getIndividualContributors();
+    res.render("contributors", {
+      user: req.user,
+      groups: groups,
+      individuals: individuals,
+    });
+  } catch (error) {
+    console.error(error);
+    createError(400, "Error");
+  }
+});
 
 // seven guitar craft themes book
 router.get("/seven-guitar-craft-themes-book", (req, res) =>
@@ -96,7 +105,7 @@ router.get("/contributions/:path", async (req, res) => {
     firstContributor.contributor = contributorOne;
     firstContributor.contribution = contributionOne[0];
 
-    const twoContributors = await api.getTwoRandomContributorExcept(pathOne);
+    const twoContributors = await api.getTwoRandomContributorsExcept(pathOne);
 
     const pathTwo = twoContributors[0].path;
     let contributorTwo = await api.getContributor(pathTwo);

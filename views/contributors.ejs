@@ -25,30 +25,18 @@
             <div class="contributors">
               <!-- Table -->
               <div class="table-wrapper">
-                <h3>Ensembles & Groups</h3>
+                <h3>Groups</h3>
                 <table>
                   <tbody>
+                    <% groups.forEach(function (group) { %>
                     <tr>
-                      <td>Ensemble 1</td>
+                      <td>
+                        <a href="/contributions/<%= group.path %>"
+                          ><%= group.name %></a
+                        >
+                      </td>
                     </tr>
-                    <tr>
-                      <td>Ensemble 2</td>
-                    </tr>
-                    <tr>
-                      <td>Ensemble 3</td>
-                    </tr>
-                    <tr>
-                      <td>Ensemble 4</td>
-                    </tr>
-                    <tr>
-                      <td>Ensemble 5</td>
-                    </tr>
-                    <tr>
-                      <td>Ensemble 6</td>
-                    </tr>
-                    <tr>
-                      <td>Ensemble 7</td>
-                    </tr>
+                    <% }); %>
                   </tbody>
                 </table>
               </div>
@@ -58,31 +46,15 @@
                 <h3>Individuals</h3>
                 <table>
                   <tbody>
+                    <% individuals.forEach(function (individual) { %>
                     <tr>
                       <td>
-                        <a href="/contributions/luis-cagnolo" id="artist-1"
-                          >Luis Cagnolo</a
+                        <a href="/contributions/<%= individual.path %>"
+                          ><%= individual.name %></a
                         >
                       </td>
                     </tr>
-                    <tr>
-                      <td>Artist 2</td>
-                    </tr>
-                    <tr>
-                      <td>Artist 3</td>
-                    </tr>
-                    <tr>
-                      <td>Artist 4</td>
-                    </tr>
-                    <tr>
-                      <td>Artist 5</td>
-                    </tr>
-                    <tr>
-                      <td>Artist 6</td>
-                    </tr>
-                    <tr>
-                      <td>Artist 7</td>
-                    </tr>
+                    <% }); %>
                   </tbody>
                 </table>
               </div>

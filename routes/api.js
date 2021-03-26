@@ -9,7 +9,30 @@ AWS.config.update({
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
 });
 const myBucket = "partitasmusic";
-const signedUrlExpireSeconds = 60 * 60 * 12; // 12 hours
+const signedUrlExpireSeconds = 60 * 60 * 5; // 5 hours
+
+async function getGroupContributors() {
+  return Contributor.find({ category: "group" }, function (err, contribution) {
+    if (err) {
+      console.error(err);
+    }
+  })
+    .sort("sort")
+    .exec();
+}
+
+async function getIndividualContributors() {
+  return Contributor.find(
+    { category: "individual" },
+    function (err, contribution) {
+      if (err) {
+        console.error(err);
+      }
+    }
+  )
+    .sort("sort")
+    .exec();
+}
 
 async function getContributor(path) {
   return Contributor.findOne({ path: path }, function (err, contributor) {
@@ -27,7 +50,7 @@ async function getContributions(path) {
   }).exec();
 }
 
-async function getTwoRandomContributorExcept(path) {
+async function getTwoRandomContributorsExcept(path) {
   const filter = { path: { $nin: [path] } };
 
   return new Promise((resolve, reject) => {
@@ -63,48 +86,68 @@ function getS3TempUrl(path, key) {
 }
 
 router.post("/create-contribution", async (req, res, next) => {
-  const { title, description, audio, score, path } = req.body;
-  let savedContribution;
+  if (req.headers.authorization == process.env.SESSION_SECRET) {
+    const { title, description, audio, score, path } = req.body;
+    let savedContribution;
 
-  try {
-    const contribution = new Contribution({
-      title: title,
-      description: description,
-      audio: audio,
-      score: score,
-      path: path,
-    });
-    savedContribution = await contribution.save();
-  } catch (err) {
-    return next(err);
+    try {
+      const contribution = new Contribution({
+        title: title,
+        description: description,
+        audio: audio,
+        score: score,
+        path: path,
+      });
+      savedContribution = await contribution.save();
+    } catch (err) {
+      return next(err);
+    }
+    res.sendStatus(200);
+  } else {
+    res.sendStatus(401);
   }
-  res.sendStatus(200);
 });
 
 router.post("/create-contributor", async (req, res, next) => {
-  const { picture, name, country, contact, donate, category, path } = req.body;
-  let savedContributor;
+  if (req.headers.authorization == process.env.SESSION_SECRET) {
+    const {
+      name,
+      sort,
+      picture,
+      country,
+      contact,
+      donate,
+      category,
+      path,
+    } = req.body;
+    let savedContributor;
 
-  try {
-    const contributor = new Contributor({
-      picture: picture,
-      name: name,
-      country: country,
-      contact: contact,
-      donate: donate,
-      category: category,
-      path: path,
-    });
-    savedContributor = await contributor.save();
-  } catch (err) {
-    return next(err);
+    try {
+      const contributor = new Contributor({
+        name: name,
+        sort: sort,
+        picture: picture,
+        country: country,
+        contact: contact,
+        donate: donate,
+        category: category,
+        path: path,
+      });
+      savedContributor = await contributor.save();
+    } catch (err) {
+      return next(err);
+    }
+    res.sendStatus(200);
+  } else {
+    res.sendStatus(401);
   }
-  res.sendStatus(200);
 });
 
 module.exports = router;
+module.exports.getGroupContributors = getGroupContributors;
+module.exports.getIndividualContributors = getIndividualContributors;
 module.exports.getContributor = getContributor;
 module.exports.getContributions = getContributions;
 module.exports.getSignedContributor = getSignedContributor;
 module.exports.getSignedContributions = getSignedContributions;
-module.exports.getTwoRandomContributorExcept = getTwoRandomContributorExcept;
+module.exports.getTwoRandomContributorsExcept = getTwoRandomContributorsExcept;

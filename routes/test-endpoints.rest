@@ -57,26 +57,29 @@ GET http://localhost:3000/aphorism
 
 POST http://localhost:3000/api/create-contributor
 content-type: application/json
+Authorization: {{$dotenv SESSION_SECRET}}
 
 {
-    "picture": "cgtbio.jpg",
-    "name": "California Guitar Trio",
-    "country": "Belgium-USA-Japan",
-    "contact": "https://cgtrio.com/",
-    "donate": "https://donate-demo-url.com",
-    "category": "ensemble",
-    "path": "california-guitar-trio"
+    "name": "ZUM",
+    "sort": "ZUM",
+    "picture": "ZUM.jpg",
+    "country": "Argentina/Japan",
+    "contact": "https://www.zumguitars.com",
+    "donate": "https://www.patreon.com/ZumGuitars",
+    "category": "group",
+    "path": "zum"
 }
 
 ###
 
 POST http://localhost:3000/api/create-contribution
 content-type: application/json
+Authorization: {{$dotenv SESSION_SECRET}}
 
 {
-    "title": "Yamanashi Blues",
-    "description": "The classic hit by the most prominent professional spinoff of the early GC years. Check their website!",
-    "audio": "Yamanashi Blues.mp3",
-    "score": "CGT-yamanashi-blues.pdf",
-    "path": "california-guitar-trio"
+    "title": "Broken Funk",
+    "description": "Shinkuro Matsuura, Luciano Pietrafesa and Fumihito Hatano’s main driving force is in the “Funk-Prog” style. Check their website!",
+    "audio": "Broken Funk.mp3",
+    "score": "Broken Funk.pdf",
+    "path": "zum"
 }

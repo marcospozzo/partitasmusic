@@ -3,14 +3,19 @@ const random = require("mongoose-simple-random");
 
 const UserSchema = new mongoose.Schema(
   {
-    picture: {
-      type: String,
-      max: 512,
-      required: true,
-    },
     name: {
       type: String,
       max: 100,
+      required: true,
+    },
+    sort: {
+      type: String,
+      max: 50,
+      required: true,
+    },
+    picture: {
+      type: String,
+      max: 512,
       required: true,
     },
     country: {
@@ -28,7 +33,7 @@ const UserSchema = new mongoose.Schema(
     },
     category: {
       type: String,
-      enum: ["ensemble", "individual"],
+      enum: ["group", "individual"],
       required: true,
     },
     path: {
