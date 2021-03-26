@@ -1,6 +1,6 @@
 <article>
   <div class="image">
-    <img src="<%= contributor.picture %>" alt="" />
+    <img src="<%= contributor.picture %>" alt="<%= contributor.name %>'s profile picture"/>
   </div>
   <div class="title-header">
     <h3><%= contributor.name %></h3>
@@ -30,10 +30,10 @@
   <a href="<%= contribution.score %>" target="_blank">
     <button
       style="width: 100%"
-      class="button primary icon solid fa-download"
+      class="button primary icon solid fa-external-link-alt"
       type="submit"
     >
-      download score
+      open score
     </button>
   </a>
 </article>
