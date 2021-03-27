@@ -16,25 +16,25 @@ textarea {
   font-weight: _font(weight);
   line-height: 1.65;
 
-  @include breakpoint('<=xlarge') {
+  @include breakpoint("<=xlarge") {
     font-size: 11pt;
   }
 
-  @include breakpoint('<=large') {
+  @include breakpoint("<=large") {
     font-size: 10pt;
   }
 
-  @include breakpoint('<=xxsmall') {
+  @include breakpoint("<=xxsmall") {
     font-size: 9pt;
   }
 }
 
 a {
   @include vendor(
-    'transition',
+    "transition",
     (
-      'color #{_duration(transition)} ease-in-out',
-      'border-bottom-color #{_duration(transition)} ease-in-out'
+      "color #{_duration(transition)} ease-in-out",
+      "border-bottom-color #{_duration(transition)} ease-in-out"
     )
   );
   border-bottom: dotted 1px;
@@ -100,11 +100,12 @@ h2 {
 
 h3 {
   font-size: 1.25em;
-  color: #c06328;
+  color: _palette(partitas-orange);
 }
 
 h4 {
   font-size: 1.1em;
+  color: _palette(fg-light);
 }
 
 h5 {
@@ -115,19 +116,19 @@ h6 {
   font-size: 0.7em;
 }
 
-@include breakpoint('<=xlarge') {
+@include breakpoint("<=xlarge") {
   h1 {
     font-size: 3.5em;
   }
 }
 
-@include breakpoint('<=medium') {
+@include breakpoint("<=medium") {
   h1 {
     font-size: 3.25em;
   }
 }
 
-@include breakpoint('<=small') {
+@include breakpoint("<=small") {
   h1 {
     font-size: 2em;
     line-height: 1.4;

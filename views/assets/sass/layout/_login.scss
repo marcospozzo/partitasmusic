@@ -109,7 +109,7 @@ textarea {
   font-family: _font(login), sans-serif;
   text-transform: uppercase;
   outline: 0;
-  background: _palette(naranja);
+  background: _palette(partitas-orange);
   width: 100%;
   border: 0;
   // padding: 15px;
@@ -124,7 +124,7 @@ textarea {
 .form button:hover,
 .form button:active,
 .form button:focus {
-  background: _palette(naranja-accent);
+  background: _palette(partitas-orange-accent);
 }
 .form .message {
   margin: 15px 0 0;

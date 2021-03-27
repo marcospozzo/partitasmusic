@@ -22,18 +22,18 @@ $size: (
 // Font.
 $font: (
   family: (
-    'Open Sans',
+    "Open Sans",
     sans-serif,
   ),
   login: (
     roboto,
   ),
   family-heading: (
-    'Open Sans',
+    "Open Sans",
     sans-serif,
   ),
   family-fixed: (
-    'Courier New',
+    "Courier New",
     monospace,
   ),
   weight: 400,
@@ -53,6 +53,6 @@ $palette: (
   border: rgba(210, 215, 217, 0.75),
   border-bg: transparentize(#e6ebed, 0.75),
   accent: #baa699,
-  naranja: #c06328,
-  naranja-accent: #c15715,
+  partitas-orange: #c06328,
+  partitas-orange-accent: #c15715,
 );
