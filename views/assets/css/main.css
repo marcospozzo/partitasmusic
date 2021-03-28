@@ -2253,6 +2253,7 @@ ul.pagination li:last-child {
 .table-wrapper {
   -webkit-overflow-scrolling: touch;
   overflow-x: auto;
+  width: 50%;
 }
 
 table {
