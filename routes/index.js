@@ -8,6 +8,7 @@ const { ensureAuthenticated, forwardAuthenticated } = require("../config/auth");
 // home
 router.get("/", (req, res) =>
   res.render("home", {
+    title: "Home",
     user: req.user,
   })
 );
@@ -15,6 +16,7 @@ router.get("/", (req, res) =>
 // seven guitar craft themes book
 router.get("/seven-guitar-craft-themes-book", (req, res) =>
   res.render("seven", {
+    title: "Book",
     user: req.user,
   })
 );
@@ -22,6 +24,7 @@ router.get("/seven-guitar-craft-themes-book", (req, res) =>
 // about us
 router.get("/about-us", (req, res) =>
   res.render("about-us", {
+    title: "About us",
     user: req.user,
   })
 );
@@ -29,6 +32,7 @@ router.get("/about-us", (req, res) =>
 // contact
 router.get("/contact", (req, res) =>
   res.render("contact", {
+    title: "Contact",
     user: req.user,
   })
 );
@@ -42,6 +46,7 @@ router.get("/aphorism", async (req, res) => {
 // aphorisms
 router.get("/aphorisms", (req, res) =>
   res.render("aphorisms", {
+    title: "Aphorisms",
     user: req.user,
   })
 );
@@ -49,6 +54,7 @@ router.get("/aphorisms", (req, res) =>
 // contribute
 router.get("/contribute", (req, res) =>
   res.render("contribute", {
+    title: "Contribute",
     user: req.user,
   })
 );
@@ -56,12 +62,17 @@ router.get("/contribute", (req, res) =>
 // picks and strings
 router.get("/picks-and-strings", (req, res) =>
   res.render("picks-and-strings", {
+    title: "Picks & Strings",
     user: req.user,
   })
 );
 
 // login
-router.get("/login", forwardAuthenticated, (req, res) => res.render("login"));
+router.get("/login", forwardAuthenticated, (req, res) =>
+  res.render("login", {
+    title: "Login",
+  })
+);
 
 // contributors
 router.get("/contributors", async (req, res) => {
@@ -69,6 +80,7 @@ router.get("/contributors", async (req, res) => {
     const groups = await api.getGroupContributors();
     const individuals = await api.getIndividualContributors();
     res.render("contributors", {
+      title: "Contributors",
       user: req.user,
       groups: groups,
       individuals: individuals,
@@ -109,6 +121,7 @@ router.get("/contributions/:path", async (req, res) => {
     thirdContributor.contribution = contributionThree[0];
 
     res.render("contributions", {
+      title: "Contributions",
       user: req.user,
       firstContributor,
       secondContributor,
