@@ -5,16 +5,9 @@
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 -->
 <html>
-  <head>
-    <title>Partitas Music | Contribute</title>
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, user-scalable=no"
-    />
-    <link rel="icon" type="image/png" href="./images/branding/favicon-PM-orange.png" />
-    <link rel="stylesheet" href="./assets/css/main.css" />
-  </head>
+  <!-- head -->
+  <%- include('partials/head'); %>
+
   <body class="is-preload">
     <!-- Wrapper -->
     <div id="wrapper">
@@ -30,25 +23,43 @@
               <header class="major">
                 <h2>Contribute</h2>
               </header>
-              <p>You can send us your music to be shared
-                with the community. Please get in touch and we
-                will reach out to you soon. Thank you!
+              <p>
+                You can send us your music to be shared with the community.
+                Please get in touch and we will reach out to you soon. Thank
+                you!
               </p>
 
-            <!-- Contact form -->
-            <%- include('partials/contact-form'); %>
+              <!-- Contact form -->
+              <%- include('partials/contact-form'); %>
 
-            <p>You can also support Partitas Music by becoming a Patreon</p>
+              <p>You can also support Partitas Music by becoming a Patreon.</p>
 
-            <ul class="actions">
-              <li>
-                <a href="/profiles" class="button primary">Become a Patreon</a>
-              </li>
-            </ul>
+              <p>
+                <a href="https://www.patreon.com/partitasmusic" target="_blank">
+                  <button
+                    class="button primary icon solid fa-external-link-alt"
+                    type="submit"
+                  >
+                    become a patreon
+                  </button>
+                </a>
+              </p>
 
+              <p>
+                This website is an open source project. You can contribute with
+                code
+                <a
+                  href="https://github.com/marcospozzo/partitasmusic/issues"
+                  target="_blank"
+                  >here</a
+                >.
+              </p>
             </div>
             <span class="image object">
-              <img src="./images/contact.png" alt="" />
+              <img
+                src="./images/contribute.png"
+                alt="Music score with the beginning of a piece by Johann Sebastian Bach."
+              />
             </span>
           </section>
         </div>

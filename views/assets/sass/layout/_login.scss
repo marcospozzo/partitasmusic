@@ -1,3 +1,5 @@
+// Copyright (c) 2020 by Aigars Silkalns (https://codepen.io/colorlib/pen/rxddKy)
+
 .login-page {
   width: 360px;
   padding: 8% 0 0;
@@ -87,7 +89,7 @@ ul {
   background: _palette(bg);
   width: 100%;
   // width: 400px;
-  height: 3.3em;
+  // height: 4rem;
   max-width: 100%;
   min-width: 100%;
   border: 0;
@@ -107,10 +109,11 @@ textarea {
   font-family: _font(login), sans-serif;
   text-transform: uppercase;
   outline: 0;
-  background: _palette(naranja);
+  background: _palette(partitas-orange);
   width: 100%;
   border: 0;
-  padding: 15px;
+  // padding: 15px;
+  line-height: 0;
   margin-top: 15px;
   color: #ffffff;
   font-size: 14px;
@@ -121,7 +124,7 @@ textarea {
 .form button:hover,
 .form button:active,
 .form button:focus {
-  background: _palette(naranja-accent);
+  background: _palette(partitas-orange-accent);
 }
 .form .message {
   margin: 15px 0 0;
@@ -134,7 +137,8 @@ textarea {
 }
 
 .form .message a:hover {
-  text-decoration: underline;
+  color: _palette(fg-bold) !important;
+  border-bottom-color: _palette(fg-bold);
 }
 
 .first-pair {
@@ -166,7 +170,7 @@ textarea {
 }
 .container:before,
 .container:after {
-  content: '';
+  content: "";
   display: block;
   clear: both;
 }
@@ -205,7 +209,7 @@ textarea {
   background: -moz-linear-gradient(right, _palette(bg), _palette(accent));
   background: -o-linear-gradient(right, _palette(bg), _palette(accent));
   background: linear-gradient(to left, _palette(bg), _palette(accent));
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

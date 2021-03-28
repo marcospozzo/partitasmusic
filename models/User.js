@@ -1,9 +1,5 @@
-const mongoose = require('mongoose');
-const uniqueValidator = require('mongoose-unique-validator');
-
-function toLower(text) {
-  return text.toLowerCase();
-}
+const mongoose = require("mongoose");
+const uniqueValidator = require("mongoose-unique-validator");
 
 const UserSchema = new mongoose.Schema(
   {
@@ -14,35 +10,20 @@ const UserSchema = new mongoose.Schema(
     },
     email: {
       type: String,
+      lowercase: true,
       required: true,
       unique: true,
       max: 50,
-      set: toLower,
     },
     password: {
       type: String,
       max: 1024,
       required: false,
     },
-    whoIs: {
-      type: String,
-      required: true,
-      max: 1000,
-    },
-    role: {
-      type: String,
-      enum: ['user', 'admin'],
-      default: 'user',
-    },
-    status: {
-      type: String,
-      enum: ['pending', 'rejected', 'approved', 'activated'],
-      default: 'pending',
-    },
   },
   { timestamps: true }
 );
 
 UserSchema.plugin(uniqueValidator);
-const User = mongoose.model('User', UserSchema);
+const User = mongoose.model("User", UserSchema);
 module.exports = User;

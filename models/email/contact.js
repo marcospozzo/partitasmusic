@@ -1,11 +1,11 @@
-const sendMail = require('./email');
+const sendMail = require("./email");
 
 function sendContactForm(name, email, message) {
   const data = {
-    to: 'info@partitasmusic.com',
-    subject: `New contact message by ${name}`,
-    text: `Dear Partitas: \n\nThere is a new contact message: \nName: ${name} \nEmail: ${email} \nMessage: ${message} \n\nBest regards.`,
-    html: '',
+    to: "partitasmusic@gmail.com",
+    subject: `[Form submit] ${name}`,
+    text: `New contact message: \nName: ${name} \nEmail: ${email} \nMessage: ${message}`,
+    html: "",
   };
   sendMail(data).catch(console.error);
 }

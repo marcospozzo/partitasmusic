@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<!--
+	Editorial by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+  <!-- head -->
+  <%- include('partials/head'); %>
+
+  <body class="is-preload">
+    <!-- Wrapper -->
+    <div id="wrapper">
+      <!-- Main -->
+      <div id="main">
+        <div class="inner">
+          <!-- Header -->
+          <%- include('partials/header'); %>
+
+          <!-- Section -->
+          <section>
+            <header class="major">
+              <h2>Contributions</h2>
+            </header>
+            <div class="posts">   
+
+              <%- include('partials/contributor', {contributor: firstContributor.contributor, contribution: firstContributor.contribution}); %>
+            
+              <%- include('partials/contributor', {contributor: secondContributor.contributor, contribution: secondContributor.contribution}); %>
+           
+              <%- include('partials/contributor', {contributor: thirdContributor.contributor, contribution: thirdContributor.contribution}); %>
+
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <%- include('partials/sidebar'); %>
+    </div>
+
+    <!-- Scripts -->
+    <%- include('partials/scripts'); %>
+
+  </body>
+</html>
