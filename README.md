@@ -46,5 +46,5 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 Inspiration, code snippets, etc.
 
-- [HTML template](https://html5up.net/editorial)
-- [Login view](https://codepen.io/colorlib/pen/rxddKy)
+- HTML template by [html5up](https://html5up.net/editorial)
+- Login view template by [codepen](https://codepen.io/colorlib/pen/rxddKy)
