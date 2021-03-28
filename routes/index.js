@@ -2,7 +2,6 @@ const router = require("express").Router();
 const aphorisms = require("../models/aphorism/aphorisms");
 const createError = require("http-errors");
 const api = require("./api");
-
 const { ensureAuthenticated, forwardAuthenticated } = require("../config/auth");
 
 // home
@@ -21,10 +20,18 @@ router.get("/seven-guitar-craft-themes-book", (req, res) =>
   })
 );
 
+// forum
+router.get("/forum", (req, res) =>
+  res.render("forum", {
+    title: "Forum / Q&A",
+    user: req.user,
+  })
+);
+
 // about us
 router.get("/about-us", (req, res) =>
   res.render("about-us", {
-    title: "About us",
+    title: "About Us",
     user: req.user,
   })
 );

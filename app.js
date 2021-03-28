@@ -62,12 +62,12 @@ app.use("/api", require("./routes/api"));
 app.use("/users", require("./routes/users"));
 
 // 404 handler
-app.use((req, res, next) => {
+app.use((req, res) => {
   res.redirect("/");
 });
 
 // error handler
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
   res.status(err.status || 500);
   res.send({
     error: {
