@@ -43,6 +43,7 @@ router.post("/signup", async (req, res, next) => {
 // load set password view with token as parameter
 router.get("/set-password/:token", async (req, res) => {
   res.render("set-password", {
+    title: "Set password",
     token: req.params.token,
   });
 });
@@ -65,6 +66,7 @@ router.post("/set-password/:token", async (req, res) => {
         if (err || user == null) {
           errors = { message: "Error finding user" };
           return res.render("set-password", {
+            title: "Set password",
             token,
             errors,
           });
@@ -77,6 +79,7 @@ router.post("/set-password/:token", async (req, res) => {
         } catch (err) {
           errors = { message: "Error saving user" };
           return res.render("set-password", {
+            title: "Set password",
             token,
             errors,
           });

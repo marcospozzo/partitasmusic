@@ -6,6 +6,14 @@
   display: flex;
   flex-flow: column;
   position: relative;
+
+  .form {
+    form {
+      input {
+        color: _palette(fg-bold);
+      }
+    }
+  }
 }
 
 .login-form,
