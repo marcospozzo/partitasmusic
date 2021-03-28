@@ -1,7 +1,6 @@
 const router = require("express").Router();
 const aphorisms = require("../models/aphorism/aphorisms");
 const createError = require("http-errors");
-const sendMail = require("../models/email/contact");
 const api = require("./api");
 
 const { ensureAuthenticated, forwardAuthenticated } = require("../config/auth");
@@ -12,25 +11,6 @@ router.get("/", (req, res) =>
     user: req.user,
   })
 );
-
-// login
-router.get("/login", forwardAuthenticated, (req, res) => res.render("login"));
-
-// contributors
-router.get("/contributors", async (req, res) => {
-  try {
-    const groups = await api.getGroupContributors();
-    const individuals = await api.getIndividualContributors();
-    res.render("contributors", {
-      user: req.user,
-      groups: groups,
-      individuals: individuals,
-    });
-  } catch (error) {
-    console.error(error);
-    createError(400, "Error");
-  }
-});
 
 // seven guitar craft themes book
 router.get("/seven-guitar-craft-themes-book", (req, res) =>
@@ -52,19 +32,6 @@ router.get("/contact", (req, res) =>
     user: req.user,
   })
 );
-
-// contact form
-router.post("/contact", (req, res, next) => {
-  const { name, email, message } = req.body;
-
-  if (!name || !email || !message) {
-    return next(createError(400, "Missing fields"));
-  }
-
-  sendMail.sendContactForm(name, email, message);
-
-  res.redirect("/");
-});
 
 // aphorism
 router.get("/aphorism", async (req, res) => {
@@ -93,14 +60,32 @@ router.get("/picks-and-strings", (req, res) =>
   })
 );
 
+// login
+router.get("/login", forwardAuthenticated, (req, res) => res.render("login"));
+
+// contributors
+router.get("/contributors", async (req, res) => {
+  try {
+    const groups = await api.getGroupContributors();
+    const individuals = await api.getIndividualContributors();
+    res.render("contributors", {
+      user: req.user,
+      groups: groups,
+      individuals: individuals,
+    });
+  } catch (error) {
+    console.error(error);
+    createError(400, "Error");
+  }
+});
+
 // contributions
 router.get("/contributions/:path", async (req, res) => {
   try {
     const pathOne = req.params.path;
     let contributorOne = await api.getContributor(pathOne);
-    let contributionOne = await api.getContributions(pathOne);
-    contributorOne = await api.getSignedContributor(contributorOne);
-    contributionOne = await api.getSignedContributions(contributionOne);
+    contributorOne = await api.getProfilePicture(contributorOne);
+    const contributionOne = await api.getContributions(pathOne);
     const firstContributor = {};
     firstContributor.contributor = contributorOne;
     firstContributor.contribution = contributionOne[0];
@@ -109,18 +94,16 @@ router.get("/contributions/:path", async (req, res) => {
 
     const pathTwo = twoContributors[0].path;
     let contributorTwo = await api.getContributor(pathTwo);
-    let contributionTwo = await api.getContributions(pathTwo);
-    contributorTwo = await api.getSignedContributor(contributorTwo);
-    contributionTwo = await api.getSignedContributions(contributionTwo);
+    contributorTwo = await api.getProfilePicture(contributorTwo);
+    const contributionTwo = await api.getContributions(pathTwo);
     const secondContributor = {};
     secondContributor.contributor = contributorTwo;
     secondContributor.contribution = contributionTwo[0];
 
     const pathThree = twoContributors[1].path;
     let contributorThree = await api.getContributor(pathThree);
-    let contributionThree = await api.getContributions(pathThree);
-    contributorThree = await api.getSignedContributor(contributorThree);
-    contributionThree = await api.getSignedContributions(contributionThree);
+    contributorThree = await api.getProfilePicture(contributorThree);
+    const contributionThree = await api.getContributions(pathThree);
     const thirdContributor = {};
     thirdContributor.contributor = contributorThree;
     thirdContributor.contribution = contributionThree[0];

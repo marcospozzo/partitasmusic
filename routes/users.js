@@ -6,7 +6,6 @@ const jwt = require("jsonwebtoken");
 const sendMail = require("../models/email/login");
 const createError = require("http-errors");
 const passport = require("passport");
-// const { forwardAuthenticated } = require('../config/auth');
 
 // signup
 router.post("/signup", async (req, res, next) => {
@@ -93,7 +92,7 @@ router.post("/set-password/:token", async (req, res) => {
 // login
 router.post("/login", (req, res, next) => {
   passport.authenticate("local", {
-    successRedirect: "/",
+    successRedirect: req.session.backUrl || "/",
     failureRedirect: "/login",
     failureFlash: true,
   })(req, res, next);
@@ -101,6 +100,7 @@ router.post("/login", (req, res, next) => {
 
 // logout
 router.get("/logout", (req, res) => {
+  req.session.backUrl = ""; // backUrl cleared so it does not go again
   req.logout();
   req.flash("flashSuccess", "You are logged out");
   res.redirect("/login");
@@ -115,8 +115,8 @@ router.post("/reset-password", async (req, res) => {
       req.flash("flashError", "Error finding user");
       return res.redirect("/login");
     }
-
-    sendMail.sendEmailWithToken(user, req.headers.host);
+    const urlProtocolWithHost = `${req.protocol}://${req.headers.host}`;
+    sendMail.sendEmailWithToken(user, urlProtocolWithHost);
     res.status(200);
     req.flash("flashSuccess", "Follow email instructions");
     res.redirect("/login");
