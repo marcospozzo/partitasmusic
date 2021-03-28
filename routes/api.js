@@ -2,6 +2,8 @@ const dotenv = require("dotenv").config();
 const Contribution = require("../models/Contribution");
 const Contributor = require("../models/Contributor");
 const router = require("express").Router();
+const sendMail = require("../models/email/contact");
+const { ensureAuthenticated, forwardAuthenticated } = require("../config/auth");
 const AWS = require("aws-sdk");
 const s3 = new AWS.S3();
 AWS.config.update({
@@ -60,21 +62,39 @@ async function getTwoRandomContributorsExcept(path) {
   });
 }
 
-async function getSignedContributions(contributions) {
-  for (contribution of contributions) {
-    const path = contribution.path;
-    contribution.audio = await getS3TempUrl(path, contribution.audio);
-    contribution.score = await getS3TempUrl(path, contribution.score);
-  }
-  return contributions;
-}
-
-async function getSignedContributor(contributor) {
+async function getProfilePicture(contributor) {
   contributor.picture = await getS3TempUrl(
     contributor.path,
     contributor.picture
   );
   return contributor;
+}
+
+router.get("/audio/:folder/:fileName", (req, res) => {
+  const path = `${req.params.folder}/${req.params.fileName}`;
+  const audio = getS3FileStream(path);
+  res.attachment(path);
+  audio.pipe(res);
+});
+
+router.get("/scores/:folder/:fileName", ensureAuthenticated, (req, res) => {
+  const path = `${req.params.folder}/${req.params.fileName}`;
+  const score = getS3FileStream(path);
+  res.attachment(path);
+  score.pipe(res);
+});
+
+function getS3FileStream(path) {
+  const file = s3
+    .getObject({
+      Bucket: myBucket,
+      Key: path,
+    })
+    .createReadStream()
+    .on("error", (error) => {
+      console.error(error);
+    });
+  return file;
 }
 
 function getS3TempUrl(path, key) {
@@ -143,11 +163,22 @@ router.post("/create-contributor", async (req, res, next) => {
   }
 });
 
+// contact form
+router.post("/contact-form", (req, res, next) => {
+  const { name, email, message } = req.body;
+
+  if (!name || !email || !message) {
+    return next(createError(400, "Missing fields"));
+  }
+
+  sendMail.sendContactForm(name, email, message);
+  res.redirect("/");
+});
+
 module.exports = router;
 module.exports.getGroupContributors = getGroupContributors;
 module.exports.getIndividualContributors = getIndividualContributors;
 module.exports.getContributor = getContributor;
 module.exports.getContributions = getContributions;
-module.exports.getSignedContributor = getSignedContributor;
-module.exports.getSignedContributions = getSignedContributions;
+module.exports.getProfilePicture = getProfilePicture;
 module.exports.getTwoRandomContributorsExcept = getTwoRandomContributorsExcept;
