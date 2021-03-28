@@ -1,20 +1,20 @@
-const express = require('express');
+const express = require("express");
 const app = express();
 const PORT = process.env.PORT || 3000;
-const mongoose = require('mongoose');
-const dotenv = require('dotenv').config();
-const createError = require('http-errors');
-const passport = require('passport');
-const flash = require('connect-flash');
-const session = require('express-session');
+const mongoose = require("mongoose");
+const dotenv = require("dotenv").config();
+const createError = require("http-errors");
+const passport = require("passport");
+const flash = require("connect-flash");
+const session = require("express-session");
 // const expressLayouts = require('express-ejs-layouts');
 
 // app.use(expressLayouts);
 
-app.set('view engine', 'ejs');
+app.set("view engine", "ejs");
 
 // Passport Config
-require('./config/passport')(passport);
+require("./config/passport")(passport);
 
 // db connect
 mongoose
@@ -23,7 +23,7 @@ mongoose
     useNewUrlParser: true,
     useCreateIndex: true,
   })
-  .then(() => console.log('Connected to database'))
+  .then(() => console.log("Connected to database"))
   .catch((error) => {
     console.log(error);
   });
@@ -31,7 +31,7 @@ mongoose
 // middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(express.static('views'));
+app.use(express.static("views"));
 
 // session
 app.use(
@@ -50,18 +50,21 @@ app.use(passport.session());
 // flash
 app.use(flash());
 app.use(function (req, res, next) {
-  res.locals.flashSuccess = req.flash('flashSuccess');
-  res.locals.flashError = req.flash('flashError');
-  res.locals.error = req.flash('error');
+  res.locals.flashSuccess = req.flash("flashSuccess");
+  res.locals.flashError = req.flash("flashError");
+  res.locals.error = req.flash("error");
   next();
 });
 
 // middleware routes
-app.use('/', require('./routes/index'));
-app.use('/users', require('./routes/users'));
+app.use("/", require("./routes/index"));
+app.use("/api", require("./routes/api"));
+app.use("/users", require("./routes/users"));
 
 // 404 handler
-app.use((req, res, next) => next(createError(404)));
+app.use((req, res, next) => {
+  res.redirect("/");
+});
 
 // error handler
 app.use((err, req, res, next) => {
@@ -69,7 +72,7 @@ app.use((err, req, res, next) => {
   res.send({
     error: {
       status: err.status || 500,
-      message: err.message || 'Internal Server Error',
+      message: err.message || "Internal Server Error",
     },
   });
 });

@@ -1,15 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Partitas Music | Login</title>
-    <link
-      rel="icon"
-      type="image/png"
-      href="./images/branding/favicon-PM-orange.png"
-    />
-    <link rel="stylesheet" href="./assets/css/main.css" />
-  </head>
+<!-- Copyright (c) 2020 by Aigars Silkalns (https://codepen.io/colorlib/pen/rxddKy) -->
+<html>
+  <!-- head -->
+  <%- include('partials/head'); %>
+
   <body id="login-body">
     <div class="login-page">
       <img class="logo" src="./images/branding/logo-pm.png" alt="logo" />
@@ -32,12 +26,12 @@
           <button>login</button>
 
           <div class="bottom-nav-containter">
-            <span id="reset-password" class="first-pair"
-              ><a href="#">Reset your password</a></span
+            <span id="request-an-account" class="second-pair"
+              ><a href="#">Create account</a></span
             >
             <span class="message">|</span>
-            <span id="request-an-account" class="second-pair"
-              ><a href="#">Request an account</a></span
+            <span id="reset-password" class="first-pair"
+              ><a href="#">Reset your password</a></span
             >
           </div>
         </form>
@@ -61,7 +55,7 @@
         >
           <input type="text" name="name" placeholder="Full Name" />
           <input type="email" name="email" placeholder="email" />
-          <textarea placeholder="Who are you?" name="whoIs"></textarea>
+          <input type="password" name="password" placeholder="password" />
           <button>submit</button>
           <p class="second-pair"><a href="#">Back</a></p>
         </form>

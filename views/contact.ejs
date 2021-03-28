@@ -5,16 +5,9 @@
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 -->
 <html>
-  <head>
-    <title>Partitas Music | Contact</title>
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, user-scalable=no"
-    />
-    <link rel="icon" type="image/png" href="./images/branding/favicon-PM-orange.png" />
-    <link rel="stylesheet" href="./assets/css/main.css" />
-  </head>
+  <!-- head -->
+  <%- include('partials/head'); %>
+
   <body class="is-preload">
     <!-- Wrapper -->
     <div id="wrapper">
@@ -29,18 +22,20 @@
             <div class="content">
               <header class="major">
                 <h2>Contact</h2>
-                <p>
-                  Please fill the form below to contact us.<br />
-                  We look forward to receiving your enquiry.
-                </p>
               </header>
+              <p>
+                We look forward to receiving your message. Comments and
+                suggestions are most welcome!
+              </p>
 
-            <!-- Contact form -->
-            <%- include('partials/contact-form'); %>
-              
+              <!-- Contact form -->
+              <%- include('partials/contact-form'); %>
             </div>
             <span class="image object">
-              <img src="./images/contact.png" alt="" />
+              <img
+                src="./images/contact.png"
+                alt="A zenith picture of seven guitarists with three colored lines connecting them."
+              />
             </span>
           </section>
         </div>

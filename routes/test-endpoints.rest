@@ -1,0 +1,74 @@
+POST http://localhost:3000/api/create-contributor
+content-type: application/json
+Authorization: {{$dotenv SESSION_SECRET}}
+
+{
+    "name": "Hernan Nuñez",
+    "sort": "Nuñez",
+    "picture": "Nunez.jpg",
+    "country": "Argentina/Germany",
+    "contact": "",
+    "donate": "",
+    "category": "individual",
+    "path": "hernan-nunez"
+}
+
+###
+
+POST http://localhost:3000/api/create-contribution
+content-type: application/json
+Authorization: {{$dotenv SESSION_SECRET}}
+
+{
+    "title": "El Péndulo II",
+    "description": "Performed by RF & The League of Crafty Guitarists (2003-2009), currently part of The LG and Berlin Guitar Ensemble repertoire. The recording is from the 2007 Argentina Tour.",
+    "audio": "El Pendulo II.mp3",
+    "score": "El_Pendulo_II.pdf",
+    "path": "hernan-nunez"
+}
+
+###
+
+GET http://localhost:3000/users/login
+content-type: application/json
+
+{
+    "email": "email@mail.com",
+    "password": "1234"
+}
+
+###
+
+POST http://localhost:3000/users/signup
+content-type: application/json
+
+{
+    "name": "name",
+    "email": "email@mail.com",
+    "password": "123456",
+}
+
+###
+
+POST http://localhost:3000/users/reset-password
+content-type: application/json
+
+{
+    "email": "email@mail.com"
+}
+
+###
+
+POST http://localhost:3000/users/set-password
+content-type: application/json
+
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmNzFlOWIzNWE1NThlMGI1MTQ0OGE1OCIsImlhdCI6MTYwMTMwMDkzNSwiZXhwIjoxNjAxOTA1NzM1fQ.jBPZsdpgeSW6VeBrYPb-qWx_aeKPzZcUN9mPDdkJl_A",
+    "password": "1234"
+}
+
+###
+
+GET http://localhost:3000/aphorism
+
+###
