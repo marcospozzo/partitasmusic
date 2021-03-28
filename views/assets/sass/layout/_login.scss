@@ -8,6 +8,12 @@
   position: relative;
 }
 
+.login-form,
+.signup-form,
+.reset-password-form {
+  margin: 0;
+}
+
 .alert {
   color: #ffffff;
   background-color: #630707;

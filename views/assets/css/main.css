@@ -2177,10 +2177,6 @@ ul.contact li:first-child:before {
   top: 0;
 }
 
-ul.contact li a {
-  color: inherit;
-}
-
 /* Pagination */
 ul.pagination {
   cursor: default;
@@ -2870,6 +2866,12 @@ button:disabled,
       -ms-flex-flow: column;
           flex-flow: column;
   position: relative;
+}
+
+.login-form,
+.signup-form,
+.reset-password-form {
+  margin: 0;
 }
 
 .alert, .alert-success {
