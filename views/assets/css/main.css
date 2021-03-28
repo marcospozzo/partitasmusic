@@ -2711,6 +2711,15 @@ button:disabled,
   outline: none;
 }
 
+.posts article p {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.posts article p span {
+  white-space: nowrap;
+}
+
 @media screen and (min-width: 1681px) {
   .posts article:nth-child(1):before {
     display: none;

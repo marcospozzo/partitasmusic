@@ -76,6 +76,14 @@
       margin-bottom: 1em;
       outline: none;
     }
+
+    p {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      span {
+        white-space: nowrap;
+      }
+    }
   }
 
   @include breakpoint("xlarge-to-max") {
