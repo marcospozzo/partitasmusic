@@ -28,7 +28,7 @@ function sendEmailWithToken(user, urlProtocolWithHost) {
     text: `Dear ${user.name}! \n\nIf you requested a password reset, you can do so by clicking on the following link: \n\n${resetlURL} \n\nBest regards, \nPartitas Music.`,
     html: "",
   };
-  sendMail(data).catch(console.error);
+  sendMail(data).catch((err) => console.error(err));
 }
 
 module.exports.notifyAccountCreation = notifyAccountCreation;
