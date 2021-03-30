@@ -8,18 +8,18 @@
 
 #featured {
   // @include padding(6em, 0);
-  @include vendor('display', 'flex');
+  @include vendor("display", "flex");
 
   .content {
-    @include vendor('flex-direction', 'column');
-    @include vendor('flex-grow', '1');
-    @include vendor('flex-shrink', '1');
+    @include vendor("flex-direction", "column");
+    @include vendor("flex-grow", "1");
+    @include vendor("flex-shrink", "1");
     width: 100%;
   }
 
   .image {
-    @include vendor('flex-grow', '0');
-    @include vendor('flex-shrink', '0');
+    @include vendor("flex-grow", "0");
+    @include vendor("flex-shrink", "0");
     display: block;
     margin: 0 0 _size(element-margin) (_size(element-margin) * 2);
     width: 25%;
@@ -40,7 +40,7 @@
   }
 
   @include orientation(portrait) {
-    @include vendor('flex-direction', 'column-reverse');
+    @include vendor("flex-direction", "column-reverse");
 
     h1 {
       br {
@@ -49,14 +49,14 @@
     }
 
     .content {
-      @include vendor('flex-grow', '0');
-      @include vendor('flex-shrink', '0');
+      @include vendor("flex-grow", "0");
+      @include vendor("flex-shrink", "0");
       width: 100%;
     }
 
     .image {
-      @include vendor('flex-grow', '0');
-      @include vendor('flex-shrink', '0');
+      @include vendor("flex-grow", "0");
+      @include vendor("flex-shrink", "0");
       margin: 0 0 (_size(element-margin) * 2) 0;
       height: 25em;
       max-height: 50vh;
@@ -64,7 +64,7 @@
       width: 100%;
     }
 
-    @include breakpoint('<=xsmall') {
+    @include breakpoint("<=xsmall") {
       .image {
         max-height: 35vh;
       }
