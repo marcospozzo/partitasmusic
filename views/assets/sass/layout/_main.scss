@@ -52,6 +52,7 @@
 
       > section {
         @include padding(3em, 0);
+        padding-bottom: 5em;
       }
     }
   }
