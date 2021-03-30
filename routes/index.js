@@ -62,6 +62,10 @@ router.get("/aphorisms", (req, res) =>
   })
 );
 
+router.get("/discord", ensureAuthenticated, (req, res) => {
+  res.redirect("https://discord.gg/a6FwyqUAKH");
+});
+
 // contribute
 router.get("/contribute", (req, res) =>
   res.render("contribute", {
