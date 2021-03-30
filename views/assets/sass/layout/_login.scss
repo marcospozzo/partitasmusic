@@ -228,3 +228,15 @@ textarea {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+@include breakpoint("<=xlarge") {
+}
+
+@include breakpoint("<=large") {
+}
+
+@include breakpoint("<=small") {
+  .login-page {
+    width: 80%;
+  }
+}

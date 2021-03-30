@@ -116,7 +116,7 @@
 
   @include breakpoint("<=xlarge") {
     article {
-      width: calc(50% - #{$gutter});
+      width: calc(33% - #{$gutter});
 
       &:nth-last-child(3) {
         margin-bottom: $gutter;
@@ -160,7 +160,7 @@
 
     article {
       margin: 0 0 $gutter $gutter;
-      width: calc(50% - #{$gutter});
+      width: calc(33% - #{$gutter});
 
       &:before {
         height: calc(100% + #{$gutter});
@@ -180,9 +180,9 @@
 
   @include breakpoint("<=xsmall") {
     $gutter: _size(gutter) * 1.5;
-
     margin: 0 0 _size(element-margin) 0;
     width: 100%;
+    flex-direction: column;
 
     article {
       margin: 0 0 $gutter 0;
