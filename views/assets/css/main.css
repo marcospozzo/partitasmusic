@@ -3183,6 +3183,7 @@ textarea {
   }
   #main > .inner > section {
     padding: 3em 0 1em 0 ;
+    padding-bottom: 5em;
   }
 }
 
