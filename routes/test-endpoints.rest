@@ -3,14 +3,14 @@ content-type: application/json
 Authorization: {{$dotenv SESSION_SECRET}}
 
 {
-    "name": "Hernan Nuñez",
-    "sort": "Nuñez",
-    "picture": "Nunez.jpg",
-    "country": "Argentina/Germany",
+    "name": "",
+    "sort": "",
+    "picture": "",
+    "country": "",
     "contact": "",
     "donate": "",
-    "category": "individual",
-    "path": "hernan-nunez"
+    "category": "",
+    "path": ""
 }
 
 ###
@@ -20,11 +20,11 @@ content-type: application/json
 Authorization: {{$dotenv SESSION_SECRET}}
 
 {
-    "title": "El Péndulo II",
-    "description": "Performed by RF & The League of Crafty Guitarists (2003-2009), currently part of The LG and Berlin Guitar Ensemble repertoire. The recording is from the 2007 Argentina Tour.",
-    "audio": "El Pendulo II.mp3",
-    "score": "El_Pendulo_II.pdf",
-    "path": "hernan-nunez"
+    "title": "",
+    "description": "",
+    "audio": "",
+    "score": "",
+    "path": ""
 }
 
 ###
