@@ -39,12 +39,16 @@
                 nisi atque optio! Veritatis modi quas voluptatum aut.
               </p>
               <p>
-                <a href="https://discord.gg/a6FwyqUAKH" target="_blank">
+                <a href="/api/discord" <% if (user) { %>
+                  target="_blank"; <% } %> >
                   <button
                     class="button primary icon solid fa-external-link-alt"
                     type="submit"
                   >
-                    join the discord
+                    join the discord <% if (!user) { %>
+                    <br />
+                    <i style="color: black; font-size: 80%">(login required)</i>
+                    <% } %>
                   </button>
                 </a>
               </p>

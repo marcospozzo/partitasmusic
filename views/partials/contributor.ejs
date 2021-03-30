@@ -27,13 +27,17 @@
     <source src="/api/audio/<%= contribution.path %>/<%= contribution.audio %>" type="audio/mpeg" />
     This browser does not support the audio tag.
   </audio>
-  <a href="/api/scores/<%= contribution.path %>/<%= contribution.score %>">
+  <a href="/api/scores/<%= contribution.path %>/<%= contribution.score %>" <% if (user) { %>
+    target="_blank"; <% } %> >
     <button
       style="width: 100%"
-      class="button primary icon solid fa-download"
+      class="button primary icon solid fa-external-link-alt"
       type="submit"
     >
-      download score
+      open score 
+      <% if (!user) { %>
+        <br> <i style="color:black; font-size: 80%;">(login required)</i> 
+      <% } %>
     </button>
   </a>
 </article>

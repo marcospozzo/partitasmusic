@@ -2,7 +2,11 @@ const router = require("express").Router();
 const aphorisms = require("../models/aphorism/aphorisms");
 const createError = require("http-errors");
 const api = require("./api");
-const { ensureAuthenticated, forwardAuthenticated } = require("../config/auth");
+const {
+  ensureAuthenticated,
+  ensureAuthenticatedContributions,
+  forwardAuthenticated,
+} = require("../config/auth");
 
 // home
 router.get("/", (req, res) =>
