@@ -17,10 +17,6 @@ AWS.config.update({
 const myBucket = "partitasmusic";
 const signedUrlExpireSeconds = 60 * 60 * 5; // 5 hours
 
-router.get("/discord", ensureAuthenticated, (req, res) => {
-  res.redirect("https://discord.gg/a6FwyqUAKH");
-});
-
 async function getGroupContributors() {
   return Contributor.find({ category: "group" }, function (err, contribution) {
     if (err) {
