@@ -3,7 +3,11 @@ const Contribution = require("../models/Contribution");
 const Contributor = require("../models/Contributor");
 const router = require("express").Router();
 const sendMail = require("../models/email/contact");
-const { ensureAuthenticated, forwardAuthenticated } = require("../config/auth");
+const {
+  ensureAuthenticated,
+  ensureAuthenticatedContributions,
+  forwardAuthenticated,
+} = require("../config/auth");
 const AWS = require("aws-sdk");
 const s3 = new AWS.S3();
 AWS.config.update({
@@ -12,6 +16,10 @@ AWS.config.update({
 });
 const myBucket = "partitasmusic";
 const signedUrlExpireSeconds = 60 * 60 * 5; // 5 hours
+
+router.get("/discord", ensureAuthenticated, (req, res) => {
+  res.redirect("https://discord.gg/a6FwyqUAKH");
+});
 
 async function getGroupContributors() {
   return Contributor.find({ category: "group" }, function (err, contribution) {
@@ -77,12 +85,15 @@ router.get("/audio/:folder/:fileName", (req, res) => {
   audio.pipe(res);
 });
 
-router.get("/scores/:folder/:fileName", ensureAuthenticated, (req, res) => {
-  const path = `${req.params.folder}/${req.params.fileName}`;
-  const score = getS3FileStream(path);
-  res.attachment(path);
-  score.pipe(res);
-});
+router.get(
+  "/scores/:folder/:fileName",
+  ensureAuthenticatedContributions,
+  async (req, res) => {
+    // const path = `${req.params.folder}/${req.params.fileName}`;
+    const score = await getS3TempUrl(req.params.folder, req.params.fileName);
+    res.redirect(score);
+  }
+);
 
 function getS3FileStream(path) {
   const file = s3
