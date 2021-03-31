@@ -3,13 +3,9 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const mongoose = require("mongoose");
 const dotenv = require("dotenv").config();
-const createError = require("http-errors");
 const passport = require("passport");
 const flash = require("connect-flash");
 const session = require("express-session");
-// const expressLayouts = require('express-ejs-layouts');
-
-// app.use(expressLayouts);
 
 app.set("view engine", "ejs");
 
