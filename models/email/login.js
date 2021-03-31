@@ -8,7 +8,7 @@ function notifyAccountCreation(user) {
     text: `New account creation: \nName: ${user.name} \nEmail: ${user.email}`,
     html: "",
   };
-  sendMail(data).catch(console.error);
+  sendMail(data).catch((err) => console.error(err));
 }
 
 function sendEmailWithToken(user, urlProtocolWithHost) {

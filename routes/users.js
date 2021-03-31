@@ -52,24 +52,16 @@ router.get("/set-password/:token", async (req, res) => {
 router.post("/set-password/:token", async (req, res) => {
   const password = req.body.password;
   const token = req.params.token;
-  let errors;
 
   jwt.verify(token, process.env.RESET_TOKEN, function (err, decoded) {
     if (err) {
-      errors = { message: "Invalid or expired token" };
-      return res.render("set-password", {
-        token,
-        errors,
-      });
+      req.flash("flashError", "Invalid or expired token");
+      return res.redirect("/login");
     } else {
       User.findById(decoded.id, async function (err, user) {
         if (err || user == null) {
-          errors = { message: "Error finding user" };
-          return res.render("set-password", {
-            title: "Set password",
-            token,
-            errors,
-          });
+          req.flash("flashError", "Error finding user");
+          return res.redirect("/login");
         }
 
         try {
@@ -77,12 +69,8 @@ router.post("/set-password/:token", async (req, res) => {
           user.password = hashedPassword;
           await user.save();
         } catch (err) {
-          errors = { message: "Error saving user" };
-          return res.render("set-password", {
-            title: "Set password",
-            token,
-            errors,
-          });
+          req.flash("flashError", "Error saving user");
+          return res.redirect("/login");
         }
         res.status(200);
         req.flash("flashSuccess", "Password set correctly");
