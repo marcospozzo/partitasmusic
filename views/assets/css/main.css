@@ -82,7 +82,7 @@ body {
   -ms-overflow-style: scrollbar;
 }
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 599px) {
   html,
   body {
     min-width: 320px;
@@ -1423,7 +1423,7 @@ hr.major {
   }
 }
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 599px) {
   .row {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -2226,7 +2226,7 @@ ul.pagination li:last-child {
   padding-left: 0.75em;
 }
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 599px) {
   ul.pagination li:nth-child(n+2):nth-last-child(n+2) {
     display: none;
   }
@@ -2587,7 +2587,7 @@ button:disabled,
   }
 }
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 599px) {
   .features article {
     -moz-flex-direction: column;
     -ms-flex-direction: column;
@@ -2616,7 +2616,7 @@ button:disabled,
   }
 }
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 599px) {
   .features article .icon:before {
     font-size: 1.25rem;
   }
@@ -2691,6 +2691,7 @@ button:disabled,
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  text-align: center;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
@@ -2744,7 +2745,7 @@ button:disabled,
   }
 }
 
-@media screen and (min-width: 481px) and (max-width: 1680px) {
+@media screen and (min-width: 600px) and (max-width: 1680px) {
   .posts article:nth-child(1):before {
     display: none;
   }
@@ -2784,7 +2785,7 @@ button:disabled,
   }
 }
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 599px) {
   .posts {
     margin: 0 0 2em 0;
     width: 100%;
@@ -3578,9 +3579,8 @@ textarea {
   }
 }
 
-@media screen and (orientation: portrait) and (max-width: 480px) {
+@media screen and (orientation: portrait) and (max-width: 736px) {
   #banner .image {
-    max-height: 35vh;
     width: 100%;
   }
 }
@@ -3678,7 +3678,7 @@ textarea {
   }
 }
 
-@media screen and (orientation: portrait) and (max-width: 480px) {
+@media screen and (orientation: portrait) and (max-width: 599px) {
   #banner-profile .image {
     max-height: 35vh;
   }
@@ -3778,7 +3778,7 @@ textarea {
   }
 }
 
-@media screen and (orientation: portrait) and (max-width: 480px) {
+@media screen and (orientation: portrait) and (max-width: 599px) {
   #featured .image {
     max-height: 35vh;
   }
