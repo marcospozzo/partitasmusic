@@ -67,9 +67,9 @@
       width: 333px;
     }
 
-    @include breakpoint("<=xsmall") {
+    @include breakpoint("<=small") {
       .image {
-        max-height: 35vh;
+        // max-height: 35vh;
         width: 100%;
       }
     }
