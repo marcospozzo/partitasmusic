@@ -107,7 +107,6 @@ router.post("/reset-password", async (req, res) => {
       return res.redirect("/login");
     }
     const urlProtocolWithHost = `${req.protocol}://${req.headers.host}`;
-    console.log(req.secure);
     sendMail.sendEmailWithToken(user, urlProtocolWithHost);
     res.status(200);
     req.flash("flashSuccess", "Follow email instructions");
