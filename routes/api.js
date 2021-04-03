@@ -15,7 +15,7 @@ AWS.config.update({
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
 });
 const myBucket = "partitasmusic";
-const signedUrlExpireSeconds = 60 * 60 * 5; // 5 hours
+const signedUrlExpireSeconds = 60 * 1 * 1; // 60 seconds, 0 minute, 0 hour
 
 async function getGroupContributors() {
   return Contributor.find({ category: "group" }, function (err, contribution) {
