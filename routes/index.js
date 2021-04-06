@@ -1,5 +1,4 @@
 const router = require("express").Router();
-const aphorisms = require("../models/aphorism/aphorisms");
 const createError = require("http-errors");
 const api = require("./api");
 const {
@@ -47,12 +46,6 @@ router.get("/contact", (req, res) =>
     user: req.user,
   })
 );
-
-// aphorism
-router.get("/aphorism", async (req, res) => {
-  const aphorism = aphorisms.getAphorismOfTheDay();
-  res.send(aphorism);
-});
 
 // aphorisms
 router.get("/aphorisms", (req, res) =>

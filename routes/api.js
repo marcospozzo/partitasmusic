@@ -1,6 +1,7 @@
 const dotenv = require("dotenv").config();
 const Contribution = require("../models/Contribution");
 const Contributor = require("../models/Contributor");
+const aphorisms = require("../models/aphorism/aphorisms");
 const router = require("express").Router();
 const sendMail = require("../models/email/contact");
 const {
@@ -133,6 +134,12 @@ router.post("/create-contribution", async (req, res, next) => {
   } else {
     res.sendStatus(401);
   }
+});
+
+// aphorism
+router.get("/aphorism", async (req, res) => {
+  const aphorism = aphorisms.getAphorismOfTheDay();
+  res.send(aphorism);
 });
 
 router.post("/create-contributor", async (req, res, next) => {
