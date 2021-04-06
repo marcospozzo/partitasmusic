@@ -52,7 +52,7 @@
     });
 
   async function aphorism() {
-    const response = await fetch("/aphorism");
+    const response = await fetch("/api/aphorism");
     const text = await response.text();
     return text;
   }
