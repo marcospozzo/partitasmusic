@@ -47,6 +47,14 @@ router.get("/contact", (req, res) =>
   })
 );
 
+// profile
+// router.get("/profile", (req, res) =>
+//   res.render("profile", {
+//     title: "Profile",
+//     user: req.user,
+//   })
+// );
+
 // aphorisms
 router.get("/aphorisms", (req, res) =>
   res.render("aphorisms", {
