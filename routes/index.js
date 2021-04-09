@@ -108,7 +108,7 @@ router.get("/contributors", async (req, res) => {
 });
 
 // contributions
-router.get("/contributions/:path", async (req, res) => {
+router.get("/contributors/:path", async (req, res) => {
   try {
     const pathOne = req.params.path;
     let contributorOne = await api.getContributor(pathOne);
