@@ -14,6 +14,10 @@
     margin-top: -0.125em;
   }
 
+  h2 {
+    margin-bottom: 0.5em;
+  }
+
   .content {
     @include vendor("flex-grow", "1");
     @include vendor("flex-shrink", "1");

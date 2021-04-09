@@ -3602,6 +3602,10 @@ textarea {
   margin-top: -0.125em;
 }
 
+#banner-profile h2 {
+  margin-bottom: 0.5em;
+}
+
 #banner-profile .content {
   -moz-flex-grow: 1;
   -ms-flex-grow: 1;
