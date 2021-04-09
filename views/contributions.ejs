@@ -24,11 +24,11 @@
             </header>
             <div class="posts">   
 
-              <%- include('partials/contributor', {contributor: firstContributor.contributor, contribution: firstContributor.contribution}); %>
+              <%- include('partials/single-contributor', {contributor: firstContributor.contributor, contributions: firstContributor.contributions}); %>
             
-              <%- include('partials/contributor', {contributor: secondContributor.contributor, contribution: secondContributor.contribution}); %>
+              <%- include('partials/single-contributor', {contributor: secondContributor.contributor, contributions: secondContributor.contributions}); %>
            
-              <%- include('partials/contributor', {contributor: thirdContributor.contributor, contribution: thirdContributor.contribution}); %>
+              <%- include('partials/single-contributor', {contributor: thirdContributor.contributor, contributions: thirdContributor.contributions}); %>
 
             </div>
           </section>

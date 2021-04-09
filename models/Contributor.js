@@ -23,6 +23,10 @@ const UserSchema = new mongoose.Schema(
       max: 50,
       required: true,
     },
+    bio: {
+      type: String,
+      max: 1024,
+    },
     contact: {
       type: String,
       max: 512,

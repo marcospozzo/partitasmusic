@@ -47,14 +47,6 @@ router.get("/contact", (req, res) =>
   })
 );
 
-// profile
-// router.get("/profile", (req, res) =>
-//   res.render("profile", {
-//     title: "Profile",
-//     user: req.user,
-//   })
-// );
-
 // aphorisms
 router.get("/aphorisms", (req, res) =>
   res.render("aphorisms", {
@@ -113,36 +105,46 @@ router.get("/contributors/:path", async (req, res) => {
     const pathOne = req.params.path;
     let contributorOne = await api.getContributor(pathOne);
     contributorOne = await api.getProfilePicture(contributorOne);
-    const contributionOne = await api.getContributions(pathOne);
-    const firstContributor = {};
-    firstContributor.contributor = contributorOne;
-    firstContributor.contribution = contributionOne[0];
+    const contributionsOne = await api.getContributions(pathOne);
 
-    const twoContributors = await api.getTwoRandomContributorsExcept(pathOne);
+    if (contributionsOne.length > 1) {
+      // clicked contributor has more than one contribution
+      return res.render("multiple-contributor", {
+        title: "Contributor",
+        user: req.user,
+        contributor: contributorOne,
+        contributions: contributionsOne,
+      });
+    } else {
+      // clicked contributor has exactly one contribution
+      const firstContributor = {};
+      firstContributor.contributor = contributorOne;
+      firstContributor.contributions = contributionsOne;
 
-    const pathTwo = twoContributors[0].path;
-    let contributorTwo = await api.getContributor(pathTwo);
-    contributorTwo = await api.getProfilePicture(contributorTwo);
-    const contributionTwo = await api.getContributions(pathTwo);
-    const secondContributor = {};
-    secondContributor.contributor = contributorTwo;
-    secondContributor.contribution = contributionTwo[0];
+      const twoContributors = await api.getTwoRandomContributorsExcept(pathOne);
 
-    const pathThree = twoContributors[1].path;
-    let contributorThree = await api.getContributor(pathThree);
-    contributorThree = await api.getProfilePicture(contributorThree);
-    const contributionThree = await api.getContributions(pathThree);
-    const thirdContributor = {};
-    thirdContributor.contributor = contributorThree;
-    thirdContributor.contribution = contributionThree[0];
+      const pathTwo = twoContributors[0].path;
+      let contributorTwo = await api.getContributor(pathTwo);
+      contributorTwo = await api.getProfilePicture(contributorTwo);
+      const secondContributor = {};
+      secondContributor.contributor = contributorTwo;
+      secondContributor.contributions = await api.getContributions(pathTwo);
 
-    res.render("contributions", {
-      title: "Contributions",
-      user: req.user,
-      firstContributor,
-      secondContributor,
-      thirdContributor,
-    });
+      const pathThree = twoContributors[1].path;
+      let contributorThree = await api.getContributor(pathThree);
+      contributorThree = await api.getProfilePicture(contributorThree);
+      const thirdContributor = {};
+      thirdContributor.contributor = contributorThree;
+      thirdContributor.contributions = await api.getContributions(pathThree);
+
+      res.render("contributions", {
+        title: "Contributions",
+        user: req.user,
+        firstContributor,
+        secondContributor,
+        thirdContributor,
+      });
+    }
   } catch (error) {
     console.error(error);
     createError(400, "Error");

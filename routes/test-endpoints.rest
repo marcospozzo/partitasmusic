@@ -7,6 +7,7 @@ Authorization: {{$dotenv SESSION_SECRET}}
     "sort": "",
     "picture": "",
     "country": "",
+    "bio": "",
     "contact": "",
     "donate": "",
     "category": "",

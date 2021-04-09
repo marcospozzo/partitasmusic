@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<!--
+	Editorial by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+  <!-- head -->
+  <%- include('partials/head'); %>
+
+  <body class="is-preload">
+    <!-- Wrapper -->
+    <div id="wrapper">
+      <!-- Main -->
+      <div id="main">
+        <div class="inner">
+          <!-- Header -->
+          <%- include('partials/header'); %>
+
+          <!-- Banner -->
+          <section id="banner-profile">
+            <div class="content">
+              <header>
+                <h2><%= contributor.name %></h2>
+                <p><%= contributor.country %></p>
+              </header>
+              <p><%= contributor.bio %></p>
+              <p>
+                <% if (contributor.contact) { %> 
+                  <span>Contact: </span><a href="<%= contributor.contact %>" target="_blank"><%= contributor.contact %></a>
+                <% } %>
+                <% if (contributor.donate) { %> 
+                  <br>
+                  <span>Donate: </span><a href="<%= contributor.donate %>" target="_blank"><%= contributor.donate %></a>
+                <% } %>
+              </p>
+            </div>
+            <span class="image object">
+              <img src="<%= contributor.picture %>" alt="<%= contributor.name %>'s profile picture"/>
+            </span>
+          </section>
+
+          <!-- Section -->
+          <section>
+            <header class="major">
+              <h2>Contributions</h2>
+            </header>
+            <div class="posts">   
+              
+              <% contributions.forEach(function (contribution) { %>
+                <article>
+                  <h3><%= contribution.title %></h3>
+                  <p><%= contribution.description %></p>
+      
+                  <audio
+                    style="width: 100%"
+                    preload="none"
+                    class="mobile-audio"
+                    controls=""
+                    >
+                    <source src="/api/audio/<%= contribution.path %>/<%= contributions.audio %>" type="audio/mpeg" />
+                    This browser does not support the audio tag.
+                  </audio>
+                  <a href="/api/scores/<%= contributions.path %>/<%= contributions.score %>" <% if (user) { %>
+                    target="_blank"; <% } %> >
+                    <button
+                      style="width: 100%"
+                      class="button primary icon solid fa-external-link-alt"
+                      type="submit"
+                    >
+                      open score 
+                      <% if (!user) { %>
+                        <br> <i style="color:black; font-size: 80%;">(login required)</i> 
+                      <% } %>
+                    </button>
+                  </a>
+
+                </article>
+    
+              <% }); %>
+
+            </div>
+          </section>
+          
+
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <%- include('partials/sidebar'); %>
+    </div>
+
+    <!-- Scripts -->
+    <%- include('partials/scripts'); %>
+  </body>
+</html>

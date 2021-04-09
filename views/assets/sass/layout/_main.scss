@@ -17,10 +17,10 @@
     max-width: 110em;
 
     > section {
-      @include padding(4em, 0);
-      border-top: solid 2px _palette(border);
+      // border-top: solid 2px _palette(border);
 
       &:first-of-type {
+        padding-top: 4em;
         border-top: 0 !important;
       }
     }
@@ -31,7 +31,10 @@
       @include padding(0, 5em);
 
       > section {
-        @include padding(3em, 0);
+        &:first-of-type {
+          padding-top: 3em;
+          border-top: 0 !important;
+        }
       }
     }
   }
@@ -41,7 +44,10 @@
       @include padding(0, 4em);
 
       > section {
-        @include padding(3em, 0);
+        &:first-of-type {
+          padding-top: 3em;
+          border-top: 0 !important;
+        }
       }
     }
   }
@@ -51,8 +57,11 @@
       @include padding(0, 2em);
 
       > section {
-        @include padding(3em, 0);
-        padding-bottom: 5em;
+        &:first-of-type {
+          padding-top: 3em;
+          border-top: 0 !important;
+          padding-bottom: 5em;
+        }
       }
     }
   }

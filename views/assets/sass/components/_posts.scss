@@ -13,6 +13,7 @@
   //   @include vendor('flex-wrap', 'wrap');
   margin: 0 0 _size(element-margin) ($gutter * -1);
   width: calc(100% + #{$gutter});
+  flex-wrap: wrap;
 
   article {
     @include vendor("flex-grow", "0");
@@ -51,10 +52,10 @@
       display: block;
       margin: 0 0 1em 0;
       //   overflow: hidden;
-      // border-radius: 50%;
+      border-radius: 50%; // if I don't keep both border-radius: 50%, edges get cropped
 
       img {
-        border-radius: 50%;
+        border-radius: 50%; // if I don't keep both border-radius: 50%, edges get cropped
         display: block;
         width: 100%;
       }
