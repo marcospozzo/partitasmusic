@@ -7,7 +7,7 @@
 /* Banner */
 
 #banner {
-  @include padding(6em, 0);
+  @include padding(4em, 0);
   @include vendor("display", "flex");
 
   h1 {

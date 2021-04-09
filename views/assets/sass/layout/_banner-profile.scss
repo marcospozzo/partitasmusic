@@ -7,22 +7,22 @@
 /* Banner */
 
 #banner-profile {
-  @include padding(6em, 0);
-  @include vendor('display', 'flex');
+  @include padding(4em, 0);
+  @include vendor("display", "flex");
 
   h1 {
     margin-top: -0.125em;
   }
 
   .content {
-    @include vendor('flex-grow', '1');
-    @include vendor('flex-shrink', '1');
+    @include vendor("flex-grow", "1");
+    @include vendor("flex-shrink", "1");
     width: 75%;
   }
 
   .image {
-    @include vendor('flex-grow', '0');
-    @include vendor('flex-shrink', '0');
+    @include vendor("flex-grow", "0");
+    @include vendor("flex-shrink", "0");
     margin: 0 0 _size(element-margin) (_size(element-margin) * 2);
     width: 25%;
 
@@ -41,8 +41,8 @@
     }
   }
 
-  @include orientation(portrait) {
-    @include vendor('flex-direction', 'column-reverse');
+  @include breakpoint("<=small") {
+    @include vendor("flex-direction", "column");
 
     h1 {
       br {
@@ -51,24 +51,25 @@
     }
 
     .content {
-      @include vendor('flex-grow', '0');
-      @include vendor('flex-shrink', '0');
+      @include vendor("flex-grow", "0");
+      @include vendor("flex-shrink", "0");
       width: 100%;
     }
 
     .image {
-      @include vendor('flex-grow', '0');
-      @include vendor('flex-shrink', '0');
+      @include vendor("flex-grow", "0");
+      @include vendor("flex-shrink", "0");
       margin: 0 0 (_size(element-margin) * 2) 0;
       height: 25em;
       max-height: 50vh;
       min-height: 18em;
-      width: 100%;
+      width: 333px;
     }
 
-    @include breakpoint('<=xsmall') {
+    @include breakpoint("<=xsmall") {
       .image {
         max-height: 35vh;
+        width: 100%;
       }
     }
   }

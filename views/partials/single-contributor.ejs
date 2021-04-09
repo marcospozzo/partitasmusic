@@ -1,13 +1,20 @@
 <article>
-  <div class="image">
-    <img src="<%= contributor.picture %>" alt="<%= contributor.name %>'s profile picture"/>
-  </div>
+  <% if (contributions.length > 1) { %> 
+    <a href="/contributors/<%= contributor.path %>" class="image">
+      <img src="<%= contributor.picture %>" alt="<%= contributor.name %>'s profile picture"/>
+    </a>
+  <% } else { %>
+    <div class="image">
+      <img src="<%= contributor.picture %>" alt="<%= contributor.name %>'s profile picture"/>
+    </div>
+  <% } %>
+
   <div class="title-header">
     <h3><%= contributor.name %></h3>
     <h4><%= contributor.country %></h4>
   </div>
-  <h3><%= contribution.title %></h3>
-  <p><%= contribution.description %></p>
+  <h3><%= contributions[0].title %></h3>
+  <p><%= contributions[0].description %></p>
   <p>
     <% if (contributor.contact) { %> 
       <span>Contact: </span><a href="<%= contributor.contact %>" target="_blank"><%= contributor.contact %></a>
@@ -24,10 +31,10 @@
     class="mobile-audio"
     controls=""
   >
-    <source src="/api/audio/<%= contribution.path %>/<%= contribution.audio %>" type="audio/mpeg" />
+    <source src="/api/audio/<%= contributions[0].path %>/<%= contributions[0].audio %>" type="audio/mpeg" />
     This browser does not support the audio tag.
   </audio>
-  <a href="/api/scores/<%= contribution.path %>/<%= contribution.score %>" <% if (user) { %>
+  <a href="/api/scores/<%= contributions[0].path %>/<%= contributions[0].score %>" <% if (user) { %>
     target="_blank"; <% } %> >
     <button
       style="width: 100%"

@@ -2631,6 +2631,8 @@ button:disabled,
   display: flex;
   margin: 0 0 2em -6em;
   width: calc(100% + 6em);
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
 }
 
 .posts article {
@@ -2676,6 +2678,7 @@ button:disabled,
 .posts article .image {
   display: block;
   margin: 0 0 1em 0;
+  border-radius: 50%;
 }
 
 .posts article .image img {
@@ -3151,12 +3154,8 @@ textarea {
   max-width: 110em;
 }
 
-#main > .inner > section {
-  padding: 4em 0 2em 0 ;
-  border-top: solid 2px rgba(210, 215, 217, 0.75);
-}
-
 #main > .inner > section:first-of-type {
+  padding-top: 4em;
   border-top: 0 !important;
 }
 
@@ -3164,8 +3163,9 @@ textarea {
   #main > .inner {
     padding: 0 5em 0.1em 5em ;
   }
-  #main > .inner > section {
-    padding: 3em 0 1em 0 ;
+  #main > .inner > section:first-of-type {
+    padding-top: 3em;
+    border-top: 0 !important;
   }
 }
 
@@ -3173,8 +3173,9 @@ textarea {
   #main > .inner {
     padding: 0 4em 0.1em 4em ;
   }
-  #main > .inner > section {
-    padding: 3em 0 1em 0 ;
+  #main > .inner > section:first-of-type {
+    padding-top: 3em;
+    border-top: 0 !important;
   }
 }
 
@@ -3182,8 +3183,9 @@ textarea {
   #main > .inner {
     padding: 0 2em 0.1em 2em ;
   }
-  #main > .inner > section {
-    padding: 3em 0 1em 0 ;
+  #main > .inner > section:first-of-type {
+    padding-top: 3em;
+    border-top: 0 !important;
     padding-bottom: 5em;
   }
 }
@@ -3488,7 +3490,7 @@ textarea {
 
 /* Banner */
 #banner {
-  padding: 6em 0 4em 0 ;
+  padding: 4em 0 2em 0 ;
   display: -moz-flex;
   display: -ms-flex;
   display: -webkit-box;
@@ -3588,7 +3590,7 @@ textarea {
 
 /* Banner */
 #banner-profile {
-  padding: 6em 0 4em 0 ;
+  padding: 4em 0 2em 0 ;
   display: -moz-flex;
   display: -ms-flex;
   display: -webkit-box;
@@ -3640,13 +3642,13 @@ textarea {
   width: 100%;
 }
 
-@media screen and (orientation: portrait) {
+@media screen and (max-width: 736px) {
   #banner-profile {
-    -moz-flex-direction: column-reverse;
-    -ms-flex-direction: column-reverse;
+    -moz-flex-direction: column;
+    -ms-flex-direction: column;
     -webkit-box-orient: vertical;
-    -webkit-box-direction: reverse;
-            flex-direction: column-reverse;
+    -webkit-box-direction: normal;
+            flex-direction: column;
   }
   #banner-profile h1 br {
     display: none;
@@ -3675,13 +3677,14 @@ textarea {
     height: 25em;
     max-height: 50vh;
     min-height: 18em;
-    width: 100%;
+    width: 333px;
   }
 }
 
-@media screen and (orientation: portrait) and (max-width: 480px) {
+@media screen and (max-width: 736px) and (max-width: 480px) {
   #banner-profile .image {
     max-height: 35vh;
+    width: 100%;
   }
 }
 

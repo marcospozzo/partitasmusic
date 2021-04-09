@@ -1,4 +1,5 @@
 contact-form.ejs
 contribute-form.ejs
 contributions.ejs
-contributor.ejs
+single-contributor.ejs
+multiple-contributor.ejs
