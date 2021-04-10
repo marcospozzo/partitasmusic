@@ -3603,7 +3603,11 @@ textarea {
 }
 
 #banner-profile h2 {
-  margin-bottom: 0.5em;
+  margin-bottom: 0.1em;
+}
+
+#banner-profile h4 {
+  margin-bottom: 2em;
 }
 
 #banner-profile .content {
