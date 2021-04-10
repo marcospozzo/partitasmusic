@@ -8,6 +8,7 @@
 
 #banner-profile {
   @include padding(4em, 0);
+  // padding: 4em 0 1em 0;
   @include vendor("display", "flex");
 
   h1 {
@@ -15,7 +16,11 @@
   }
 
   h2 {
-    margin-bottom: 0.5em;
+    margin-bottom: 0.1em;
+  }
+
+  h4 {
+    margin-bottom: 2em;
   }
 
   .content {

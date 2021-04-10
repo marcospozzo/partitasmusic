@@ -22,7 +22,7 @@
             <div class="content">
               <header>
                 <h2><%= contributor.name %></h2>
-                <p><%= contributor.country %></p>
+                <h4><%= contributor.country %></h4>
               </header>
               <p><%= contributor.bio %></p>
               <p>
@@ -55,10 +55,10 @@
                     class="mobile-audio"
                     controls=""
                     >
-                    <source src="/api/audio/<%= contribution.path %>/<%= contributions.audio %>" type="audio/mpeg" />
+                    <source src="/api/audio/<%= contribution.path %>/<%= contribution.audio %>" type="audio/mpeg" />
                     This browser does not support the audio tag.
                   </audio>
-                  <a href="/api/scores/<%= contributions.path %>/<%= contributions.score %>" <% if (user) { %>
+                  <a href="/api/scores/<%= contribution.path %>/<%= contribution.score %>" <% if (user) { %>
                     target="_blank"; <% } %> >
                     <button
                       style="width: 100%"
