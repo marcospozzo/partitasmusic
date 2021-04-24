@@ -1,4 +1,4 @@
-POST http://localhost:3000/api/create-contributor
+POST https://partitasmusic.com/api/create-contributor
 content-type: application/json
 Authorization: {{$dotenv SESSION_SECRET}}
 
@@ -16,7 +16,7 @@ Authorization: {{$dotenv SESSION_SECRET}}
 
 ###
 
-POST http://localhost:3000/api/create-contribution
+POST https://partitasmusic.com/api/create-contribution
 content-type: application/json
 Authorization: {{$dotenv SESSION_SECRET}}
 
@@ -70,6 +70,6 @@ content-type: application/json
 
 ###
 
-GET http://localhost:3000/aphorism
+GET http://localhost:3000/api/aphorism
 
 ###
