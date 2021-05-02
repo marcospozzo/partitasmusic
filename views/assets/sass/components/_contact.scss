@@ -9,8 +9,6 @@
 ul.contact {
   list-style: none;
   padding: 0;
-  position: fixed;
-  bottom: 6em;
 
   li {
     @include icon;
@@ -43,7 +41,7 @@ ul.contact {
     }
 
     a {
-      // color: inherit;
+      color: inherit;
     }
   }
 }
