@@ -106,6 +106,12 @@ router.get("/contributors/:path", async (req, res) => {
   try {
     const pathOne = req.params.path;
     let contributorOne = await api.getContributor(pathOne);
+
+    // invalid path returns to home
+    if (!contributorOne) {
+      return res.redirect("/");
+    }
+
     contributorOne = await api.getProfilePicture(contributorOne);
     const contributionsOne = await api.getContributions(pathOne);
 
