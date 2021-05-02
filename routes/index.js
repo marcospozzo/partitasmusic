@@ -44,6 +44,7 @@ router.get("/contact", (req, res) =>
   res.render("contact", {
     title: "Contact",
     user: req.user,
+    body: req.session.body,
   })
 );
 
@@ -64,6 +65,7 @@ router.get("/contribute", (req, res) =>
   res.render("contribute", {
     title: "Contribute",
     user: req.user,
+    body: req.session.body,
   })
 );
 

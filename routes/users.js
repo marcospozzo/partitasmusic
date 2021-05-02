@@ -91,7 +91,8 @@ router.post("/login", (req, res, next) => {
 
 // logout
 router.get("/logout", (req, res) => {
-  req.session.backUrl = ""; // backUrl cleared so it does not go again
+  delete req.session.backUrl; // backUrl cleared so it does not go again
+  delete req.session.body;
   req.logout();
   req.flash("flashSuccess", "You are logged out");
   res.redirect("/login");

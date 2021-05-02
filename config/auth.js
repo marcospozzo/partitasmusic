@@ -8,6 +8,15 @@ module.exports = {
     req.flash("flashSuccess", "Please login");
     res.redirect("/login");
   },
+  ensureAuthenticatedForm: function (req, res, next) {
+    if (req.isAuthenticated()) {
+      return next();
+    }
+    req.session.backUrl = req.header("Referer");
+    req.session.body = req.body;
+    req.flash("flashSuccess", "Please login");
+    res.redirect("/login");
+  },
   ensureAuthenticated: function (req, res, next) {
     if (req.isAuthenticated()) {
       return next();
