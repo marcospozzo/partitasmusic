@@ -2106,6 +2106,15 @@ ul.icons {
   cursor: default;
   list-style: none;
   padding-left: 0;
+  position: fixed;
+  bottom: 6em;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: space-evenly;
+      -ms-flex-pack: space-evenly;
+          justify-content: space-evenly;
+  width: 21em;
 }
 
 ul.icons li {
@@ -2129,8 +2138,6 @@ ul.icons li .icon:before {
 ul.contact {
   list-style: none;
   padding: 0;
-  position: fixed;
-  bottom: 6em;
 }
 
 ul.contact li {
@@ -2175,6 +2182,10 @@ ul.contact li:first-child {
 
 ul.contact li:first-child:before {
   top: 0;
+}
+
+ul.contact li a {
+  color: inherit;
 }
 
 /* Pagination */

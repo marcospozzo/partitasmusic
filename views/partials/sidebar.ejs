@@ -26,14 +26,43 @@
     </a>
 
     <!-- Login / Logout -->
-    <ul class="contact">
+    <ul class="icons">
+      <li>
+        <a
+          href="https://facebook.com/partitasmusic"
+          target="_blank"
+          class="icon brands fa-facebook-f"
+          ><span class="label">Facebook</span></a
+        >
+      </li>
+      <li>
+        <a
+          href="https://instagram.com/partitasmusic"
+          target="_blank"
+          class="icon brands fa-instagram"
+          ><span class="label">Instagram</span></a
+        >
+      </li>
+      <li>
+        <a
+          href="https://twitter.com/gcaphorisms"
+          target="_blank"
+          class="icon brands fa-twitter"
+          ><span class="label">Twitter</span></a
+        >
+      </li>
+      <li>
+        <a href="/forum" class="icon brands fa-discord"
+          ><span class="label">Discord</span></a
+        >
+      </li>
       <% if (user) { %>
-      <li class="icon solid fa-sign-out-alt">
-        <a href="/users/logout">Logout</a>
+      <li>
+        <a href="/users/logout" class="icon solid fa-sign-out-alt"> Logout</a>
       </li>
       <% } else { %>
-      <li class="icon solid fa-sign-in-alt">
-        <a href="/login">Login</a>
+      <li>
+        <a href="/login" class="icon solid fa-sign-in-alt"> Login</a>
       </li>
       <% } %>
     </ul>
