@@ -7,6 +7,7 @@ const sendMail = require("../models/email/contact");
 const {
   ensureAuthenticated,
   ensureAuthenticatedContributions,
+  ensureAuthenticatedForm,
   forwardAuthenticated,
 } = require("../config/auth");
 const AWS = require("aws-sdk");
@@ -180,7 +181,7 @@ router.post("/create-contributor", async (req, res, next) => {
 });
 
 // contact form
-router.post("/contact-form", (req, res, next) => {
+router.post("/contact-form", ensureAuthenticatedForm, (req, res, next) => {
   const { name, email, message } = req.body;
 
   if (!name || !email || !message) {
@@ -188,6 +189,7 @@ router.post("/contact-form", (req, res, next) => {
   }
 
   sendMail.sendContactForm(name, email, message);
+  delete req.session.body;
   res.redirect("/");
 });
 

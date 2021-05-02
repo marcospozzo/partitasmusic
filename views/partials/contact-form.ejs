@@ -32,19 +32,22 @@
         id="message"
         placeholder="Message"
         rows="6"
-    ></textarea>
+        ><% if (body) { %><%= body.message %> <% } %></textarea>
     </div>
     <!-- Break -->
-    <div class="col-12">
-    <ul class="actions">
-        <li>
-        <input
+    <p>
+        <a>
+          <button
+            class="button primary"
             type="submit"
-            value="Send Message"
-            class="primary"
-        />
-        </li>
-    </ul>
-    </div>
+          >
+            send message
+            <% if (!user) { %>
+            <br />
+            <i style="color: black; font-size: 80%">(login required)</i>
+            <% } %>
+          </button>
+        </a>
+    </p>
 </div>
 </form>
