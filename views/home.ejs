@@ -9,6 +9,17 @@
   <%- include('partials/head'); %>
 
   <body class="is-preload">
+    <!-- Form submit message confirmation -->
+    <% if (flashSuccess != '') { %>
+    <div id="myModal" class="modal">
+      <!-- Modal content -->
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <p>Message sent</p>
+      </div>
+    </div>
+    <% } %>
+
     <!-- Wrapper -->
     <div id="wrapper">
       <!-- Main -->

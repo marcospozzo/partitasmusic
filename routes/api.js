@@ -190,6 +190,7 @@ router.post("/contact-form", ensureAuthenticatedForm, (req, res, next) => {
 
   sendMail.sendContactForm(name, email, message);
   delete req.session.body;
+  req.flash("flashSuccess", "Message sent");
   res.redirect("/");
 });
 

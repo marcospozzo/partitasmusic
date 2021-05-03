@@ -7,13 +7,13 @@
 /* Header */
 
 #header {
-  @include vendor('display', 'flex');
+  @include vendor("display", "flex");
   border-bottom: solid 8px _palette(accent);
   padding: 1em 0 0em 0;
   // position: relative;
 
   > * {
-    @include vendor('flex', '1');
+    @include vendor("flex", "1");
     margin-bottom: 0;
   }
 
@@ -31,11 +31,11 @@
     text-transform: uppercase;
   }
 
-  @include breakpoint('<=xlarge') {
+  @include breakpoint("<=xlarge") {
     padding-top: 1em;
   }
 
-  @include breakpoint('<=small') {
+  @include breakpoint("<=small") {
     padding-top: 3.5em;
 
     .logo {
