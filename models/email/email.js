@@ -16,6 +16,7 @@ async function email(data) {
   let info = await transporter.sendMail({
     from: '"Partitas Music" <partitasmusic@gmail.com>', // sender address
     to: data.to, // list of receivers
+    cc: data.cc,
     subject: data.subject, // Subject line
     text: data.text, // plain text body
     html: data.html, // html body
