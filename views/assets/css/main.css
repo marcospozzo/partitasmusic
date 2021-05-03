@@ -2870,7 +2870,7 @@ button:disabled,
   border: 1px solid #888;
   width: 20%;
   /* Could be more or less, depending on screen size */
-  height: 7%;
+  height: 175px;
 }
 
 /* The Close Button */
@@ -2879,6 +2879,7 @@ button:disabled,
   float: right;
   font-size: 18px;
   font-weight: bold;
+  margin-left: 10px;
 }
 
 .close:hover,

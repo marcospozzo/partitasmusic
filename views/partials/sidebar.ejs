@@ -58,11 +58,23 @@
       </li>
       <% if (user) { %>
       <li>
-        <a href="/users/logout" class="icon solid fa-sign-out-alt"> Logout</a>
+        <a
+          style="display: inline-flex; align-items: center"
+          href="/users/logout"
+          class="icon solid fa-sign-out-alt"
+        >
+          <i style="margin-right: 3px"></i>Logout
+        </a>
       </li>
       <% } else { %>
       <li>
-        <a href="/login" class="icon solid fa-sign-in-alt"> Login</a>
+        <a
+          style="display: inline-flex; align-items: center"
+          href="/login"
+          class="icon solid fa-sign-in-alt"
+        >
+          <i style="margin-right: 3px"></i>Login
+        </a>
       </li>
       <% } %>
     </ul>
