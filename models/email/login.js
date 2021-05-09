@@ -11,7 +11,7 @@ function notifyAccountCreation(user) {
   sendMail(data).catch((err) => console.error(err));
 }
 
-function sendEmailWithToken(user, urlProtocolWithHost) {
+function sendEmailWithToken(user, host) {
   const token = jwt.sign(
     {
       id: user.id,
@@ -20,7 +20,7 @@ function sendEmailWithToken(user, urlProtocolWithHost) {
     { expiresIn: "15m" }
   );
 
-  const resetlURL = `${urlProtocolWithHost}/users/set-password/${token}`;
+  const resetlURL = `https://${host}/users/set-password/${token}`;
 
   const data = {
     to: user.email,

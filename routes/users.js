@@ -107,8 +107,7 @@ router.post("/reset-password", async (req, res) => {
       req.flash("flashError", "Error finding user");
       return res.redirect("/login");
     }
-    const urlProtocolWithHost = `${req.protocol}://${req.headers.host}`;
-    sendMail.sendEmailWithToken(user, urlProtocolWithHost);
+    sendMail.sendEmailWithToken(user, req.headers.host);
     res.status(200);
     req.flash("flashSuccess", "Follow email instructions");
     res.redirect("/login");
