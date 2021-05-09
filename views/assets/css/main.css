@@ -1656,7 +1656,7 @@ header.main > :last-child {
   margin: 0 0 1em 0;
 }
 
-header#contributions-header {
+header.contributions-header {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;

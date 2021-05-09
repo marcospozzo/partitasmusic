@@ -20,9 +20,14 @@
           <!-- Banner -->
           <section id="banner-profile">
             <div class="content">
-              <header>
-                <h2><%= contributor.name %></h2>
-                <h4><%= contributor.country %></h4>
+              <header class="contributions-header">
+                <ul class="actions">
+                  <li><a href="/contributors" class="button icon solid fa-arrow-left"> Back</a></li>
+                </ul>
+                <div>
+                  <h2><%= contributor.name %></h2>
+                  <h4><%= contributor.country %></h4>
+                </div>
               </header>
               <p><%= contributor.bio %></p>
               <p>
