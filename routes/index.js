@@ -77,6 +77,14 @@ router.get("/picks-and-strings", (req, res) =>
   })
 );
 
+// the tuning
+router.get("/the-tuning", (req, res) =>
+  res.render("the-tuning", {
+    title: "The Tuning",
+    user: req.user,
+  })
+);
+
 // login
 router.get("/login", forwardAuthenticated, (req, res) =>
   res.render("login", {
