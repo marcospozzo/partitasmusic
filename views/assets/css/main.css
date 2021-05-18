@@ -1937,7 +1937,7 @@ input[type="radio"] + label:before {
 }
 
 .image.left, .image.right {
-  max-width: 40%;
+  max-width: 100%;
 }
 
 .image.left img, .image.right img {
@@ -1990,6 +1990,27 @@ a.image img {
 a.image:hover img {
   -webkit-transform: scale(1.075);
   transform: scale(1.075);
+}
+
+@media screen and (max-width: 736px) {
+  .image.right {
+    float: none;
+    padding: 0;
+    margin: 0;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  #header-tuning {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: reverse;
+        -ms-flex-direction: column-reverse;
+            flex-direction: column-reverse;
+    margin-bottom: 6em;
+  }
 }
 
 /* List */
