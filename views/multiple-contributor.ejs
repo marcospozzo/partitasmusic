@@ -4,7 +4,7 @@
 	html5up.net | @ajlkn
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 -->
-<html>
+<html lang="en">
   <!-- head -->
   <%- include('partials/head'); %>
 
@@ -32,11 +32,11 @@
               <p><%= contributor.bio %></p>
               <p>
                 <% if (contributor.contact) { %> 
-                  <span>Contact: </span><a href="<%= contributor.contact %>" target="_blank"><%= contributor.contact %></a>
+                  <span>Contact: </span><a href="<%= contributor.contact %>" rel="noopener" target="_blank"><%= contributor.contact %></a>
                 <% } %>
                 <% if (contributor.donate) { %> 
                   <br>
-                  <span>Donate: </span><a href="<%= contributor.donate %>" target="_blank"><%= contributor.donate %></a>
+                  <span>Donate: </span><a href="<%= contributor.donate %>" rel="noopener" target="_blank"><%= contributor.donate %></a>
                 <% } %>
               </p>
             </div>
@@ -63,7 +63,7 @@
                     <source src="/api/audio/<%= contribution.path %>/<%= contribution.audio %>" type="audio/mpeg" />
                     This browser does not support the audio tag.
                   </audio>
-                  <a href="/api/scores/<%= contribution.path %>/<%= contribution.score %>" <% if (user) { %>
+                  <a href="/api/scores/<%= contribution.path %>/<%= contribution.score %>" rel="noopener" <% if (user) { %>
                     target="_blank"; <% } %> >
                     <button
                       style="width: 100%"

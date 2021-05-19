@@ -17,11 +17,11 @@
   <p><%= contributions[0].description %></p>
   <p>
     <% if (contributor.contact) { %> 
-      <span>Contact: </span><a href="<%= contributor.contact %>" target="_blank"><%= contributor.contact %></a>
+      <span>Contact: </span><a href="<%= contributor.contact %>" rel="noopener" target="_blank"><%= contributor.contact %></a>
     <% } %>
     <% if (contributor.donate) { %> 
       <br>
-      <span>Donate: </span><a href="<%= contributor.donate %>" target="_blank"><%= contributor.donate %></a>
+      <span>Donate: </span><a href="<%= contributor.donate %>" rel="noopener" target="_blank"><%= contributor.donate %></a>
     <% } %>
   </p>
           
@@ -37,7 +37,7 @@
     <source src="/api/audio/<%= contributions[0].path %>/<%= contributions[0].audio %>" type="audio/mpeg" />
     This browser does not support the audio tag.
   </audio>
-  <a href="/api/scores/<%= contributions[0].path %>/<%= contributions[0].score %>" <% if (user) { %>
+  <a href="/api/scores/<%= contributions[0].path %>/<%= contributions[0].score %>" rel="noopener" <% if (user) { %>
     target="_blank"; <% } %> >
     <button
       style="width: 100%"
