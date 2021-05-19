@@ -59,6 +59,9 @@
                     preload="none"
                     class="mobile-audio"
                     controls=""
+                    <% if (!user) { %>
+                      controlsList="nodownload"
+                    <% } %>
                     >
                     <source src="/api/audio/<%= contribution.path %>/<%= contribution.audio %>" type="audio/mpeg" />
                     This browser does not support the audio tag.
