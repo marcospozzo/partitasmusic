@@ -30,6 +30,38 @@ Authorization: {{$dotenv SESSION_SECRET}}
 
 ###
 
+POST http://localhost:3000/api/create-contributor
+content-type: application/json
+Authorization: {{$dotenv SESSION_SECRET}}
+
+{
+    "name": "Name Contributor 3",
+    "sort": "Sort Contributor 3",
+    "picture": "Picture Contributor 3",
+    "country": "Country Contributor ",
+    "bio": "Bio Contributor 3",
+    "contact": "Contact Contributor 3",
+    "donate": "Donate Contributor 3",
+    "category": "group",
+    "path": "AWS S3 Path Contributor 3"
+}
+
+###
+
+POST http://localhost:3000/api/create-contribution
+content-type: application/json
+Authorization: {{$dotenv SESSION_SECRET}}
+
+{
+    "title": "Title Contribution 3",
+    "description": "Description Contribution 3",
+    "audio": "Audio Path Contribution 3",
+    "score": "Score Path Contribution 3",
+    "path": "AWS S3 path Contribution 3"
+}
+
+###
+
 GET http://localhost:3000/users/login
 content-type: application/json
 
