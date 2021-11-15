@@ -1,9 +1,11 @@
 const sendMail = require("./email");
 const jwt = require("jsonwebtoken");
+const dotenv = require("dotenv");
+dotenv.config();
 
 function notifyAccountCreation(user) {
   const data = {
-    to: "partitasmusic@gmail.com",
+    to: process.env.GOOGLE_EMAIL_ADDRESS,
     subject: `[New account] ${user.name}`,
     text: `New account creation: \nName: ${user.name} \nEmail: ${user.email}`,
     html: "",
