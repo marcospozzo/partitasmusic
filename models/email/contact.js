@@ -1,9 +1,11 @@
 const sendMail = require("./email");
+const dotenv = require("dotenv");
+dotenv.config();
 
 function sendContactForm(name, email, message) {
   const data = {
     to: email,
-    cc: "partitasmusic@gmail.com",
+    cc: process.env.GOOGLE_EMAIL_ADDRESS,
     subject: `[Form submit] ${name}`,
     text: `New form submit: \nName: ${name} \nEmail: ${email} \nMessage: ${message}`,
     html: "",
