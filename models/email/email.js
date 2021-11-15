@@ -21,7 +21,7 @@ async function email(data) {
     service: "gmail",
     auth: {
       type: "OAuth2",
-      user: "partitasmusic@gmail.com",
+      user: process.env.GOOGLE_EMAIL_ADDRESS,
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       refreshToken: process.env.GOOGLE_REFRESH_TOKEN,
@@ -30,7 +30,7 @@ async function email(data) {
   });
 
   let info = await transporter.sendMail({
-    from: '"Partitas Music" <partitasmusic@gmail.com>', // sender address
+    from: `"Partitas Music" <${process.env.GOOGLE_EMAIL_ADDRESS}>`, // sender address
     to: data.to, // list of receivers
     cc: data.cc,
     subject: data.subject, // Subject line
