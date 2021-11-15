@@ -1,15 +1,31 @@
 "use strict";
 const nodemailer = require("nodemailer");
+const { google } = require("googleapis");
 const dotenv = require("dotenv");
 dotenv.config();
 
+const oAuth2Client = new google.auth.OAuth2(
+  process.env.GOOGLE_CLIENT_ID,
+  process.env.GOOGLE_CLIENT_SECRET,
+  process.env.GOOGLE_REDIRECT_URI
+);
+oAuth2Client.setCredentials({
+  refresh_token: process.env.GOOGLE_REFRESH_TOKEN,
+});
+
 // async..await is not allowed in global scope, must use a wrapper
 async function email(data) {
-  let transporter = nodemailer.createTransport({
+  const accessToken = await oAuth2Client.getAccessToken();
+
+  const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-      user: process.env.USER_EMAIL,
-      pass: process.env.USER_PASSWORD,
+      type: "OAuth2",
+      user: "partitasmusic@gmail.com",
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      refreshToken: process.env.GOOGLE_REFRESH_TOKEN,
+      accessToken: accessToken,
     },
   });
 
