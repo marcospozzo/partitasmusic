@@ -67,8 +67,9 @@ router.post("/set-password/:token", async (req, res) => {
         try {
           const hashedPassword = await bcrypt.hash(password, 10);
           user.password = hashedPassword;
-          await user.save();
+          await user.save({ validateModifiedOnly: true }); // workaround for mongoose-unique-validator bug in version 3.0.0
         } catch (err) {
+          // console.error(err);
           req.flash("flashError", "Error saving user");
           return res.redirect("/login");
         }
