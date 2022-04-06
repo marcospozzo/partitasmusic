@@ -11,6 +11,7 @@ const {
   forwardAuthenticated,
 } = require("../config/auth");
 const AWS = require("aws-sdk");
+const { cloudchannel } = require("googleapis/build/src/apis/cloudchannel");
 const s3 = new AWS.S3();
 AWS.config.update({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -20,42 +21,19 @@ const myBucket = "partitasmusic";
 const signedUrlExpireSeconds = 60 * 1 * 1; // 60 seconds, 0 minute, 0 hour
 
 async function getGroupContributors() {
-  return Contributor.find({ category: "group" }, function (err, contribution) {
-    if (err) {
-      console.error(err);
-    }
-  })
-    .sort("sort")
-    .exec();
+  return Contributor.find({ category: "group" }).sort("sort").exec();
 }
 
 async function getIndividualContributors() {
-  return Contributor.find(
-    { category: "individual" },
-    function (err, contribution) {
-      if (err) {
-        console.error(err);
-      }
-    }
-  )
-    .sort("sort")
-    .exec();
+  return Contributor.find({ category: "individual" }).sort("sort").exec();
 }
 
 async function getContributor(path) {
-  return Contributor.findOne({ path: path }, function (err, contributor) {
-    if (err) {
-      console.error(err);
-    }
-  }).exec();
+  return Contributor.findOne({ path: path }).exec();
 }
 
 async function getContributions(path) {
-  return Contribution.find({ path: path }, function (err, contribution) {
-    if (err) {
-      console.error(err);
-    }
-  }).exec();
+  return Contribution.find({ path: path }).exec();
 }
 
 async function getTwoRandomContributorsExcept(path) {
