@@ -60,7 +60,9 @@
                     class="mobile-audio"
                     controls=""
                     <% if (!user) { %>
-                      controlsList="nodownload"
+                      controlsList="nodownload noplaybackrate"
+                    <% } else { %>
+                      controlsList="noplaybackrate"
                     <% } %>
                     >
                     <source src="/api/audio/<%= contribution.path %>/<%= contribution.audio %>" type="audio/mpeg" />

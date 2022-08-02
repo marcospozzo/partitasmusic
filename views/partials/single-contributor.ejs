@@ -31,9 +31,11 @@
     class="mobile-audio"
     controls=""
     <% if (!user) { %>
-    controlsList="nodownload"
+      controlsList="nodownload noplaybackrate"
+    <% } else { %>
+      controlsList="noplaybackrate"
     <% } %>
-  >
+    >
     <source src="/api/audio/<%= contributions[0].path %>/<%= contributions[0].audio %>" type="audio/mpeg" />
     This browser does not support the audio tag.
   </audio>
