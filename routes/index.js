@@ -23,14 +23,6 @@ router.get("/seven-guitar-craft-themes-book", (req, res) =>
   })
 );
 
-// forum
-router.get("/forum", (req, res) =>
-  res.render("forum", {
-    title: "Forum / Q&A",
-    user: req.user,
-  })
-);
-
 // about us
 router.get("/about-us", (req, res) =>
   res.render("about-us", {
