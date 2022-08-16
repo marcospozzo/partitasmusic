@@ -8,6 +8,7 @@
 
 #banner {
   @include padding(4em, 0);
+  padding-bottom: 0em;  // remove padding-bottom
   @include vendor("display", "flex");
 
   h1 {
@@ -18,6 +19,10 @@
     @include vendor("flex-grow", "1");
     @include vendor("flex-shrink", "1");
     width: 50%;
+
+    &.banner-home {
+      width: 67%;
+    }
   }
 
   .image {
@@ -26,6 +31,10 @@
     display: block;
     margin: 0 0 _size(element-margin) (_size(element-margin) * 2);
     width: 50%;
+
+    &.banner-home {
+      width: 33%;
+    }
 
     img {
       // border-radius: 50%;
@@ -41,7 +50,7 @@
       width: 100%;
     }
   }
-
+  
   @include breakpoint("<=small") {
     @include vendor("flex-direction", "column");
 
@@ -55,6 +64,11 @@
       @include vendor("flex-grow", "0");
       @include vendor("flex-shrink", "0");
       width: 100%;
+
+      &.banner-home {
+        width: 100%;
+      }
+
     }
 
     .image {
@@ -65,12 +79,22 @@
       max-height: 50vh;
       min-height: 18em;
       width: 333px;
+
+      &.banner-home {
+        width: 60%;
+      }
+
     }
   }
   @include breakpoint("<=xsmall") {
     .image {
       max-height: 35vh;
       width: 100%;
+
+      &.banner-home {
+        width: 100%;
+      }
+
     }
   }
 }
