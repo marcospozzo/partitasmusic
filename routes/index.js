@@ -8,12 +8,43 @@ const {
 } = require("../config/auth");
 
 // home
-router.get("/", (req, res) =>
-  res.render("home", {
-    title: "Home",
-    user: req.user,
-  })
-);
+router.get("/", async (req, res) => {
+  try {
+    const threeContributors = await api.getThreeRandomFeaturedContributors();
+
+    const pathOne = threeContributors[0].path;
+    let contributorOne = await api.getContributor(pathOne);
+    contributorOne = await api.getProfilePicture(contributorOne);
+    const firstContributor = {};
+    firstContributor.contributor = contributorOne;
+    firstContributor.contributions = await api.getContributions(pathOne);
+
+    const pathTwo = threeContributors[1].path;
+    let contributorTwo = await api.getContributor(pathTwo);
+    contributorTwo = await api.getProfilePicture(contributorTwo);
+    const secondContributor = {};
+    secondContributor.contributor = contributorTwo;
+    secondContributor.contributions = await api.getContributions(pathTwo);
+
+    const pathThree = threeContributors[2].path;
+    let contributorThree = await api.getContributor(pathThree);
+    contributorThree = await api.getProfilePicture(contributorThree);
+    const thirdContributor = {};
+    thirdContributor.contributor = contributorThree;
+    thirdContributor.contributions = await api.getContributions(pathThree);
+
+    res.render("home", {
+      title: "Home",
+      user: req.user,
+      firstContributor,
+      secondContributor,
+      thirdContributor,
+    });
+  } catch (error) {
+    console.error(error);
+    createError(400, "Error");
+  }
+});
 
 // seven guitar craft themes book
 router.get("/seven-guitar-craft-themes-book", (req, res) =>
