@@ -46,6 +46,14 @@ async function getTwoRandomContributorsExcept(path) {
   });
 }
 
+async function getThreeRandomFeaturedContributors() {
+  return new Promise((resolve, reject) => {
+    Contributor.findRandom({}, {}, { limit: 3 }, function (err, result) {
+      return err ? reject(err) : resolve(result);
+    });
+  });
+}
+
 async function getProfilePicture(contributor) {
   contributor.picture = await getS3TempUrl(
     contributor.path,
@@ -179,3 +187,5 @@ module.exports.getContributor = getContributor;
 module.exports.getContributions = getContributions;
 module.exports.getProfilePicture = getProfilePicture;
 module.exports.getTwoRandomContributorsExcept = getTwoRandomContributorsExcept;
+module.exports.getThreeRandomFeaturedContributors =
+  getThreeRandomFeaturedContributors;

@@ -35,9 +35,9 @@
 
           <!-- Banner -->
           <section id="banner">
-            <div class="content">
+            <div class="content" style="width: 67%;">
               <header class="major">
-                <h2>Welcome</h2>
+                <h2>Welcome!</h2>
               </header>
               <p>
                 Since the early days of
@@ -62,21 +62,40 @@
                 We invite you to find the music here, participate and support
                 the community.
               </p>
-              <ul class="actions">
+              <!-- <ul class="actions">
                 <li>
                   <a href="/contributors" class="button primary"
                     >music contributors</a
                   >
                 </li>
-              </ul>
+              </ul> -->
             </div>
-            <span class="image object">
+            <span class="image object" style="width: 33%;">
               <img
                 src="./images/collage-partitas.jpg"
                 alt="Collage of pictures made with a book, a pick, and four guitarists playing the guitar."
               />
             </span>
           </section>
+
+          <!-- Section -->
+          <section>
+            <header class="major">
+              <h2>Featured Contributors</h2>
+            </header>
+            <div class="posts">   
+              
+              <%- include('partials/single-contributor', {contributor: firstContributor.contributor, contributions: firstContributor.contributions}); %>
+              
+              <%- include('partials/single-contributor', {contributor: secondContributor.contributor, contributions: secondContributor.contributions}); %>
+              
+              <%- include('partials/single-contributor', {contributor: thirdContributor.contributor, contributions: thirdContributor.contributions}); %>
+              
+            </div>
+          </section>
+          <ul class="actions" style="justify-content: center;">
+            <li><a href="/contributors" class="button primary"> View all contributors</a></li>
+          </ul>
         </div>
       </div>
 
