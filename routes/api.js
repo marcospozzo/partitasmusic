@@ -47,8 +47,20 @@ async function getTwoRandomContributorsExcept(path) {
 }
 
 async function getThreeRandomFeaturedContributors() {
+  const featuredContributors = [
+    "california-guitar-trio",
+    "steve-ball",
+    "robert-fripp",
+    "the-league-of-crafty-guitarists",
+    "pietro-russino",
+    "martin-schwutke",
+    "zum",
+    "tony-geballe",
+  ];
+  const filter = { path: { $in: featuredContributors } };
+
   return new Promise((resolve, reject) => {
-    Contributor.findRandom({}, {}, { limit: 3 }, function (err, result) {
+    Contributor.findRandom(filter, {}, { limit: 3 }, function (err, result) {
       return err ? reject(err) : resolve(result);
     });
   });

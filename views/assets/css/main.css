@@ -3538,6 +3538,7 @@ textarea {
 /* Banner */
 #banner {
   padding: 4em 0 2em 0 ;
+  padding-bottom: 0em;
   display: -moz-flex;
   display: -ms-flex;
   display: -webkit-box;
@@ -3561,6 +3562,10 @@ textarea {
   width: 50%;
 }
 
+#banner .content.banner-home {
+  width: 67%;
+}
+
 #banner .image {
   -moz-flex-grow: 0;
   -ms-flex-grow: 0;
@@ -3573,6 +3578,10 @@ textarea {
   display: block;
   margin: 0 0 2em 4em;
   width: 50%;
+}
+
+#banner .image.banner-home {
+  width: 33%;
 }
 
 #banner .image img {
@@ -3611,6 +3620,9 @@ textarea {
         flex-shrink: 0;
     width: 100%;
   }
+  #banner .content.banner-home {
+    width: 100%;
+  }
   #banner .image {
     -moz-flex-grow: 0;
     -ms-flex-grow: 0;
@@ -3626,11 +3638,17 @@ textarea {
     min-height: 18em;
     width: 333px;
   }
+  #banner .image.banner-home {
+    width: 60%;
+  }
 }
 
 @media screen and (max-width: 480px) {
   #banner .image {
     max-height: 35vh;
+    width: 100%;
+  }
+  #banner .image.banner-home {
     width: 100%;
   }
 }
