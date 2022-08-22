@@ -4,10 +4,7 @@ Website for a music community.
 
 ## Description
 
-The aims of Partitas Music:
-
-- To make the repertoire of the Guitar Craft Tuning available to everyone, so that this music finds its audience.
-- To create a space of exchange that will favor our growth as musicians.
+The aim of Partitas Music is to make the repertoire of the Guitar Craft Tuning available to everyone.
 
 ## Getting Started
 
