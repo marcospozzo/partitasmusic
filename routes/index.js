@@ -13,22 +13,22 @@ router.get("/", async (req, res) => {
     const threeContributors = await api.getThreeRandomFeaturedContributors();
 
     const pathOne = threeContributors[0].path;
-    let contributorOne = await api.getContributor(pathOne);
-    contributorOne = await api.getProfilePicture(contributorOne);
+    const contributorOne = await api.getContributor(pathOne);
+    api.getProfilePicture(contributorOne);
     const firstContributor = {};
     firstContributor.contributor = contributorOne;
     firstContributor.contributions = await api.getContributions(pathOne);
 
     const pathTwo = threeContributors[1].path;
-    let contributorTwo = await api.getContributor(pathTwo);
-    contributorTwo = await api.getProfilePicture(contributorTwo);
+    const contributorTwo = await api.getContributor(pathTwo);
+    api.getProfilePicture(contributorTwo);
     const secondContributor = {};
     secondContributor.contributor = contributorTwo;
     secondContributor.contributions = await api.getContributions(pathTwo);
 
     const pathThree = threeContributors[2].path;
-    let contributorThree = await api.getContributor(pathThree);
-    contributorThree = await api.getProfilePicture(contributorThree);
+    const contributorThree = await api.getContributor(pathThree);
+    api.getProfilePicture(contributorThree);
     const thirdContributor = {};
     thirdContributor.contributor = contributorThree;
     thirdContributor.contributions = await api.getContributions(pathThree);
@@ -119,9 +119,15 @@ router.get("/login", forwardAuthenticated, (req, res) =>
 router.get("/contributors", async (req, res) => {
   try {
     const groups = await api.getGroupContributors();
+    api.getAllProfilePictures(groups);
     const individuals = await api.getIndividualContributors();
+    api.getAllProfilePictures(individuals);
+
+    // TODO -> very ugly
+    await api.getContributor("");
+
     res.render("contributors", {
-      title: "Contributors",
+      title: "Music Contributors",
       user: req.user,
       groups: groups,
       individuals: individuals,
@@ -136,20 +142,20 @@ router.get("/contributors", async (req, res) => {
 router.get("/contributors/:path", async (req, res) => {
   try {
     const pathOne = req.params.path;
-    let contributorOne = await api.getContributor(pathOne);
+    const contributorOne = await api.getContributor(pathOne);
 
     // invalid path returns to home
     if (!contributorOne) {
       return res.redirect("/");
     }
 
-    contributorOne = await api.getProfilePicture(contributorOne);
+    await api.getProfilePicture(contributorOne);
     const contributionsOne = await api.getContributions(pathOne);
 
     if (contributionsOne.length > 1) {
       // clicked contributor has more than one contribution
       return res.render("multiple-contributor", {
-        title: "Contributor",
+        title: "Music Contributors",
         user: req.user,
         contributor: contributorOne,
         contributions: contributionsOne,
@@ -163,21 +169,21 @@ router.get("/contributors/:path", async (req, res) => {
       const twoContributors = await api.getTwoRandomContributorsExcept(pathOne);
 
       const pathTwo = twoContributors[0].path;
-      let contributorTwo = await api.getContributor(pathTwo);
-      contributorTwo = await api.getProfilePicture(contributorTwo);
+      const contributorTwo = await api.getContributor(pathTwo);
+      await api.getProfilePicture(contributorTwo);
       const secondContributor = {};
       secondContributor.contributor = contributorTwo;
       secondContributor.contributions = await api.getContributions(pathTwo);
 
       const pathThree = twoContributors[1].path;
-      let contributorThree = await api.getContributor(pathThree);
-      contributorThree = await api.getProfilePicture(contributorThree);
+      const contributorThree = await api.getContributor(pathThree);
+      await api.getProfilePicture(contributorThree);
       const thirdContributor = {};
       thirdContributor.contributor = contributorThree;
       thirdContributor.contributions = await api.getContributions(pathThree);
 
       res.render("contributions", {
-        title: "Contributions",
+        title: "Music Contributors",
         user: req.user,
         firstContributor,
         secondContributor,
