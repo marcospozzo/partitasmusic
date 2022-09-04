@@ -44,3 +44,35 @@ header {
     justify-content: space-between;
   }
 }
+
+.contributors {
+  display: flex;
+  height: 230vh;
+}
+
+.contributors-column {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  width: fit-content;
+}
+
+.contributor-card {
+  display: flex;
+  height: 5em;
+  width: fit-content;
+  background-color: _palette(bg-mid);
+  border-radius: 0.5em;
+  align-items: center;
+  border-bottom: 0; // override default
+  padding: 1em;
+  margin-bottom: 0.5em;
+  margin-right: 1em;
+
+  img{
+    border-radius: 50%;
+    height: 100%;
+    margin-right: 1em;
+    min-width: 3em;
+  }
+}
