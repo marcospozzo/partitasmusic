@@ -57,6 +57,12 @@ header {
   width: fit-content;
 }
 
+.line {
+  width: 1px;
+  background-color: _palette(border);
+  margin-right: 1em;
+}
+
 .contributor-card {
   display: flex;
   height: 5em;
