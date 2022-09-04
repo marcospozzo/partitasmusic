@@ -17,84 +17,47 @@
           <!-- Header -->
           <%- include('partials/header'); %>
 
-          <!-- Banner -->
-          <section id="banner">
-            <div class="content">
-              <header class="major">
-                <h2>Music <%= title %></h2>
-              </header>
-              <p>
-                The music in this section was composed using the
-                <a href="/the-tuning" rel="noopener">Guitar Craft Tuning</a>
-                (CGDAEG) beginning in 1985 all the way through to the present
-                day.
-              </p>
-              <p>
-                Traditionally, we write and share our compositions while engaged
-                with guitars, often in residential courses. Most of that music
-                was transmitted in person without any recordings or scores. So,
-                the materials available here represent a portion of the music
-                resulting from our work together.
-              </p>
-              <p>The aims of this section are:</p>
-              <ul>
-                <li>to share our music so it can be performed worldwide;</li>
-                <li>
-                  to provide a facility for the addition of new compositions;
-                </li>
-                <li>
-                  to develop and perhaps enrich pieces previously contributed;
-                </li>
-                <li>to strengthen our common practice;</li>
-                <li>
-                  to offer an opportunity for additional musicians and composers
-                  to learn about and possibly participate in this initiative.
-                </li>
-              </ul>
-              <p>
-                We look forward to hearing from you in the
-                <a href="/contribute">Contribute</a> section.
-              </p>
-            </div>
-            <span class="image object">
-              <div class="contributors">
-                <!-- Table -->
-                <div style="width: 80%" class="table-wrapper">
-                  <h3>Groups & Ensembles</h3>
-                  <table>
-                    <tbody>
-                      <% groups.forEach(function (group) { %>
-                      <tr>
-                        <td>
-                          <a href="/contributors/<%= group.path %>"
-                            ><%= group.name %></a
-                          >
-                        </td>
-                      </tr>
-                      <% }); %>
-                    </tbody>
-                  </table>
+          <section>
+            <header class="major">
+              <h2>Music Contributors</h2>
+            </header>
+            <div class="contributors">
+              <div class="contributors-column">
+                <h3>Groups & Ensembles</h3>
+                <% groups.forEach(function (group) { %>
+                <div>
+                  <a
+                    class="contributor-card"
+                    href="/contributors/<%= group.path %>"
+                  >
+                    <img
+                      src="<%= group.picture %>"
+                      alt="<%= group.name %>'s profile picture"
+                    />
+                    <%= group.name %>
+                  </a>
                 </div>
-
-                <!-- Table -->
-                <div class="table-wrapper">
-                  <h3>Individuals</h3>
-                  <table>
-                    <tbody>
-                      <% individuals.forEach(function (individual) { %>
-                      <tr>
-                        <td>
-                          <a href="/contributors/<%= individual.path %>"
-                            ><%= individual.name %></a
-                          >
-                        </td>
-                      </tr>
-                      <% }); %>
-                    </tbody>
-                  </table>
-                </div>
+                <% }); %>
               </div>
-            </span>
+
+              <div class="contributors-column">
+                <h3>Individuals</h3>
+                <% individuals.forEach(function (individual) { %>
+                <div>
+                  <a
+                    class="contributor-card"
+                    href="/contributors/<%= individual.path %>"
+                  >
+                    <img
+                      src="<%= individual.picture %>"
+                      alt="<%= individual.name %>'s profile picture"
+                    />
+                    <%= individual.name %>
+                  </a>
+                </div>
+                <% }); %>
+              </div>
+            </div>
           </section>
         </div>
       </div>
