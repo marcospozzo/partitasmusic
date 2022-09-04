@@ -71,7 +71,10 @@ async function getProfilePicture(contributor) {
     contributor.path,
     contributor.picture
   );
-  return contributor;
+}
+
+function getAllProfilePictures(array) {
+  array.forEach((element) => getProfilePicture(element));
 }
 
 router.get("/audio/:folder/:fileName", (req, res) => {
@@ -85,7 +88,6 @@ router.get(
   "/scores/:folder/:fileName",
   ensureAuthenticatedContributions,
   async (req, res) => {
-    // const path = `${req.params.folder}/${req.params.fileName}`;
     const score = await getS3TempUrl(req.params.folder, req.params.fileName);
     res.redirect(score);
   }
@@ -104,7 +106,7 @@ function getS3FileStream(path) {
   return file;
 }
 
-function getS3TempUrl(path, key) {
+async function getS3TempUrl(path, key) {
   return s3.getSignedUrlPromise("getObject", {
     Bucket: myBucket,
     Key: `${path}/${key}`,
@@ -201,3 +203,4 @@ module.exports.getProfilePicture = getProfilePicture;
 module.exports.getTwoRandomContributorsExcept = getTwoRandomContributorsExcept;
 module.exports.getThreeRandomFeaturedContributors =
   getThreeRandomFeaturedContributors;
+module.exports.getAllProfilePictures = getAllProfilePictures;
