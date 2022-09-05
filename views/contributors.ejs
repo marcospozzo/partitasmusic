@@ -42,22 +42,26 @@
 
               <div class="line"></div>
 
-              <div class="contributors-column">
-                <h3 style="width: 100%">Individuals</h3>
-                <% individuals.forEach(function (individual) { %>
+              <div class="individuals-column">
                 <div>
-                  <a
-                    class="contributor-card"
-                    href="/contributors/<%= individual.path %>"
-                  >
-                    <img
-                      src="<%= individual.picture %>"
-                      alt="<%= individual.name %>'s profile picture"
-                    />
-                    <%= individual.name %>
-                  </a>
+                  <h3>Individuals</h3>
                 </div>
-                <% }); %>
+                <div class="individuals-body">
+                  <% individuals.forEach(function (individual) { %>
+                  <div class="individuals-card">
+                    <a
+                      class="contributor-card"
+                      href="/contributors/<%= individual.path %>"
+                    >
+                      <img
+                        src="<%= individual.picture %>"
+                        alt="<%= individual.name %>'s profile picture"
+                      />
+                      <%= individual.name %>
+                    </a>
+                  </div>
+                  <% }); %>
+                </div>
               </div>
             </div>
           </section>
