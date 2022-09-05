@@ -47,14 +47,29 @@ header {
 
 .contributors {
   display: flex;
-  height: 230vh;
+  height: fit-content;
+  width: 100%;
+  margin-bottom: 3em;
 }
 
 .contributors-column {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  width: fit-content;
+  width: 40%;
+}
+
+.individuals-column {
+  width: 60%;
+}
+
+.individuals-body {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.individuals-card {
+  flex: 1 0 50%;
 }
 
 .line {
