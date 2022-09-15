@@ -48,8 +48,8 @@ router.get("/", async (req, res) => {
 
 // seven guitar craft themes book
 router.get("/seven-guitar-craft-themes-book", (req, res) =>
-  res.render("seven", {
-    title: "Book",
+  res.render("book", {
+    title: "The Seven Guitar Craft Themes Book",
     user: req.user,
   })
 );
@@ -74,7 +74,7 @@ router.get("/contact", (req, res) =>
 // aphorisms
 router.get("/aphorisms", (req, res) =>
   res.render("aphorisms", {
-    title: "Aphorisms",
+    title: "Guitar Craft Aphorisms",
     user: req.user,
   })
 );
@@ -103,7 +103,7 @@ router.get("/picks-and-strings", (req, res) =>
 // the tuning
 router.get("/the-tuning", (req, res) =>
   res.render("the-tuning", {
-    title: "The Tuning",
+    title: "The Guitar Craft Tuning",
     user: req.user,
   })
 );
@@ -115,8 +115,7 @@ router.get("/login", forwardAuthenticated, (req, res) =>
   })
 );
 
-// contributors
-router.get("/contributors", async (req, res) => {
+router.get("/music-catalog", async (req, res) => {
   try {
     const groups = await api.getGroupContributors();
     api.getAllProfilePictures(groups);
@@ -126,8 +125,8 @@ router.get("/contributors", async (req, res) => {
     // TODO -> very ugly
     await api.getContributor("");
 
-    res.render("contributors", {
-      title: "Music Contributors",
+    res.render("music-catalog", {
+      title: "Music Catalog",
       user: req.user,
       groups: groups,
       individuals: individuals,
@@ -138,8 +137,7 @@ router.get("/contributors", async (req, res) => {
   }
 });
 
-// contributions
-router.get("/contributors/:path", async (req, res) => {
+router.get("/music-catalog/:path", async (req, res) => {
   try {
     const pathOne = req.params.path;
     const contributorOne = await api.getContributor(pathOne);
@@ -152,10 +150,11 @@ router.get("/contributors/:path", async (req, res) => {
     await api.getProfilePicture(contributorOne);
     const contributionsOne = await api.getContributions(pathOne);
 
+    const title = "Music Contributors";
     if (contributionsOne.length > 1) {
       // clicked contributor has more than one contribution
       return res.render("multiple-contributor", {
-        title: "Music Contributors",
+        title: title,
         user: req.user,
         contributor: contributorOne,
         contributions: contributionsOne,
@@ -182,8 +181,8 @@ router.get("/contributors/:path", async (req, res) => {
       thirdContributor.contributor = contributorThree;
       thirdContributor.contributions = await api.getContributions(pathThree);
 
-      res.render("contributions", {
-        title: "Music Contributors",
+      res.render("single-contributor", {
+        title: title,
         user: req.user,
         firstContributor,
         secondContributor,
@@ -194,6 +193,11 @@ router.get("/contributors/:path", async (req, res) => {
     console.error(error);
     createError(400, "Error");
   }
+});
+
+// redirect for social media legacy urls
+router.get("/contributors/:path", async (req, res) => {
+  res.redirect(`/music-catalog/${req.params.path}`);
 });
 
 module.exports = router;

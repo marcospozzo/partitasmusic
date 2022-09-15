@@ -21,17 +21,17 @@
           <section>
             <header class="major contributions-header">
               <ul class="actions">
-                <li><a href="/contributors" class="button icon solid fa-arrow-left"> Back</a></li>
+                <li><a href="/music-catalog" class="button icon solid fa-arrow-left"> Back</a></li>
               </ul>
               <h2><%= title %></h2>
             </header>
             <div class="posts">   
 
-              <%- include('partials/single-contributor', {contributor: firstContributor.contributor, contributions: firstContributor.contributions}); %>
+              <%- include('partials/one-contributor', {contributor: firstContributor.contributor, contributions: firstContributor.contributions}); %>
             
-              <%- include('partials/single-contributor', {contributor: secondContributor.contributor, contributions: secondContributor.contributions}); %>
+              <%- include('partials/one-contributor', {contributor: secondContributor.contributor, contributions: secondContributor.contributions}); %>
            
-              <%- include('partials/single-contributor', {contributor: thirdContributor.contributor, contributions: thirdContributor.contributions}); %>
+              <%- include('partials/one-contributor', {contributor: thirdContributor.contributor, contributions: thirdContributor.contributions}); %>
 
             </div>
           </section>
