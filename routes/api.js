@@ -49,13 +49,20 @@ async function getTwoRandomContributorsExcept(path) {
 async function getThreeRandomFeaturedContributors() {
   const featuredContributors = [
     "california-guitar-trio",
+    "bigtime-trio",
+    "berlin-guitar-ensemble",
+    "zum",
+    "the-league-of-crafty-guitarists",
+    "guitar-ensemble-of-moscow",
+    "los-gauchos-alemanes",
+    "seattle-guitar-circle",
+    "sarah-metivier",
     "steve-ball",
     "robert-fripp",
-    "the-league-of-crafty-guitarists",
-    "pietro-russino",
-    "martin-schwutke",
-    "zum",
     "tony-geballe",
+    "curt-golden",
+    "alex-anthony-faide",
+    "bert-lams",
   ];
   const filter = { path: { $in: featuredContributors } };
 
