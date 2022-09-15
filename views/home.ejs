@@ -62,13 +62,6 @@
                 We invite you to find the music here, participate and support
                 the community.
               </p>
-              <!-- <ul class="actions">
-                <li>
-                  <a href="/contributors" class="button primary"
-                    >music contributors</a
-                  >
-                </li>
-              </ul> -->
             </div>
             <span class="image object banner-home">
               <img
@@ -85,15 +78,15 @@
             </header>
             <div class="posts">   
               
-              <%- include('partials/single-contributor', {contributor: firstContributor.contributor, contributions: firstContributor.contributions}); %>
+              <%- include('partials/one-contributor', {contributor: firstContributor.contributor, contributions: firstContributor.contributions}); %>
               
-              <%- include('partials/single-contributor', {contributor: secondContributor.contributor, contributions: secondContributor.contributions}); %>
+              <%- include('partials/one-contributor', {contributor: secondContributor.contributor, contributions: secondContributor.contributions}); %>
               
-              <%- include('partials/single-contributor', {contributor: thirdContributor.contributor, contributions: thirdContributor.contributions}); %>
+              <%- include('partials/one-contributor', {contributor: thirdContributor.contributor, contributions: thirdContributor.contributions}); %>
               
             </div>
           </section>
-          <ul class="actions" style="justify-content: center; margin-top: 3em;">
+          <ul class="actions" style="justify-content: center">
             <li><a href="/music-catalog" class="button primary"> View music catalog</a></li>
           </ul>
         </div>
