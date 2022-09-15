@@ -1743,6 +1743,10 @@ header.contributions-header {
   min-width: 3em;
 }
 
+.catalog-p {
+  margin-bottom: 3em;
+}
+
 /* Form */
 form {
   margin: 0 0 2em 0;
@@ -2796,7 +2800,12 @@ button:disabled,
 }
 
 .posts article .image {
-  display: block;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
   margin: 0 0 1em 0;
   border-radius: 50%;
 }
@@ -2804,7 +2813,7 @@ button:disabled,
 .posts article .image img {
   border-radius: 50%;
   display: block;
-  width: 100%;
+  width: 90%;
 }
 
 .posts article .title-header {
