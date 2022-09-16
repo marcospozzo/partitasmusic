@@ -50,6 +50,11 @@ header {
   height: fit-content;
   width: 100%;
   margin-bottom: 3em;
+
+  @include breakpoint("<=small") {
+    @include vendor("flex-direction", "column");
+  }
+
 }
 
 .contributors-column {
@@ -57,25 +62,47 @@ header {
   flex-direction: column;
   flex-wrap: wrap;
   width: 40%;
+
+  @include breakpoint("<=small") {
+    width: 100%;
+  }
 }
 
 .individuals-column {
   width: 60%;
+
+  @include breakpoint("<=small") {
+    width: 100%;
+  }
 }
 
 .individuals-body {
   display: flex;
   flex-wrap: wrap;
+
+  @include breakpoint("<=small") {
+    @include vendor("flex-direction", "column");
+  }
 }
 
 .individuals-card {
   flex: 1 0 50%;
+
+  @include breakpoint("<=small") {
+    flex: none;
+  }
 }
 
 .line {
   width: 1px;
   background-color: _palette(border);
   margin-right: 1em;
+
+  @include breakpoint("<=small") {
+    height: 1px;
+    width: 0px;
+    margin-top: 3em;
+  }
 }
 
 .contributor-card:hover img {
