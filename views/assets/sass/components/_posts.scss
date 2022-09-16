@@ -52,7 +52,7 @@
       display: flex;
       justify-content: center;
       margin: 0 0 1em 0;
-      //   overflow: hidden;
+      overflow: visible;
       border-radius: 50%; // if I don't keep both border-radius: 50%, edges get cropped
 
       img {
