@@ -78,6 +78,11 @@ header {
   margin-right: 1em;
 }
 
+.contributor-card:hover img {
+  @include vendor("transition", "transform #{_duration(transition)} ease");
+  @include vendor("transform", "scale(1.05)");
+}
+
 .contributor-card {
   display: flex;
   height: 5em;

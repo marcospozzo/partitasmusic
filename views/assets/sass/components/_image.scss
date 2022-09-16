@@ -68,7 +68,7 @@ a.image {
 
   &:hover {
     img {
-      @include vendor("transform", "scale(1.075)");
+      @include vendor("transform", "scale(1.025)");
     }
   }
 }

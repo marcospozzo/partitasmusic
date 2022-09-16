@@ -1717,6 +1717,15 @@ header.contributions-header {
   margin-right: 1em;
 }
 
+.contributor-card:hover img {
+  -webkit-transition: -webkit-transform 0.2s ease;
+  transition: -webkit-transform 0.2s ease;
+  transition: transform 0.2s ease;
+  transition: transform 0.2s ease, -webkit-transform 0.2s ease;
+  -webkit-transform: scale(1.05);
+  transform: scale(1.05);
+}
+
 .contributor-card {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -2066,8 +2075,8 @@ a.image img {
 }
 
 a.image:hover img {
-  -webkit-transform: scale(1.075);
-  transform: scale(1.075);
+  -webkit-transform: scale(1.025);
+  transform: scale(1.025);
 }
 
 @media screen and (max-width: 736px) {
@@ -2807,6 +2816,7 @@ button:disabled,
       -ms-flex-pack: center;
           justify-content: center;
   margin: 0 0 1em 0;
+  overflow: visible;
   border-radius: 50%;
 }
 
