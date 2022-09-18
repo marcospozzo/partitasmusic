@@ -1760,8 +1760,9 @@ header.contributions-header {
 @media screen and (max-width: 736px) {
   .line {
     height: 1px;
-    width: 0px;
-    margin-top: 3em;
+    width: 100%;
+    margin-top: 1em;
+    margin-bottom: 3em;
   }
 }
 
