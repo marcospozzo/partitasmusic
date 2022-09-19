@@ -94,9 +94,11 @@ router.post("/login", (req, res, next) => {
 router.get("/logout", (req, res) => {
   delete req.session.backUrl; // backUrl cleared so it does not go again
   delete req.session.body;
-  req.logout();
-  req.flash("flashSuccess", "You are logged out");
-  res.redirect("/login");
+  req.logout(req.user, (err) => {
+    if (err) return next(err);
+    req.flash("flashSuccess", "You are logged out");
+    res.redirect("/login");
+  });
 });
 
 // user requests password reset based on email address
