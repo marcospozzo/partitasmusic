@@ -150,7 +150,7 @@ router.get("/music-catalog/:path", async (req, res) => {
     await api.getProfilePicture(contributorOne);
     const contributionsOne = await api.getContributions(pathOne);
 
-    const title = "Music Contributors";
+    const title = contributorOne.name;
     if (contributionsOne.length > 1) {
       // clicked contributor has more than one contribution
       return res.render("multiple-contributor", {
