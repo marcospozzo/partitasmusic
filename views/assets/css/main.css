@@ -2614,6 +2614,54 @@ button:disabled,
   opacity: 0.25;
 }
 
+#myBtn {
+  width: 3em;
+  height: 3em;
+  background-color: #dfdbd4;
+  display: none;
+  /* Hidden by default */
+  position: fixed;
+  /* Fixed/sticky position */
+  bottom: 1em;
+  /* Place the button at the bottom of the page */
+  right: 1em;
+  /* Place the button 30px from the right */
+  z-index: 99;
+  /* Make sure it does not overlap */
+  border: none;
+  /* Remove borders */
+  outline: none;
+  /* Remove outline */
+  padding: 15px;
+  /* Some padding */
+  border-radius: 0.5em;
+  font-size: 1.15em;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+#myBtn i {
+  font-size: 0.8em;
+  color: #49423d;
+}
+
+@media screen and (max-width: 736px) {
+  #myBtn {
+    bottom: 1.5em;
+    /* Place the button at the bottom of the page */
+    right: 1.5em;
+    /* Place the button 30px from the right */
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
 /* Mini Posts */
 .mini-posts article {
   border-top: solid 1px rgba(210, 215, 217, 0.75);
