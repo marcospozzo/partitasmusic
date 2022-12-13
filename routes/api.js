@@ -201,6 +201,43 @@ router.post("/contact-form", ensureAuthenticatedForm, (req, res, next) => {
   res.redirect("/");
 });
 
+/*
+
+// search all
+router.get("/search", async (req, res) => {
+  const term = req.query.term;
+  const results = [];
+
+  results.push(await findContributors(term));
+  // results.push(await findContributions(term));
+
+  console.log(results);
+
+  return results;
+});
+
+async function findContributors(term) {
+  return Contributor.aggregate([
+    {
+      $search: {
+        index: "contributors",
+        text: {
+          query: term,
+          path: {
+            wildcard: "*",
+          },
+        },
+      },
+    },
+  ]);
+}
+
+async function findContributions(term) {
+  return Contribution.find({ name: term }).sort("sort").exec();
+}
+
+*/
+
 module.exports = router;
 module.exports.getGroupContributors = getGroupContributors;
 module.exports.getIndividualContributors = getIndividualContributors;
