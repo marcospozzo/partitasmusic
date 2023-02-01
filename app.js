@@ -16,6 +16,7 @@ app.set("view engine", "ejs");
 require("./config/passport")(passport);
 
 // db connect
+mongoose.set("strictQuery", false);
 mongoose
   .connect(process.env.DB_CONNECT, {})
   .then(() => console.log("Connected to database"))
