@@ -1,11 +1,14 @@
 const express = require("express");
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 const mongoose = require("mongoose");
 const dotenv = require("dotenv").config();
 const passport = require("passport");
 const flash = require("connect-flash");
 const session = require("express-session");
+var cors = require("cors");
+
+app.use(cors());
 
 app.set("view engine", "ejs");
 
@@ -70,4 +73,4 @@ app.use((err, req, res) => {
   });
 });
 
-app.listen(PORT || 3000, () => console.log(`Server started at ${PORT}`));
+app.listen(PORT, () => console.log(`Server started at ${PORT}`));

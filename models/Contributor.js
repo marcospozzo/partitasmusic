@@ -45,6 +45,10 @@ const UserSchema = new mongoose.Schema(
       max: 512,
       required: true,
     },
+    type: {
+      type: String,
+      enum: ["featured", "not-featured"],
+    },
   },
   { timestamps: true }
 );
