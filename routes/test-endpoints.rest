@@ -105,3 +105,23 @@ content-type: application/json
 GET http://localhost:3000/api/aphorism
 
 ###
+
+GET http://localhost:3001/api/get-contributors
+
+###
+
+GET http://localhost:3001/api/get-contributor/CONTRIBUTOR-NAME
+
+###
+
+POST http://localhost:3001/api/signin
+content-type: application/json
+
+{
+    "username": "email@mail.com",
+    "password": "123456"
+}
+
+###
+
+### POST http://localhost:3000/api/update-contributor

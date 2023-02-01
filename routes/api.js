@@ -19,6 +19,9 @@ AWS.config.update({
 });
 const myBucket = "partitasmusic";
 const signedUrlExpireSeconds = 60 * 1 * 1; // 60 seconds, 0 minute, 0 hour
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
+const User = require("../models/User");
 
 async function getGroupContributors() {
   return Contributor.find({ category: "group" }).sort("sort").exec();
@@ -47,24 +50,7 @@ async function getTwoRandomContributorsExcept(path) {
 }
 
 async function getThreeRandomFeaturedContributors() {
-  const featuredContributors = [
-    "california-guitar-trio",
-    "bigtime-trio",
-    "berlin-guitar-ensemble",
-    "zum",
-    "the-league-of-crafty-guitarists",
-    "guitar-ensemble-of-moscow",
-    "los-gauchos-alemanes",
-    "seattle-guitar-circle",
-    "sarah-metivier",
-    "steve-ball",
-    "robert-fripp",
-    "tony-geballe",
-    "curt-golden",
-    "alex-anthony-faide",
-    "bert-lams",
-  ];
-  const filter = { path: { $in: featuredContributors } };
+  const filter = { type: { $in: "featured" } };
 
   return new Promise((resolve, reject) => {
     Contributor.findRandom(filter, {}, { limit: 3 }, function (err, result) {
@@ -187,6 +173,43 @@ router.post("/create-contributor", async (req, res, next) => {
   }
 });
 
+router.post("/update-contributor", async (req, res, next) => {
+  jwt.verify(
+    req.header("x-access-token"),
+    process.env.CMS_TOKEN,
+    async function (err, decoded) {
+      if (err) {
+        return res.sendStatus(498);
+      } else {
+        const { name, sort, country, bio, contact, donate, category, path } =
+          req.body;
+
+        const contributor = await Contributor.findOne({ path: path });
+
+        contributor.name = name;
+        contributor.sort = sort;
+        // contributor.picture = picture;
+        contributor.country = country;
+        contributor.bio = bio;
+        contributor.contact = contact;
+        contributor.donate = donate;
+        contributor.category = category;
+        contributor.path = path;
+
+        // console.log(contributor);
+
+        try {
+          await contributor.save();
+        } catch (err) {
+          console.error(err);
+          return next(err);
+        }
+        res.sendStatus(200);
+      }
+    }
+  );
+});
+
 // contact form
 router.post("/contact-form", ensureAuthenticatedForm, (req, res, next) => {
   const { name, email, message } = req.body;
@@ -237,6 +260,69 @@ async function findContributions(term) {
 }
 
 */
+
+// get contributors
+router.get("/get-contributors", async (req, res) => {
+  const contributors = await Contributor.find().sort("sort").exec();
+
+  res.send(contributors);
+});
+
+// get contributor
+router.get("/get-contributor/:path", async (req, res) => {
+  const contributor = await Contributor.findOne({
+    path: req.params.path,
+  }).exec();
+
+  if (contributor) {
+    await getProfilePicture(contributor);
+    res.send(contributor);
+  } else {
+    res.sendStatus(404);
+  }
+});
+
+// cms login
+router.post("/signin", async (req, res) => {
+  const { username, password } = req.body;
+
+  if (!username || !password) {
+    return res.sendStatus(404);
+  }
+
+  try {
+    const user = await User.findOne({
+      email: username,
+    });
+    if (!user || user.role !== "admin") {
+      return res.sendStatus(404);
+    } else {
+      bcrypt.compare(password, user.password, (err, isMatch) => {
+        if (err) {
+          return res.sendStatus(404);
+        }
+        if (isMatch) {
+          const token = jwt.sign(
+            {
+              id: user.id,
+            },
+            process.env.CMS_TOKEN,
+            { expiresIn: "1w" }
+          );
+          const data = {
+            accessToken: token,
+          };
+          return res.send(data);
+        } else {
+          return res.sendStatus(404);
+        }
+      });
+    }
+  } catch (err) {
+    console.error(err);
+    return res.sendStatus(404);
+  }
+});
 
 module.exports = router;
 module.exports.getGroupContributors = getGroupContributors;
