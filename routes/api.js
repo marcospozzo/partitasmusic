@@ -173,43 +173,6 @@ router.post("/create-contributor", async (req, res, next) => {
   }
 });
 
-router.post("/update-contributor", async (req, res, next) => {
-  jwt.verify(
-    req.header("x-access-token"),
-    process.env.CMS_TOKEN,
-    async function (err, decoded) {
-      if (err) {
-        return res.sendStatus(498);
-      } else {
-        const { name, sort, country, bio, contact, donate, category, path } =
-          req.body;
-
-        const contributor = await Contributor.findOne({ path: path });
-
-        contributor.name = name;
-        contributor.sort = sort;
-        // contributor.picture = picture;
-        contributor.country = country;
-        contributor.bio = bio;
-        contributor.contact = contact;
-        contributor.donate = donate;
-        contributor.category = category;
-        contributor.path = path;
-
-        // console.log(contributor);
-
-        try {
-          await contributor.save();
-        } catch (err) {
-          console.error(err);
-          return next(err);
-        }
-        res.sendStatus(200);
-      }
-    }
-  );
-});
-
 // contact form
 router.post("/contact-form", ensureAuthenticatedForm, (req, res, next) => {
   const { name, email, message } = req.body;
@@ -263,7 +226,10 @@ async function findContributions(term) {
 
 // get contributors
 router.get("/get-contributors", async (req, res) => {
-  const contributors = await Contributor.find().sort("sort").exec();
+  const contributors = await Contributor.find()
+    .sort("sort")
+    .select("name path")
+    .exec();
 
   res.send(contributors);
 });
@@ -322,6 +288,39 @@ router.post("/signin", async (req, res) => {
     console.error(err);
     return res.sendStatus(404);
   }
+});
+
+router.post("/update-contributor", async (req, res, next) => {
+  jwt.verify(
+    req.header("x-access-token"),
+    process.env.CMS_TOKEN,
+    async function (err, decoded) {
+      if (err) {
+        return res.sendStatus(498);
+      } else {
+        const { name, sort, country, bio, contact, donate, category, path } =
+          req.body;
+
+        let contributor = await Contributor.findOne({ path: path });
+        contributor.name = name;
+        contributor.sort = sort;
+        contributor.country = country;
+        contributor.bio = bio;
+        contributor.contact = contact;
+        contributor.donate = donate;
+        contributor.category = category;
+        contributor.path = path;
+
+        try {
+          await contributor.save();
+        } catch (err) {
+          console.error(err);
+          return next(err);
+        }
+        res.sendStatus(200);
+      }
+    }
+  );
 });
 
 module.exports = router;
