@@ -323,6 +323,20 @@ router.post("/update-contributor", async (req, res, next) => {
   );
 });
 
+router.get("/verifyToken", (req, res) => {
+  jwt.verify(
+    req.header("x-access-token"),
+    process.env.CMS_TOKEN,
+    function (err, decoded) {
+      if (err) {
+        return res.sendStatus(498);
+      } else {
+        return res.sendStatus(200);
+      }
+    }
+  );
+});
+
 module.exports = router;
 module.exports.getGroupContributors = getGroupContributors;
 module.exports.getIndividualContributors = getIndividualContributors;
