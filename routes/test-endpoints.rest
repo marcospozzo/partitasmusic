@@ -130,3 +130,9 @@ content-type: application/json
 
 GET http://localhost:3001/api/verifyToken
 x-access-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwNjQxNmRlZDEwZDJmMTAzZTRjYWVmZSIsImlhdCI6MTY3NTYzMDkwNSwiZXhwIjoxNjc2MjM1NzA1fQ.AvjQsgKtko-Ad3vhHnUjjD6BoGvHqqiDUW2HQk9O-CM
+
+###
+
+GET http://localhost:3001/api/get-contributions/the-league-of-crafty-guitarists
+
+###
