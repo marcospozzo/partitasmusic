@@ -224,6 +224,14 @@ async function findContributions(term) {
 
 */
 
+// get pieces/contributions
+
+router.get("/get-contributions/:path", async (req, res) => {
+  const contributions = await getContributions(req.params.path);
+
+  res.send(contributions);
+});
+
 // get contributors
 router.get("/get-contributors", async (req, res) => {
   const contributors = await Contributor.find()
@@ -298,12 +306,12 @@ router.post("/update-contributor", async (req, res, next) => {
       if (err) {
         return res.sendStatus(498);
       } else {
-        const { name, sort, country, bio, contact, donate, category, path } =
+        const { name, sortBy, country, bio, contact, donate, category, path } =
           req.body;
 
         let contributor = await Contributor.findOne({ path: path });
         contributor.name = name;
-        contributor.sort = sort;
+        contributor.sort = sortBy; // rename was needed on frontend side to differ from js sort function
         contributor.country = country;
         contributor.bio = bio;
         contributor.contact = contact;
