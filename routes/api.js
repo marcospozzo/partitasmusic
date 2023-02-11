@@ -22,6 +22,8 @@ const signedUrlExpireSeconds = 60 * 1 * 1; // 60 seconds, 0 minute, 0 hour
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const User = require("../models/User");
+const multer = require("multer");
+const upload = multer();
 
 async function getGroupContributors() {
   return Contributor.find({ category: "group" }).sort("sort").exec();
@@ -298,51 +300,74 @@ router.post("/signin", async (req, res) => {
   }
 });
 
-router.post("/update-contributor", async (req, res, next) => {
-  jwt.verify(
-    req.header("x-access-token"),
-    process.env.CMS_TOKEN,
-    async function (err, decoded) {
-      if (err) {
-        return res.sendStatus(498);
-      } else {
-        const { name, sortBy, country, bio, contact, donate, category, path } =
-          req.body;
+router.post(
+  "/update-contributor/:path",
+  verifyToken,
+  upload.single("image"),
+  async (req, res, next) => {
+    const previousPath = req.params.path;
+    const image = req.file;
+    const { name, sortBy, country, bio, contact, donate, category, path } =
+      req.body;
+    const imageName = req.body.imageName;
 
-        let contributor = await Contributor.findOne({ path: path });
-        contributor.name = name;
-        contributor.sort = sortBy; // rename was needed on frontend side to differ from js sort function
-        contributor.country = country;
-        contributor.bio = bio;
-        contributor.contact = contact;
-        contributor.donate = donate;
-        contributor.category = category;
-        contributor.path = path;
-
-        try {
-          await contributor.save();
-        } catch (err) {
-          console.error(err);
-          return next(err);
-        }
-        res.sendStatus(200);
-      }
+    if (previousPath !== path) {
+      // updatePathForAllPieces(previousPath, path);
     }
-  );
-});
 
-router.get("/verifyToken", (req, res) => {
+    try {
+      let contributor = await Contributor.findOne({ path: previousPath });
+      contributor.name = name;
+      contributor.sort = sortBy; // rename was needed on frontend side to differ from js sort function
+      contributor.country = country;
+      contributor.bio = bio;
+      contributor.contact = contact;
+      contributor.donate = donate;
+      contributor.category = category;
+      contributor.path = path;
+
+      // update profile picture if exists
+      if (image) {
+        const imageExtension = imageName.slice(imageName.lastIndexOf("."));
+        const newImageName = `${path}${imageExtension}`;
+        const params = {
+          Bucket: myBucket,
+          Key: `${path}/${newImageName}`,
+          Body: image.buffer,
+        };
+
+        s3.upload(params, function (err, data) {
+          if (err) {
+            console.log("Error", err);
+          }
+          if (data) {
+            console.log("Upload Success", data.Location);
+          }
+        });
+        contributor.picture = newImageName;
+      }
+      await contributor.save();
+    } catch (err) {
+      console.error(err);
+      return next(err);
+    }
+    res.sendStatus(200);
+  }
+);
+
+// middleware
+function verifyToken(req, res, next) {
   jwt.verify(
     req.header("x-access-token"),
     process.env.CMS_TOKEN,
     function (err, decoded) {
-      if (err) {
-        return res.sendStatus(498);
-      } else {
-        return res.sendStatus(200);
-      }
+      return err ? res.sendStatus(498) : next();
     }
   );
+}
+
+router.get("/verifyToken", verifyToken, (req, res) => {
+  return res.sendStatus(200);
 });
 
 module.exports = router;
