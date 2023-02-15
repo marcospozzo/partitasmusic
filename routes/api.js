@@ -24,6 +24,7 @@ const bcrypt = require("bcryptjs");
 const User = require("../models/User");
 const multer = require("multer");
 const upload = multer();
+const nodePath = require("path");
 
 async function getGroupContributors() {
   return Contributor.find({ category: "group" }).sort("sort").exec();
@@ -83,7 +84,7 @@ router.get(
   "/scores/:folder/:fileName",
   ensureAuthenticatedContributions,
   async (req, res) => {
-    const score = await getS3TempUrl(req.params.folder, req.params.fileName);
+    const score = await getPdfS3TempUrl(req.params.folder, req.params.fileName);
     res.redirect(score);
   }
 );
@@ -106,6 +107,18 @@ async function getS3TempUrl(path, key) {
     Bucket: myBucket,
     Key: `${path}/${key}`,
     Expires: signedUrlExpireSeconds,
+  });
+}
+
+async function getPdfS3TempUrl(path, key) {
+  return s3.getSignedUrlPromise("getObject", {
+    Bucket: myBucket,
+    Key: `${path}/${key}`,
+    Expires: signedUrlExpireSeconds,
+    ResponseContentDisposition: "inline",
+    ResponseContentType: "application/pdf",
+    ResponseContentEncoding: "bytes",
+    ResponseCacheControl: "no-cache",
   });
 }
 
@@ -227,7 +240,6 @@ async function findContributions(term) {
 */
 
 // get pieces/contributions
-
 router.get("/get-contributions/:path", async (req, res) => {
   const contributions = await getContributions(req.params.path);
 
@@ -305,18 +317,12 @@ router.post(
   verifyToken,
   upload.single("image"),
   async (req, res, next) => {
-    const previousPath = req.params.path;
-    const image = req.file;
-    const { name, sortBy, country, bio, contact, donate, category, path } =
-      req.body;
-    const imageName = req.body.imageName;
-
-    if (previousPath !== path) {
-      // updatePathForAllPieces(previousPath, path);
-    }
+    const path = req.params.path;
+    const imageFile = req.file;
+    const { name, sortBy, country, bio, contact, donate, category } = req.body;
 
     try {
-      let contributor = await Contributor.findOne({ path: previousPath });
+      let contributor = await Contributor.findOne({ path: path });
       contributor.name = name;
       contributor.sort = sortBy; // rename was needed on frontend side to differ from js sort function
       contributor.country = country;
@@ -324,27 +330,13 @@ router.post(
       contributor.contact = contact;
       contributor.donate = donate;
       contributor.category = category;
-      contributor.path = path;
 
-      // update profile picture if exists
-      if (image) {
-        const imageExtension = imageName.slice(imageName.lastIndexOf("."));
-        const newImageName = `${path}${imageExtension}`;
-        const params = {
-          Bucket: myBucket,
-          Key: `${path}/${newImageName}`,
-          Body: image.buffer,
-        };
-
-        s3.upload(params, function (err, data) {
-          if (err) {
-            console.log("Error", err);
-          }
-          if (data) {
-            console.log("Upload Success", data.Location);
-          }
-        });
-        contributor.picture = newImageName;
+      // update profile picture if present
+      if (imageFile) {
+        const fileExtension = nodePath.extname(imageFile.originalname);
+        const imageFileName = `${path}${fileExtension}`;
+        await uploadFileToS3(imageFile, path, imageFileName);
+        contributor.picture = imageFileName;
       }
       await contributor.save();
     } catch (err) {
@@ -354,6 +346,113 @@ router.post(
     res.sendStatus(200);
   }
 );
+
+const validateRequiredFields = (req, res, next) => {
+  const requiredFields = ["title", "description"];
+  const requiredFiles = ["audio", "score"];
+  for (const field of requiredFields) {
+    if (!req.body[field]) {
+      return res
+        .status(400)
+        .json({ error: `Missing required field: ${field}` });
+    }
+  }
+  for (const file of requiredFiles) {
+    if (!req.files[file][0]) {
+      return res.status(400).json({ error: `Missing required file: ${file}` });
+    }
+  }
+  next();
+};
+
+router.post("/create-contribution", (req, res) => {
+  console.log(req);
+  return res.sendStatus(200);
+});
+
+// router.post(
+//   "/create-contribution",
+//   verifyToken,
+//   // validateRequiredFields,
+//   upload.fields([
+//     { name: "audio", maxCount: 1 },
+//     { name: "score", maxCount: 1 },
+//   ]),
+//   async (req, res, next) => {
+//     const { title, description } = req.body;
+//     // const audioFile = req.files["audio"][0];
+//     // const scoreFile = req.files["score"][0];
+//     res.sendStatus(200);
+//   }
+// );
+
+router.post(
+  "/update-contribution",
+  verifyToken,
+  upload.fields([
+    { name: "audio", maxCount: 1 },
+    { name: "score", maxCount: 1 },
+  ]),
+  async (req, res, next) => {
+    const { id, title, description } = req.body;
+    let audioFile, scoreFile;
+    if (req.files && req.files["audio"]) {
+      audioFile = req.files["audio"][0];
+    }
+    if (req.files && req.files["score"]) {
+      scoreFile = req.files["score"][0];
+    }
+
+    try {
+      let contribution = await Contribution.findById(id);
+      contribution.title = title;
+      contribution.description = description;
+
+      // update audio file if present
+      if (audioFile) {
+        const fileExtension = nodePath.extname(audioFile.originalname);
+        const audioFileName = `${title}${fileExtension}`
+          .replace(/\s/g, "-")
+          .toLowerCase();
+        await uploadFileToS3(audioFile, contribution.path, audioFileName);
+        contribution.audio = audioFileName;
+      }
+
+      // update score file if present
+      if (scoreFile) {
+        const fileExtension = nodePath.extname(scoreFile.originalname);
+        const scoreFileName = `${title}${fileExtension}`
+          .replace(/\s/g, "-")
+          .toLowerCase();
+        await uploadFileToS3(scoreFile, contribution.path, scoreFileName);
+        contribution.score = scoreFileName;
+      }
+      await contribution.save();
+    } catch (err) {
+      console.error(err);
+      return next(err);
+    }
+    res.sendStatus(200);
+  }
+);
+
+async function uploadFileToS3(file, path, fileName) {
+  const params = {
+    Bucket: myBucket,
+    Key: `${path}/${fileName}`,
+    Body: file.buffer,
+  };
+
+  s3.upload(params, function (err, data) {
+    if (err) {
+      console.log("Error", err);
+      // throw new Error();
+    }
+    if (data) {
+      console.log("Upload Success", data.Location);
+    }
+  });
+}
 
 // middleware
 function verifyToken(req, res, next) {
