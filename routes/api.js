@@ -122,29 +122,6 @@ async function getPdfS3TempUrl(path, key) {
   });
 }
 
-router.post("/create-contribution", async (req, res, next) => {
-  if (req.headers.authorization == process.env.SESSION_SECRET) {
-    const { title, description, audio, score, path } = req.body;
-    let savedContribution;
-
-    try {
-      const contribution = new Contribution({
-        title: title,
-        description: description,
-        audio: audio,
-        score: score,
-        path: path,
-      });
-      savedContribution = await contribution.save();
-    } catch (err) {
-      return next(err);
-    }
-    res.sendStatus(200);
-  } else {
-    res.sendStatus(401);
-  }
-});
-
 // aphorism
 router.get("/aphorism", async (req, res) => {
   const aphorism = aphorisms.getAphorismOfTheDay();
@@ -347,7 +324,7 @@ router.post(
   }
 );
 
-const validateRequiredFields = (req, res, next) => {
+function validateRequiredFields(req, res, next) {
   const requiredFields = ["title", "description"];
   const requiredFiles = ["audio", "score"];
   for (const field of requiredFields) {
@@ -358,33 +335,55 @@ const validateRequiredFields = (req, res, next) => {
     }
   }
   for (const file of requiredFiles) {
-    if (!req.files[file][0]) {
+    if (!req.files || !req.files[file] || !req.files[file][0]) {
       return res.status(400).json({ error: `Missing required file: ${file}` });
     }
   }
   next();
-};
+}
 
-router.post("/create-contribution", (req, res) => {
-  console.log(req);
-  return res.sendStatus(200);
-});
+router.post(
+  "/create-contribution/:path",
+  verifyToken,
+  upload.fields([
+    { name: "audio", maxCount: 1 },
+    { name: "score", maxCount: 1 },
+  ]),
+  validateRequiredFields,
+  async (req, res, next) => {
+    const audioFile = req.files["audio"][0];
+    const scoreFile = req.files["score"][0];
+    const { title, description } = req.body;
+    const path = req.params.path;
 
-// router.post(
-//   "/create-contribution",
-//   verifyToken,
-//   // validateRequiredFields,
-//   upload.fields([
-//     { name: "audio", maxCount: 1 },
-//     { name: "score", maxCount: 1 },
-//   ]),
-//   async (req, res, next) => {
-//     const { title, description } = req.body;
-//     // const audioFile = req.files["audio"][0];
-//     // const scoreFile = req.files["score"][0];
-//     res.sendStatus(200);
-//   }
-// );
+    try {
+      // upload audio file
+      const audioFileExtension = nodePath.extname(audioFile.originalname);
+      const audioFileName =
+        `${title.trim()}`.replace(/\s+/g, "-").toLowerCase() +
+        `${audioFileExtension}`;
+      await uploadFileToS3(audioFile, path, audioFileName);
+
+      // upload score file
+      const scoreFileExtension = nodePath.extname(scoreFile.originalname);
+      const scoreFileName =
+        `${title.trim()}`.replace(/\s+/g, "-").toLowerCase() +
+        `${scoreFileExtension}`;
+      await uploadFileToS3(scoreFile, path, scoreFileName);
+      const contribution = new Contribution({
+        title: title,
+        description: description,
+        audio: audioFileName,
+        score: scoreFileName,
+        path: path,
+      });
+      await contribution.save();
+      res.status(200).json({ success: "Piece created" });
+    } catch (err) {
+      return next(err);
+    }
+  }
+);
 
 router.post(
   "/update-contribution",
@@ -411,9 +410,9 @@ router.post(
       // update audio file if present
       if (audioFile) {
         const fileExtension = nodePath.extname(audioFile.originalname);
-        const audioFileName = `${title}${fileExtension}`
-          .replace(/\s/g, "-")
-          .toLowerCase();
+        const audioFileName =
+          `${title.trim()}`.replace(/\s+/g, "-").toLowerCase() +
+          `${fileExtension}`;
         await uploadFileToS3(audioFile, contribution.path, audioFileName);
         contribution.audio = audioFileName;
       }
@@ -421,9 +420,9 @@ router.post(
       // update score file if present
       if (scoreFile) {
         const fileExtension = nodePath.extname(scoreFile.originalname);
-        const scoreFileName = `${title}${fileExtension}`
-          .replace(/\s/g, "-")
-          .toLowerCase();
+        const scoreFileName =
+          `${title.trim()}`.replace(/\s+/g, "-").toLowerCase() +
+          `${fileExtension}`;
         await uploadFileToS3(scoreFile, contribution.path, scoreFileName);
         contribution.score = scoreFileName;
       }
@@ -432,7 +431,7 @@ router.post(
       console.error(err);
       return next(err);
     }
-    res.sendStatus(200);
+    res.status(200).json({ success: "Piece saved" });
   }
 );
 
@@ -443,15 +442,16 @@ async function uploadFileToS3(file, path, fileName) {
     Body: file.buffer,
   };
 
-  s3.upload(params, function (err, data) {
-    if (err) {
-      console.log("Error", err);
-      // throw new Error();
-    }
-    if (data) {
-      console.log("Upload Success", data.Location);
-    }
-  });
+  return s3
+    .upload(params, function (err, data) {
+      if (err) {
+        console.log("Error", err);
+      }
+      if (data) {
+        console.log("Upload Success", data.Location);
+      }
+    })
+    .promise();
 }
 
 // middleware

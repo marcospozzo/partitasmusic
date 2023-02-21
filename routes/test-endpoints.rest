@@ -1,68 +1,4 @@
-POST https://partitasmusic.com/api/create-contributor
-content-type: application/json
-Authorization: {{$dotenv SESSION_SECRET}}
-
-{
-    "name": "",
-    "sort": "",
-    "picture": "",
-    "country": "",
-    "bio": "",
-    "contact": "",
-    "donate": "",
-    "category": "",
-    "path": ""
-}
-
-###
-
-POST https://partitasmusic.com/api/create-contribution
-content-type: application/json
-Authorization: {{$dotenv SESSION_SECRET}}
-
-{
-    "title": "",
-    "description": "",
-    "audio": "",
-    "score": "",
-    "path": ""
-}
-
-###
-
-POST http://localhost:3000/api/create-contributor
-content-type: application/json
-Authorization: {{$dotenv SESSION_SECRET}}
-
-{
-    "name": "Name Contributor 3",
-    "sort": "Sort Contributor 3",
-    "picture": "Picture Contributor 3",
-    "country": "Country Contributor ",
-    "bio": "Bio Contributor 3",
-    "contact": "Contact Contributor 3",
-    "donate": "Donate Contributor 3",
-    "category": "group",
-    "path": "AWS S3 Path Contributor 3"
-}
-
-###
-
-POST http://localhost:3000/api/create-contribution
-content-type: application/json
-Authorization: {{$dotenv SESSION_SECRET}}
-
-{
-    "title": "Title Contribution 3",
-    "description": "Description Contribution 3",
-    "audio": "Audio Path Contribution 3",
-    "score": "Score Path Contribution 3",
-    "path": "AWS S3 path Contribution 3"
-}
-
-###
-
-GET http://localhost:3000/users/login
+GET http://localhost:3001/users/login
 content-type: application/json
 
 {
@@ -72,7 +8,7 @@ content-type: application/json
 
 ###
 
-POST http://localhost:3000/users/signup
+POST http://localhost:3001/users/signup
 content-type: application/json
 
 {
@@ -83,7 +19,7 @@ content-type: application/json
 
 ###
 
-POST http://localhost:3000/users/reset-password
+POST http://localhost:3001/users/reset-password
 content-type: application/json
 
 {
@@ -92,17 +28,17 @@ content-type: application/json
 
 ###
 
-POST http://localhost:3000/users/set-password
+POST http://localhost:3001/users/set-password
 content-type: application/json
 
 {
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmNzFlOWIzNWE1NThlMGI1MTQ0OGE1OCIsImlhdCI6MTYwMTMwMDkzNSwiZXhwIjoxNjAxOTA1NzM1fQ.jBPZsdpgeSW6VeBrYPb-qWx_aeKPzZcUN9mPDdkJl_A",
+    "token": "jwt",
     "password": "1234"
 }
 
 ###
 
-GET http://localhost:3000/api/aphorism
+GET http://localhost:3001/api/aphorism
 
 ###
 
@@ -110,7 +46,7 @@ GET http://localhost:3001/api/get-contributors
 
 ###
 
-GET http://localhost:3001/api/get-contributor/CONTRIBUTOR-NAME
+GET http://localhost:3001/api/get-contributor/CONTRIBUTOR-PATH
 
 ###
 
@@ -124,15 +60,66 @@ content-type: application/json
 
 ###
 
-### POST http://localhost:3000/api/update-contributor
+POST http://localhost:3001/api/update-contributor/CONTRIBUTOR-PATH
+x-access-token: jwt
+content-type: application/json
+
+{
+    "name": "testName",
+    "sortBy": "sortByTest",
+    "country": "countryTest",
+    "bio": "bioTest",
+    "contact": "contactTest",
+    "donate": "donateTest",
+    "category": "individual"
+}
 
 ###
 
 GET http://localhost:3001/api/verifyToken
-x-access-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwNjQxNmRlZDEwZDJmMTAzZTRjYWVmZSIsImlhdCI6MTY3NTYzMDkwNSwiZXhwIjoxNjc2MjM1NzA1fQ.AvjQsgKtko-Ad3vhHnUjjD6BoGvHqqiDUW2HQk9O-CM
+x-access-token: jwt
 
 ###
 
-GET http://localhost:3001/api/get-contributions/the-league-of-crafty-guitarists
+GET http://localhost:3001/api/get-contributions/CONTRIBUTOR-PATH
+
+###
+
+POST http://localhost:3001/api/create-contributor
+x-access-token: jwt
+content-type: application/json
+
+{
+    "name": "name",
+    "sortBy": "sortBy",
+    "country": "country",
+    "bio": "bio",
+    "contact": "contact",
+    "donate": "donate",
+    "category": "individual"
+}
+
+###
+
+POST http://localhost:3001/api/create-contribution/CONTRIBUTOR-PATH
+x-access-token: jwt
+content-type: application/json
+
+{
+    "title": "title",
+    "description": "description"
+}
+
+###
+
+POST http://localhost:3001/api/update-contribution
+x-access-token: jwt
+content-type: application/json
+
+{
+    "id": "id",
+    "title": "title",
+    "description": "description"
+}
 
 ###
