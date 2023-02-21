@@ -11,7 +11,6 @@ const {
   forwardAuthenticated,
 } = require("../config/auth");
 const AWS = require("aws-sdk");
-const { cloudchannel } = require("googleapis/build/src/apis/cloudchannel");
 const s3 = new AWS.S3();
 AWS.config.update({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -126,43 +125,6 @@ async function getPdfS3TempUrl(path, key) {
 router.get("/aphorism", async (req, res) => {
   const aphorism = aphorisms.getAphorismOfTheDay();
   res.send(aphorism);
-});
-
-router.post("/create-contributor", async (req, res, next) => {
-  if (req.headers.authorization == process.env.SESSION_SECRET) {
-    const {
-      name,
-      sort,
-      picture,
-      country,
-      bio,
-      contact,
-      donate,
-      category,
-      path,
-    } = req.body;
-    let savedContributor;
-
-    try {
-      const contributor = new Contributor({
-        name: name,
-        sort: sort,
-        picture: picture,
-        country: country,
-        bio: bio,
-        contact: contact,
-        donate: donate,
-        category: category,
-        path: path,
-      });
-      savedContributor = await contributor.save();
-    } catch (err) {
-      return next(err);
-    }
-    res.sendStatus(200);
-  } else {
-    res.sendStatus(401);
-  }
 });
 
 // contact form
@@ -290,13 +252,69 @@ router.post("/signin", async (req, res) => {
 });
 
 router.post(
-  "/update-contributor/:path",
+  "/create-contributor",
+  verifyToken,
+  upload.single("image"),
+  validateRequiredFields(
+    ["name", "sortBy", "country", "category", "path", "type"],
+    ["image"]
+  ),
+  async (req, res, next) => {
+    const {
+      name,
+      sortBy,
+      country,
+      contact,
+      donate,
+      category,
+      bio,
+      type,
+      path,
+    } = req.body;
+    const imageFile = req.file;
+
+    try {
+      const fileExtension = nodePath.extname(imageFile.originalname);
+      const imageFileName = `${path}${fileExtension}`;
+      await uploadFileToS3(imageFile, path, imageFileName);
+
+      const contributor = new Contributor({
+        name: name,
+        sort: sortBy,
+        picture: imageFileName,
+        country: country,
+        bio: bio,
+        contact: contact,
+        donate: donate,
+        category: category,
+        path: path,
+        type: type,
+      });
+      await contributor.save();
+      res.status(200).json({ success: "Contributor created" });
+    } catch (error) {
+      return next(error);
+    }
+  }
+);
+
+router.post(
+  "/update-contributor",
   verifyToken,
   upload.single("image"),
   async (req, res, next) => {
-    const path = req.params.path;
     const imageFile = req.file;
-    const { name, sortBy, country, bio, contact, donate, category } = req.body;
+    const {
+      name,
+      sortBy,
+      country,
+      bio,
+      contact,
+      donate,
+      category,
+      path,
+      type,
+    } = req.body;
 
     try {
       let contributor = await Contributor.findOne({ path: path });
@@ -307,6 +325,8 @@ router.post(
       contributor.contact = contact;
       contributor.donate = donate;
       contributor.category = category;
+      (type === "featured" || type === "not-featured") &&
+        (contributor.type = type);
 
       // update profile picture if present
       if (imageFile) {
@@ -316,31 +336,13 @@ router.post(
         contributor.picture = imageFileName;
       }
       await contributor.save();
+      res.status(200).json({ success: "Contributor updated" });
     } catch (err) {
       console.error(err);
       return next(err);
     }
-    res.sendStatus(200);
   }
 );
-
-function validateRequiredFields(req, res, next) {
-  const requiredFields = ["title", "description"];
-  const requiredFiles = ["audio", "score"];
-  for (const field of requiredFields) {
-    if (!req.body[field]) {
-      return res
-        .status(400)
-        .json({ error: `Missing required field: ${field}` });
-    }
-  }
-  for (const file of requiredFiles) {
-    if (!req.files || !req.files[file] || !req.files[file][0]) {
-      return res.status(400).json({ error: `Missing required file: ${file}` });
-    }
-  }
-  next();
-}
 
 router.post(
   "/create-contribution/:path",
@@ -349,7 +351,7 @@ router.post(
     { name: "audio", maxCount: 1 },
     { name: "score", maxCount: 1 },
   ]),
-  validateRequiredFields,
+  validateRequiredFields(["title", "description"], ["audio", "score"]),
   async (req, res, next) => {
     const audioFile = req.files["audio"][0];
     const scoreFile = req.files["score"][0];
@@ -392,6 +394,7 @@ router.post(
     { name: "audio", maxCount: 1 },
     { name: "score", maxCount: 1 },
   ]),
+  validateRequiredFields(["id", "title", "description"], []),
   async (req, res, next) => {
     const { id, title, description } = req.body;
     let audioFile, scoreFile;
@@ -454,20 +457,49 @@ async function uploadFileToS3(file, path, fileName) {
     .promise();
 }
 
+router.get("/verifyToken", verifyToken, (req, res) => {
+  return res.sendStatus(200);
+});
+
 // middleware
 function verifyToken(req, res, next) {
   jwt.verify(
     req.header("x-access-token"),
     process.env.CMS_TOKEN,
-    function (err, decoded) {
+    function (err) {
       return err ? res.sendStatus(498) : next();
     }
   );
 }
 
-router.get("/verifyToken", verifyToken, (req, res) => {
-  return res.sendStatus(200);
-});
+// middleware
+function validateRequiredFields(fieldsArray, filesArray) {
+  return (req, res, next) => {
+    for (const field of fieldsArray) {
+      if (!req.body[field] || req.body[field] === "undefined") {
+        return res
+          .status(400)
+          .json({ error: `Missing required field: ${field}` });
+      }
+    }
+    if (filesArray.length === 1) {
+      if (!req.file) {
+        return res
+          .status(400)
+          .json({ error: `Missing required file: ${filesArray[0]}` });
+      }
+    } else {
+      for (const file of filesArray) {
+        if (!req.files || !req.files[file] || !req.files[file][0]) {
+          return res
+            .status(400)
+            .json({ error: `Missing required file: ${file}` });
+        }
+      }
+    }
+    next();
+  };
+}
 
 module.exports = router;
 module.exports.getGroupContributors = getGroupContributors;
