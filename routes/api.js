@@ -5,10 +5,8 @@ const aphorisms = require("../models/aphorism/aphorisms");
 const router = require("express").Router();
 const sendMail = require("../models/email/contact");
 const {
-  ensureAuthenticated,
   ensureAuthenticatedContributions,
   ensureAuthenticatedForm,
-  forwardAuthenticated,
 } = require("../config/auth");
 const AWS = require("aws-sdk");
 const s3 = new AWS.S3();
@@ -140,43 +138,6 @@ router.post("/contact-form", ensureAuthenticatedForm, (req, res, next) => {
   req.flash("flashSuccess", "Message sent");
   res.redirect("/");
 });
-
-/*
-
-// search all
-router.get("/search", async (req, res) => {
-  const term = req.query.term;
-  const results = [];
-
-  results.push(await findContributors(term));
-  // results.push(await findContributions(term));
-
-  console.log(results);
-
-  return results;
-});
-
-async function findContributors(term) {
-  return Contributor.aggregate([
-    {
-      $search: {
-        index: "contributors",
-        text: {
-          query: term,
-          path: {
-            wildcard: "*",
-          },
-        },
-      },
-    },
-  ]);
-}
-
-async function findContributions(term) {
-  return Contribution.find({ name: term }).sort("sort").exec();
-}
-
-*/
 
 // get pieces/contributions
 router.get("/get-contributions/:path", async (req, res) => {
