@@ -361,16 +361,12 @@ router.post(
     try {
       // upload audio file
       const audioFileExtension = nodePath.extname(audioFile.originalname);
-      const audioFileName =
-        `${title.trim()}`.replace(/\s+/g, "-").toLowerCase() +
-        `${audioFileExtension}`;
+      const audioFileName = convertToSlug(title) + `${audioFileExtension}`;
       await uploadFileToS3(audioFile, path, audioFileName);
 
       // upload score file
       const scoreFileExtension = nodePath.extname(scoreFile.originalname);
-      const scoreFileName =
-        `${title.trim()}`.replace(/\s+/g, "-").toLowerCase() +
-        `${scoreFileExtension}`;
+      const scoreFileName = convertToSlug(title) + `${scoreFileExtension}`;
       await uploadFileToS3(scoreFile, path, scoreFileName);
       const contribution = new Contribution({
         title: title,
@@ -413,9 +409,7 @@ router.post(
       // update audio file if present
       if (audioFile) {
         const fileExtension = nodePath.extname(audioFile.originalname);
-        const audioFileName =
-          `${title.trim()}`.replace(/\s+/g, "-").toLowerCase() +
-          `${fileExtension}`;
+        const audioFileName = convertToSlug(title) + `${fileExtension}`;
         await uploadFileToS3(audioFile, contribution.path, audioFileName);
         contribution.audio = audioFileName;
       }
@@ -423,9 +417,7 @@ router.post(
       // update score file if present
       if (scoreFile) {
         const fileExtension = nodePath.extname(scoreFile.originalname);
-        const scoreFileName =
-          `${title.trim()}`.replace(/\s+/g, "-").toLowerCase() +
-          `${fileExtension}`;
+        const scoreFileName = convertToSlug(title) + `${fileExtension}`;
         await uploadFileToS3(scoreFile, contribution.path, scoreFileName);
         contribution.score = scoreFileName;
       }
@@ -434,7 +426,7 @@ router.post(
       console.error(err);
       return next(err);
     }
-    res.status(200).json({ success: "Piece saved" });
+    res.status(200).json({ success: "Piece updated" });
   }
 );
 
@@ -499,6 +491,10 @@ function validateRequiredFields(fieldsArray, filesArray) {
     }
     next();
   };
+}
+
+function convertToSlug(string) {
+  return string.trim().replace(/\s+/g, "-").replace(/-+/g, "-").toLowerCase();
 }
 
 module.exports = router;
