@@ -30,7 +30,7 @@ async function email(data) {
   });
 
   let info = await transporter.sendMail({
-    from: `"Partitas Music" <${process.env.GOOGLE_EMAIL_ADDRESS}>`, // sender address
+    from: `"Partitas Music" <${process.env.GOOGLE_EMAIL_ALIAS}>`, // sender address
     to: data.to, // list of receivers
     cc: data.cc,
     subject: data.subject, // Subject line
