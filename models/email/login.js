@@ -5,7 +5,7 @@ dotenv.config();
 
 function notifyAccountCreation(user) {
   const data = {
-    to: process.env.GOOGLE_EMAIL_ADDRESS,
+    to: process.env.GOOGLE_EMAIL_ALIAS,
     subject: `[New account] ${user.name}`,
     text: `New account creation: \nName: ${user.name} \nEmail: ${user.email}`,
     html: "",
