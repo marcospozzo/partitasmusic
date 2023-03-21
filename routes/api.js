@@ -100,23 +100,35 @@ function getS3FileStream(path) {
 }
 
 async function getS3TempUrl(path, key) {
-  return s3.getSignedUrlPromise("getObject", {
-    Bucket: myBucket,
-    Key: `${path}/${key}`,
-    Expires: signedUrlExpireSeconds,
-  });
+  try {
+    const signedUrl = await s3.getSignedUrlPromise("getObject", {
+      Bucket: myBucket,
+      Key: `${path}/${key}`,
+      Expires: signedUrlExpireSeconds,
+    });
+    return signedUrl;
+  } catch (err) {
+    console.log("Error getting S3 temp URL:", err);
+    throw err;
+  }
 }
 
 async function getPdfS3TempUrl(path, key) {
-  return s3.getSignedUrlPromise("getObject", {
-    Bucket: myBucket,
-    Key: `${path}/${key}`,
-    Expires: signedUrlExpireSeconds,
-    ResponseContentDisposition: "inline",
-    ResponseContentType: "application/pdf",
-    ResponseContentEncoding: "bytes",
-    ResponseCacheControl: "no-cache",
-  });
+  try {
+    const signedUrl = await s3.getSignedUrlPromise("getObject", {
+      Bucket: myBucket,
+      Key: `${path}/${key}`,
+      Expires: signedUrlExpireSeconds,
+      ResponseContentDisposition: "inline",
+      ResponseContentType: "application/pdf",
+      ResponseContentEncoding: "bytes",
+      ResponseCacheControl: "no-cache",
+    });
+    return signedUrl;
+  } catch (err) {
+    console.log("Error getting PDF S3 temp URL:", err);
+    throw err;
+  }
 }
 
 // aphorism
@@ -398,16 +410,17 @@ async function uploadFileToS3(file, path, fileName) {
     Body: file.buffer,
   };
 
-  return s3
-    .upload(params, function (err, data) {
-      if (err) {
-        console.log("Error", err);
-      }
-      if (data) {
-        console.log("Upload Success", data.Location);
-      }
-    })
-    .promise();
+  try {
+    const data = await new Upload({
+      client: s3,
+      params,
+    }).done();
+    console.log("Upload Success", data.Location);
+    return data;
+  } catch (err) {
+    console.log("Error", err);
+    throw err;
+  }
 }
 
 router.get("/verifyToken", verifyToken, (req, res) => {
