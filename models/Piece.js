@@ -31,5 +31,5 @@ const UserSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Contribution = mongoose.model("Contribution", UserSchema);
-module.exports = Contribution;
+const Piece = mongoose.model("Piece", UserSchema);
+module.exports = Piece;

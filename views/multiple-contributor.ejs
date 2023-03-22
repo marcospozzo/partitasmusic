@@ -20,7 +20,7 @@
           <!-- Banner -->
           <section id="banner-profile">
             <div class="content">
-              <header class="contributions-header">
+              <header class="pieces-header">
                 <ul class="actions">
                   <li><a href="/music-catalog" class="button icon solid fa-arrow-left"> Back</a></li>
                 </ul>
@@ -49,10 +49,10 @@
           <section>
             <div class="posts">   
               
-              <% contributions.forEach(function (contribution) { %>
+              <% pieces.forEach(function (piece) { %>
                 <article>
-                  <h3><%= contribution.title %></h3>
-                  <p><%= contribution.description %></p>
+                  <h3><%= piece.title %></h3>
+                  <p><%= piece.description %></p>
       
                   <audio
                     style="width: 100%"
@@ -65,10 +65,10 @@
                       controlsList="noplaybackrate"
                     <% } %>
                     >
-                    <source src="/api/audio/<%= contribution.path %>/<%= contribution.audio %>" type="audio/mpeg" />
+                    <source src="/api/audio/<%= piece.path %>/<%= piece.audio %>" type="audio/mpeg" />
                     This browser does not support the audio tag.
                   </audio>
-                  <a href="/api/scores/<%= contribution.path %>/<%= contribution.score %>" rel="noopener" <% if (user) { %>
+                  <a href="/api/scores/<%= piece.path %>/<%= piece.score %>" rel="noopener" <% if (user) { %>
                     target="_blank"; <% } %> >
                     <button
                       style="width: 100%"

@@ -1,11 +1,11 @@
 const dotenv = require("dotenv").config();
-const Contribution = require("../models/Contribution");
+const Piece = require("../models/Piece");
 const Contributor = require("../models/Contributor");
 const aphorisms = require("../models/aphorism/aphorisms");
 const router = require("express").Router();
 const sendMail = require("../models/email/contact");
 const {
-  ensureAuthenticatedContributions,
+  ensureAuthenticatedPieces,
   ensureAuthenticatedForm,
 } = require("../config/auth");
 const AWS = require("aws-sdk");
@@ -35,8 +35,8 @@ async function getContributor(path) {
   return Contributor.findOne({ path: path }).exec();
 }
 
-async function getContributions(path) {
-  return Contribution.find({ path: path }).exec();
+async function getPieces(path) {
+  return Piece.find({ path: path }).exec();
 }
 
 async function getTwoRandomContributorsExcept(path) {
@@ -79,7 +79,7 @@ router.get("/audio/:folder/:fileName", (req, res) => {
 
 router.get(
   "/scores/:folder/:fileName",
-  ensureAuthenticatedContributions,
+  ensureAuthenticatedPieces,
   async (req, res) => {
     const score = await getPdfS3TempUrl(req.params.folder, req.params.fileName);
     res.redirect(score);
@@ -151,11 +151,11 @@ router.post("/contact-form", ensureAuthenticatedForm, (req, res, next) => {
   res.redirect("/");
 });
 
-// get pieces/contributions
-router.get("/get-contributions/:path", async (req, res) => {
-  const contributions = await getContributions(req.params.path);
+// get pieces
+router.get("/get-pieces/:path", async (req, res) => {
+  const pieces = await getPieces(req.params.path);
 
-  res.send(contributions);
+  res.send(pieces);
 });
 
 // get contributors
@@ -318,7 +318,7 @@ router.post(
 );
 
 router.post(
-  "/create-contribution/:path",
+  "/create-Piece/:path",
   verifyToken,
   upload.fields([
     { name: "audio", maxCount: 1 },
@@ -341,14 +341,14 @@ router.post(
       const scoreFileExtension = nodePath.extname(scoreFile.originalname);
       const scoreFileName = convertToSlug(title) + `${scoreFileExtension}`;
       await uploadFileToS3(scoreFile, path, scoreFileName);
-      const contribution = new Contribution({
+      const piece = new Piece({
         title: title,
         description: description,
         audio: audioFileName,
         score: scoreFileName,
         path: path,
       });
-      await contribution.save();
+      await piece.save();
       res.status(200).json({ success: "Piece created" });
     } catch (err) {
       return next(err);
@@ -357,7 +357,7 @@ router.post(
 );
 
 router.post(
-  "/update-contribution",
+  "/update-piece",
   verifyToken,
   upload.fields([
     { name: "audio", maxCount: 1 },
@@ -375,26 +375,26 @@ router.post(
     }
 
     try {
-      let contribution = await Contribution.findById(id);
-      contribution.title = title;
-      contribution.description = description;
+      let piece = await Piece.findById(id);
+      piece.title = title;
+      piece.description = description;
 
       // update audio file if present
       if (audioFile) {
         const fileExtension = nodePath.extname(audioFile.originalname);
         const audioFileName = convertToSlug(title) + `${fileExtension}`;
-        await uploadFileToS3(audioFile, contribution.path, audioFileName);
-        contribution.audio = audioFileName;
+        await uploadFileToS3(audioFile, piece.path, audioFileName);
+        piece.audio = audioFileName;
       }
 
       // update score file if present
       if (scoreFile) {
         const fileExtension = nodePath.extname(scoreFile.originalname);
         const scoreFileName = convertToSlug(title) + `${fileExtension}`;
-        await uploadFileToS3(scoreFile, contribution.path, scoreFileName);
-        contribution.score = scoreFileName;
+        await uploadFileToS3(scoreFile, piece.path, scoreFileName);
+        piece.score = scoreFileName;
       }
-      await contribution.save();
+      await piece.save();
     } catch (err) {
       console.error(err);
       return next(err);
@@ -475,7 +475,7 @@ module.exports = router;
 module.exports.getGroupContributors = getGroupContributors;
 module.exports.getIndividualContributors = getIndividualContributors;
 module.exports.getContributor = getContributor;
-module.exports.getContributions = getContributions;
+module.exports.getPieces = getPieces;
 module.exports.getProfilePicture = getProfilePicture;
 module.exports.getTwoRandomContributorsExcept = getTwoRandomContributorsExcept;
 module.exports.getThreeRandomFeaturedContributors =
