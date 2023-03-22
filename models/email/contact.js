@@ -4,10 +4,10 @@ dotenv.config();
 
 function sendContactForm(name, email, message) {
   const data = {
-    to: email,
-    cc: process.env.GOOGLE_EMAIL_ALIAS,
+    to: process.env.GOOGLE_EMAIL_ALIAS,
+    cc: email,
     subject: `[Form submit] ${name}`,
-    text: `New form submit: \nName: ${name} \nEmail: ${email} \nMessage: ${message}`,
+    text: `Name: ${name} \nEmail: ${email} \nMessage: ${message}`,
     html: "",
   };
   sendMail(data).catch(console.error);
