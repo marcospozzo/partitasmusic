@@ -39,6 +39,38 @@ async function getPieces(path) {
   return Piece.find({ path: path }).exec();
 }
 
+async function getPiecesThatMatchQuery(query) {
+  try {
+    const pieces = await Piece.find({
+      $or: [
+        { title: { $regex: query, $options: "i" } },
+        { description: { $regex: query, $options: "i" } },
+      ],
+    });
+    return pieces;
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+async function getContributorsThatMatchQuery(query) {
+  try {
+    const contributors = await Contributor.find({
+      $or: [
+        { name: { $regex: query, $options: "i" } },
+        { country: { $regex: query, $options: "i" } },
+        { bio: { $regex: query, $options: "i" } },
+        { contact: { $regex: query, $options: "i" } },
+        { donate: { $regex: query, $options: "i" } },
+      ],
+    });
+    await getAllProfilePictures(contributors);
+    return contributors;
+  } catch (err) {
+    console.error(err);
+  }
+}
+
 async function getTwoRandomContributorsExcept(path) {
   const filter = { path: { $nin: [path] } };
 
@@ -66,8 +98,10 @@ async function getProfilePicture(contributor) {
   );
 }
 
-function getAllProfilePictures(array) {
-  array.forEach((element) => getProfilePicture(element));
+async function getAllProfilePictures(array) {
+  await Promise.all(
+    array.map(async (element) => await getProfilePicture(element))
+  );
 }
 
 router.get("/audio/:folder/:fileName", (req, res) => {
@@ -481,3 +515,5 @@ module.exports.getTwoRandomContributorsExcept = getTwoRandomContributorsExcept;
 module.exports.getThreeRandomFeaturedContributors =
   getThreeRandomFeaturedContributors;
 module.exports.getAllProfilePictures = getAllProfilePictures;
+module.exports.getPiecesThatMatchQuery = getPiecesThatMatchQuery;
+module.exports.getContributorsThatMatchQuery = getContributorsThatMatchQuery;

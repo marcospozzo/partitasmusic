@@ -2,11 +2,22 @@
   <div class="inner">
     <!-- Search -->
 
-    <!-- <section id="search" class="alt">
-      <form method="post" action="#">
-        <input type="text" name="query" id="query" placeholder="Search" />
+    <section id="search" class="alt">
+      <form method="get" action="/search">
+        <input type="text" name="q" id="query" placeholder="Search" />
       </form>
-    </section> -->
+    </section>
+
+    <script>
+      var form = document.querySelector("#search form");
+      var input = document.querySelector("#search input");
+      input.addEventListener("keyup", function (event) {
+        event.preventDefault();
+        if (event.keyCode === 13) {
+          form.submit();
+        }
+      });
+    </script>
 
     <!-- Menu -->
     <nav id="menu">

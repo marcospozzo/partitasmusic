@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<!--
+	Editorial by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html lang="en">
+  <!-- head -->
+  <%- include('partials/head'); %>
+
+  <body class="is-preload">
+    <!-- Wrapper -->
+    <div id="wrapper">
+      <!-- Main -->
+      <div id="main">
+        <div class="inner">
+          <!-- Header -->
+          <%- include('partials/header'); %>
+
+          <section>
+            <header class="major">
+              <h2><%= title %></h2>
+            </header>
+
+            <% if (contributors.length === 0 && pieces.length === 0) { %>
+
+            <i>No results for "<%= query %>".</i>
+
+            <% }; %>
+
+            <div class="contributors">
+              <% if (contributors.length > 0) { %>
+              <div class="contributors-column">
+                <h3>Contributors</h3>
+                <% contributors.forEach(function (contributor) { %>
+                <div>
+                  <a
+                    class="contributor-card"
+                    href="/contributors/<%= contributor.path %>"
+                  >
+                    <img
+                      src="<%= contributor.picture %>"
+                      alt="<%= contributor.name %>'s profile picture"
+                    />
+                    <%= contributor.name %>
+                  </a>
+                </div>
+                <% }); %>
+              </div>
+              <% }; %>
+
+              <div class="line"></div>
+              <% if (pieces.length > 0) { %>
+
+              <div class="individuals-column">
+                <div>
+                  <h3>Pieces</h3>
+                </div>
+                <div class="individuals-body">
+                  <% pieces.forEach(function (piece) { %>
+                  <div class="individuals-card">
+                    <a
+                      class="contributor-card"
+                      href="/contributors/<%= piece.path %>"
+                    >
+                      <%= piece.title %>
+                    </a>
+                  </div>
+                  <% }); %>
+                </div>
+              </div>
+
+              <% }; %>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <%- include('partials/sidebar'); %>
+    </div>
+
+    <!-- Scripts -->
+    <%- include('partials/scripts'); %>
+  </body>
+</html>
