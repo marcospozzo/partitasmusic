@@ -3,7 +3,7 @@ const createError = require("http-errors");
 const api = require("./api");
 const {
   ensureAuthenticated,
-  ensureAuthenticatedContributions,
+  ensureAuthenticatedPieces,
   forwardAuthenticated,
 } = require("../config/auth");
 
@@ -17,21 +17,21 @@ router.get("/", async (req, res) => {
     api.getProfilePicture(contributorOne);
     const firstContributor = {};
     firstContributor.contributor = contributorOne;
-    firstContributor.contributions = await api.getContributions(pathOne);
+    firstContributor.pieces = await api.getPieces(pathOne);
 
     const pathTwo = threeContributors[1].path;
     const contributorTwo = await api.getContributor(pathTwo);
     api.getProfilePicture(contributorTwo);
     const secondContributor = {};
     secondContributor.contributor = contributorTwo;
-    secondContributor.contributions = await api.getContributions(pathTwo);
+    secondContributor.pieces = await api.getPieces(pathTwo);
 
     const pathThree = threeContributors[2].path;
     const contributorThree = await api.getContributor(pathThree);
     api.getProfilePicture(contributorThree);
     const thirdContributor = {};
     thirdContributor.contributor = contributorThree;
-    thirdContributor.contributions = await api.getContributions(pathThree);
+    thirdContributor.pieces = await api.getPieces(pathThree);
 
     res.render("home", {
       title: "Home",
@@ -148,22 +148,22 @@ router.get("/music-catalog/:path", async (req, res) => {
     }
 
     await api.getProfilePicture(contributorOne);
-    const contributionsOne = await api.getContributions(pathOne);
+    const pieces = await api.getPieces(pathOne);
 
     const title = contributorOne.name;
-    if (contributionsOne.length > 1) {
-      // clicked contributor has more than one contribution
+    if (pieces.length > 1) {
+      // clicked contributor has more than one piece
       return res.render("multiple-contributor", {
         title: title,
         user: req.user,
         contributor: contributorOne,
-        contributions: contributionsOne,
+        pieces: pieces,
       });
     } else {
-      // clicked contributor has exactly one contribution
+      // clicked contributor has exactly one piece
       const firstContributor = {};
       firstContributor.contributor = contributorOne;
-      firstContributor.contributions = contributionsOne;
+      firstContributor.pieces = pieces;
 
       const twoContributors = await api.getTwoRandomContributorsExcept(pathOne);
 
@@ -172,14 +172,14 @@ router.get("/music-catalog/:path", async (req, res) => {
       await api.getProfilePicture(contributorTwo);
       const secondContributor = {};
       secondContributor.contributor = contributorTwo;
-      secondContributor.contributions = await api.getContributions(pathTwo);
+      secondContributor.pieces = await api.getPieces(pathTwo);
 
       const pathThree = twoContributors[1].path;
       const contributorThree = await api.getContributor(pathThree);
       await api.getProfilePicture(contributorThree);
       const thirdContributor = {};
       thirdContributor.contributor = contributorThree;
-      thirdContributor.contributions = await api.getContributions(pathThree);
+      thirdContributor.pieces = await api.getPieces(pathThree);
 
       res.render("single-contributor", {
         title: title,

@@ -1,5 +1,5 @@
 <article>
-  <% if (contributions.length > 1) { %>
+  <% if (pieces.length > 1) { %>
   <a href="/music-catalog/<%= contributor.path %>" class="image">
     <img
       src="<%= contributor.picture %>"
@@ -19,8 +19,8 @@
     <h3><%= contributor.name %></h3>
     <h4><%= contributor.country %></h4>
   </div>
-  <h3><%= contributions[0].title %></h3>
-  <p><%= contributions[0].description %></p>
+  <h3><%= pieces[0].title %></h3>
+  <p><%= pieces[0].description %></p>
   <p>
     <% if (contributor.contact) { %>
     <span>Contact: </span
@@ -48,13 +48,13 @@
     <% } %>
     >
     <source
-      src="/api/audio/<%= contributions[0].path %>/<%= contributions[0].audio %>"
+      src="/api/audio/<%= pieces[0].path %>/<%= pieces[0].audio %>"
       type="audio/mpeg"
     />
     This browser does not support the audio tag.
   </audio>
   <a
-    href="/api/scores/<%= contributions[0].path %>/<%= contributions[0].score %>"
+    href="/api/scores/<%= pieces[0].path %>/<%= pieces[0].score %>"
     rel="noopener"
     <% if (user) { %>
     target="_blank"; <% } %> >

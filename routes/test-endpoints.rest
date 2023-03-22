@@ -81,7 +81,7 @@ x-access-token: jwt
 
 ###
 
-GET http://localhost:3001/api/get-contributions/CONTRIBUTOR-PATH
+GET http://localhost:3001/api/get-pieces/CONTRIBUTOR-PATH
 
 ###
 
@@ -101,7 +101,7 @@ content-type: application/json
 
 ###
 
-POST http://localhost:3001/api/create-contribution/CONTRIBUTOR-PATH
+POST http://localhost:3001/api/create-piece/CONTRIBUTOR-PATH
 x-access-token: jwt
 content-type: application/json
 
@@ -112,7 +112,7 @@ content-type: application/json
 
 ###
 
-POST http://localhost:3001/api/update-contribution
+POST http://localhost:3001/api/update-piece
 x-access-token: jwt
 content-type: application/json
 
