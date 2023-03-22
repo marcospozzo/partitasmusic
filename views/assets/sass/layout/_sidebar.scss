@@ -60,7 +60,6 @@
     @include padding($pad, $pad, (0, 0, $pad, 0));
     position: relative;
     width: _size(sidebar-width);
-    margin-top: 5em;
 
     > * {
       border-bottom: solid 2px _palette(border);

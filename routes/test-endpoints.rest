@@ -123,3 +123,7 @@ content-type: application/json
 }
 
 ###
+
+GET http://localhost:3001/search?q=eye
+
+###

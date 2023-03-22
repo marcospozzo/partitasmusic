@@ -108,6 +108,22 @@ router.get("/the-tuning", (req, res) =>
   })
 );
 
+// search
+router.get("/search", async (req, res) => {
+  const { q } = req.query; // Get the 'q' query parameter from the request
+
+  const pieces = await api.getPiecesThatMatchQuery(q);
+  const contributors = await api.getContributorsThatMatchQuery(q);
+
+  res.render("search", {
+    title: "Search",
+    user: req.user,
+    pieces: pieces,
+    contributors: contributors,
+    query: q,
+  });
+});
+
 // login
 router.get("/login", forwardAuthenticated, (req, res) =>
   res.render("login", {
@@ -118,12 +134,9 @@ router.get("/login", forwardAuthenticated, (req, res) =>
 router.get("/music-catalog", async (req, res) => {
   try {
     const groups = await api.getGroupContributors();
-    api.getAllProfilePictures(groups);
+    await api.getAllProfilePictures(groups);
     const individuals = await api.getIndividualContributors();
-    api.getAllProfilePictures(individuals);
-
-    // TODO -> very ugly
-    await api.getContributor("");
+    await api.getAllProfilePictures(individuals);
 
     res.render("music-catalog", {
       title: "Music Catalog",
