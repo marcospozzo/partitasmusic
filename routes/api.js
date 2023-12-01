@@ -8,13 +8,20 @@ const {
   ensureAuthenticatedPieces,
   ensureAuthenticatedForm,
 } = require("../config/auth");
-const AWS = require("aws-sdk");
-const s3 = new AWS.S3();
-AWS.config.update({
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+
+const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
+const { GetObjectCommand, S3 } = require("@aws-sdk/client-s3");
+
+const s3 = new S3({
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  },
+  region: process.env.AWS_REGION,
 });
-const myBucket = "partitasmusic";
+
+const myBucket = process.env.AWS_BUCKET_NAME;
+
 const signedUrlExpireSeconds = 60 * 1 * 1; // 60 seconds, 0 minute, 0 hour
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
@@ -104,11 +111,11 @@ async function getAllProfilePictures(array) {
   );
 }
 
-router.get("/audio/:folder/:fileName", (req, res) => {
+router.get("/audio/:folder/:fileName", async (req, res) => {
   const path = `${req.params.folder}/${req.params.fileName}`;
-  const audio = getS3FileStream(path);
+  const audio = await getS3FileStream(path);
   res.attachment(path);
-  audio.pipe(res);
+  audio.Body.pipe(res);
 });
 
 router.get(
@@ -120,26 +127,25 @@ router.get(
   }
 );
 
-function getS3FileStream(path) {
-  const file = s3
-    .getObject({
-      Bucket: myBucket,
-      Key: path,
-    })
-    .createReadStream()
-    .on("error", (error) => {
-      console.error(error);
-    });
-  return file;
+async function getS3FileStream(path) {
+  return await s3.getObject({
+    Bucket: myBucket,
+    Key: path,
+  });
 }
 
 async function getS3TempUrl(path, key) {
   try {
-    const signedUrl = await s3.getSignedUrlPromise("getObject", {
-      Bucket: myBucket,
-      Key: `${path}/${key}`,
-      Expires: signedUrlExpireSeconds,
-    });
+    const signedUrl = await getSignedUrl(
+      s3,
+      new GetObjectCommand({
+        Bucket: myBucket,
+        Key: `${path}/${key}`,
+      }),
+      {
+        expiresIn: signedUrlExpireSeconds,
+      }
+    );
     return signedUrl;
   } catch (err) {
     console.log("Error getting S3 temp URL:", err);
@@ -149,15 +155,20 @@ async function getS3TempUrl(path, key) {
 
 async function getPdfS3TempUrl(path, key) {
   try {
-    const signedUrl = await s3.getSignedUrlPromise("getObject", {
-      Bucket: myBucket,
-      Key: `${path}/${key}`,
-      Expires: signedUrlExpireSeconds,
-      ResponseContentDisposition: "inline",
-      ResponseContentType: "application/pdf",
-      ResponseContentEncoding: "bytes",
-      ResponseCacheControl: "no-cache",
-    });
+    const signedUrl = await getSignedUrl(
+      s3,
+      new GetObjectCommand({
+        Bucket: myBucket,
+        Key: `${path}/${key}`,
+        ResponseContentDisposition: "inline",
+        ResponseContentType: "application/pdf",
+        ResponseContentEncoding: "bytes",
+        ResponseCacheControl: "no-cache",
+      }),
+      {
+        expiresIn: signedUrlExpireSeconds,
+      }
+    );
     return signedUrl;
   } catch (err) {
     console.log("Error getting PDF S3 temp URL:", err);
@@ -445,12 +456,13 @@ async function uploadFileToS3(file, path, fileName) {
   };
 
   try {
-    const data = await new Upload({
-      client: s3,
-      params,
-    }).done();
-    console.log("Upload Success", data.Location);
-    return data;
+    s3.putObject(params, (err, data) => {
+      if (err) {
+        throw err;
+      } else {
+        // console.log("File created on S3:", data);
+      }
+    });
   } catch (err) {
     console.log("Error", err);
     throw err;
