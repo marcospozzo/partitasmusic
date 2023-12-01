@@ -23,7 +23,18 @@ mongoose
   });
 
 // middleware
-app.use(cors());
+app.use(
+  cors({
+    credentials: true,
+    origin: [
+      "http://localhost:3000",
+      process.env.API_URL,
+      process.env.API_URL_WWW,
+      process.env.CMS_URL,
+      process.env.CMS_URL_WWW,
+    ],
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("views"));
