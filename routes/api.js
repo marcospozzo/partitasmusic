@@ -29,6 +29,7 @@ const User = require("../models/User");
 const multer = require("multer");
 const upload = multer();
 const nodePath = require("path");
+const puppeteer = require("puppeteer");
 
 async function getGroupContributors() {
   return Contributor.find({ category: "group" }).sort("sort").exec();
@@ -471,6 +472,55 @@ async function uploadFileToS3(file, path, fileName) {
 
 router.get("/verifyToken", verifyToken, (req, res) => {
   return res.sendStatus(200);
+});
+
+router.get("/generate-contributors-image/:path", async (req, res) => {
+  try {
+    const browser = await puppeteer.launch({ headless: "new" });
+    const page = await browser.newPage();
+    await page.goto(`${process.env.API_URL}/music-catalog/${req.params.path}`); // Reemplaza 'tu-url' con la URL de tu página
+    await page.setViewport({ width: 4000, height: 4000, deviceScaleFactor: 3 });
+
+    const firstArticle = await page.$("article");
+
+    // Keep only the first two children of the article
+    await page.evaluate((article) => {
+      const childrenToRemove = Array.from(article.children).slice(2);
+      childrenToRemove.forEach((child) => child.remove());
+    }, firstArticle);
+
+    // Create a new div and append the first two children to it
+    const divHandle = await page.evaluateHandle(() => {
+      const article = document.querySelector("article");
+      const div = document.createElement("div");
+      div.appendChild(article.children[0].cloneNode(true));
+      div.appendChild(article.children[1].cloneNode(true));
+      article.innerHTML = "";
+      article.appendChild(div);
+      return div;
+    });
+
+    // Add 3em padding to the div
+    await page.evaluate((div) => {
+      div.style.paddingTop = "2em";
+      div.style.paddingLeft = "3em";
+      div.style.paddingRight = "3em";
+    }, divHandle);
+
+    const screenshotBuffer = await divHandle.screenshot();
+
+    res.writeHead(200, {
+      "Content-Type": "image/png",
+      "Content-Length": screenshotBuffer.length,
+    });
+
+    res.end(screenshotBuffer);
+
+    await browser.close();
+  } catch (error) {
+    console.error("Error generating image:", error);
+    res.status(500).send("Internal Server Error");
+  }
 });
 
 // middleware
