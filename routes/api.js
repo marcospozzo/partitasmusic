@@ -564,7 +564,15 @@ function validateRequiredFields(fieldsArray, filesArray) {
 }
 
 function convertToSlug(string) {
-  return string.trim().replace(/\s+/g, "-").replace(/-+/g, "-").toLowerCase();
+  const withoutAccents = string
+    .normalize("NFD") // normalize to decomposed form
+    .replace(/[\u0300-\u036f]/g, ""); // remove diacritic marks
+
+  return withoutAccents
+    .trim()
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
+    .toLowerCase();
 }
 
 module.exports = router;
