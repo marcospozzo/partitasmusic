@@ -4,19 +4,14 @@ const router = require("express").Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const sendMail = require("../models/email/login");
-const createError = require("http-errors");
 const passport = require("passport");
+const { validateUser } = require("../middleware");
 
 // signup
-router.post("/signup", async (req, res, next) => {
+router.post("/signup", validateUser, async (req, res, next) => {
   const { name, email, password } = req.body;
-  let savedUser;
-
-  if (!name || !email || !password) {
-    return next(createError(400, "Missing fields"));
-  }
-
   const hashedPassword = await bcrypt.hash(password, 10);
+  let savedUser;
 
   try {
     const user = new User({
