@@ -32,6 +32,7 @@ app.use(
       process.env.API_URL_WWW,
       process.env.CMS_URL,
       process.env.CMS_URL_WWW,
+      /netlify\.app/,
     ],
   })
 );
