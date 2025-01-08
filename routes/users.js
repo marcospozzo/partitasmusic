@@ -29,7 +29,6 @@ router.post("/signup", validateUser, async (req, res, next) => {
     }
   }
 
-  sendMail.notifyAccountCreation(savedUser);
   res.status(200);
   req.flash("flashSuccess", "Account created");
   res.redirect("/login");
