@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3002;
 const mongoose = require("mongoose");
 const dotenv = require("dotenv").config();
 const passport = require("passport");
@@ -16,7 +16,12 @@ require("./config/passport")(passport);
 // db connect
 mongoose.set("strictQuery", false);
 mongoose
-  .connect(process.env.DB_CONNECT, {})
+  .connect(process.env.DB_CONNECT, {
+    serverSelectionTimeoutMS: 10000,
+    socketTimeoutMS: 30000,
+    family: 4,
+    retryWrites: true,
+  })
   .then(() => console.log("Connected to database"))
   .catch((error) => {
     console.log(error);
@@ -86,4 +91,7 @@ app.use((err, req, res) => {
   });
 });
 
-app.listen(PORT, () => console.log(`Server started at ${PORT}`));
+app.listen(PORT, () => {
+  console.log(`Server started at ${PORT}`);
+  if (process.send) process.send("ready");
+});
