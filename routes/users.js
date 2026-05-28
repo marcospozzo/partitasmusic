@@ -9,6 +9,7 @@ const { validateUser } = require("../middleware");
 
 // signup
 router.post("/signup", validateUser, async (req, res, next) => {
+  if (req.body.website) return res.redirect("/login");
   const { name, email, password } = req.body;
   const hashedPassword = await bcrypt.hash(password, 10);
   let savedUser;
@@ -97,6 +98,7 @@ router.get("/logout", (req, res) => {
 
 // user requests password reset based on email address
 router.post("/reset-password", async (req, res) => {
+  if (req.body.website) return res.redirect("/login");
   const email = req.body.email;
 
   User.findOne({ email: email }, async function (err, user) {
