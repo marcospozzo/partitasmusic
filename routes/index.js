@@ -51,7 +51,7 @@ router.get("/seven-guitar-craft-themes-book", (req, res) =>
   res.render("book", {
     title: "The Seven Guitar Craft Themes Book",
     user: req.user,
-  })
+  }),
 );
 
 // about us
@@ -59,7 +59,7 @@ router.get("/about-us", (req, res) =>
   res.render("about-us", {
     title: "About Us",
     user: req.user,
-  })
+  }),
 );
 
 // contact
@@ -68,7 +68,7 @@ router.get("/contact", (req, res) =>
     title: "Contact",
     user: req.user,
     body: req.session.body,
-  })
+  }),
 );
 
 // aphorisms
@@ -76,7 +76,7 @@ router.get("/aphorisms", (req, res) =>
   res.render("aphorisms", {
     title: "Guitar Craft Aphorisms",
     user: req.user,
-  })
+  }),
 );
 
 router.get("/discord", ensureAuthenticated, (req, res) => {
@@ -89,15 +89,15 @@ router.get("/contribute", (req, res) =>
     title: "Contribute",
     user: req.user,
     body: req.session.body,
-  })
+  }),
 );
 
-// picks and strings
-router.get("/picks-and-strings", (req, res) =>
-  res.render("picks-and-strings", {
-    title: "Picks & Strings",
+// scores picks and strings
+router.get("/scores-picks-and-strings", (req, res) =>
+  res.render("scores-picks-and-strings", {
+    title: "Scores, Picks & Strings",
     user: req.user,
-  })
+  }),
 );
 
 // the tuning
@@ -105,7 +105,7 @@ router.get("/the-tuning", (req, res) =>
   res.render("the-tuning", {
     title: "The Guitar Craft Tuning",
     user: req.user,
-  })
+  }),
 );
 
 // search
@@ -128,7 +128,7 @@ router.get("/search", async (req, res) => {
 router.get("/login", forwardAuthenticated, (req, res) =>
   res.render("login", {
     title: "Login",
-  })
+  }),
 );
 
 router.get("/music-catalog", async (req, res) => {
