@@ -24,7 +24,7 @@ const crypto = require("crypto");
 const passport = require("passport");
 const flash = require("connect-flash");
 const session = require("express-session");
-const MongoStore = require("connect-mongo");
+const { MongoStore } = require("connect-mongo");
 const helmet = require("helmet");
 var cors = require("cors");
 
