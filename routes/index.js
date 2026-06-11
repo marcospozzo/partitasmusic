@@ -8,7 +8,7 @@ const {
 } = require("../config/auth");
 
 // home
-router.get("/", async (req, res) => {
+router.get("/", async (req, res, next) => {
   try {
     const threeContributors = await api.getThreeRandomFeaturedContributors();
 
@@ -41,8 +41,7 @@ router.get("/", async (req, res) => {
       thirdContributor,
     });
   } catch (error) {
-    console.error(error);
-    createError(400, "Error");
+    return next(createError(400, error.message));
   }
 });
 
@@ -109,19 +108,22 @@ router.get("/the-tuning", (req, res) =>
 );
 
 // search
-router.get("/search", async (req, res) => {
-  const { q } = req.query; // Get the 'q' query parameter from the request
+router.get("/search", async (req, res, next) => {
+  try {
+    const { q } = req.query;
+    const pieces = await api.getPiecesThatMatchQuery(q);
+    const contributors = await api.getContributorsThatMatchQuery(q);
 
-  const pieces = await api.getPiecesThatMatchQuery(q);
-  const contributors = await api.getContributorsThatMatchQuery(q);
-
-  res.render("search", {
-    title: "Search",
-    user: req.user,
-    pieces: pieces,
-    contributors: contributors,
-    query: q,
-  });
+    res.render("search", {
+      title: "Search",
+      user: req.user,
+      pieces: pieces,
+      contributors: contributors,
+      query: q,
+    });
+  } catch (error) {
+    return next(createError(400, error.message));
+  }
 });
 
 // login
@@ -131,7 +133,7 @@ router.get("/login", forwardAuthenticated, (req, res) =>
   }),
 );
 
-router.get("/music-catalog", async (req, res) => {
+router.get("/music-catalog", async (req, res, next) => {
   try {
     const groups = await api.getGroupContributors();
     await api.getAllProfilePictures(groups);
@@ -145,12 +147,11 @@ router.get("/music-catalog", async (req, res) => {
       individuals: individuals,
     });
   } catch (error) {
-    console.error(error);
-    createError(400, "Error");
+    return next(createError(400, error.message));
   }
 });
 
-router.get("/music-catalog/:path", async (req, res) => {
+router.get("/music-catalog/:path", async (req, res, next) => {
   try {
     const pathOne = req.params.path;
     const contributorOne = await api.getContributor(pathOne);
@@ -203,8 +204,7 @@ router.get("/music-catalog/:path", async (req, res) => {
       });
     }
   } catch (error) {
-    console.error(error);
-    createError(400, "Error");
+    return next(createError(400, error.message));
   }
 });
 

@@ -44,36 +44,32 @@ router.get("/set-password/:token", async (req, res) => {
 });
 
 // user sets password with provided token
-router.post("/set-password/:token", async (req, res) => {
-  const password = req.body.password;
-  const token = req.params.token;
+router.post("/set-password/:token", async (req, res, next) => {
+  const { password } = req.body;
+  const { token } = req.params;
 
-  jwt.verify(token, process.env.RESET_TOKEN, function (err, decoded) {
-    if (err) {
-      req.flash("flashError", "Invalid or expired token");
+  let decoded;
+  try {
+    decoded = jwt.verify(token, process.env.RESET_TOKEN);
+  } catch (err) {
+    req.flash("flashError", "Invalid or expired token");
+    return res.redirect("/login");
+  }
+
+  try {
+    const user = await User.findById(decoded.id);
+    if (!user) {
+      req.flash("flashError", "Error finding user");
       return res.redirect("/login");
-    } else {
-      User.findById(decoded.id, async function (err, user) {
-        if (err || user == null) {
-          req.flash("flashError", "Error finding user");
-          return res.redirect("/login");
-        }
-
-        try {
-          const hashedPassword = await bcrypt.hash(password, 10);
-          user.password = hashedPassword;
-          await user.save({ validateModifiedOnly: true }); // workaround for mongoose-unique-validator bug in version 3.0.0
-        } catch (err) {
-          // console.error(err);
-          req.flash("flashError", "Error saving user");
-          return res.redirect("/login");
-        }
-        res.status(200);
-        req.flash("flashSuccess", "Password set correctly");
-        res.redirect("/login");
-      });
     }
-  });
+    user.password = await bcrypt.hash(password, 10);
+    await user.save({ validateModifiedOnly: true }); // workaround for mongoose-unique-validator bug in version 3.0.0
+    req.flash("flashSuccess", "Password set correctly");
+    res.redirect("/login");
+  } catch (err) {
+    req.flash("flashError", "Error saving user");
+    return res.redirect("/login");
+  }
 });
 
 // login
@@ -86,7 +82,7 @@ router.post("/login", (req, res, next) => {
 });
 
 // logout
-router.get("/logout", (req, res) => {
+router.get("/logout", (req, res, next) => {
   delete req.session.backUrl; // backUrl cleared so it does not go again
   delete req.session.body;
   req.logout(req.user, (err) => {
@@ -97,20 +93,22 @@ router.get("/logout", (req, res) => {
 });
 
 // user requests password reset based on email address
-router.post("/reset-password", async (req, res) => {
+router.post("/reset-password", async (req, res, next) => {
   if (req.body.website) return res.redirect("/login");
-  const email = req.body.email;
+  const { email } = req.body;
 
-  User.findOne({ email: email }, async function (err, user) {
-    if (err || user == null) {
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
       req.flash("flashError", "Error finding user");
       return res.redirect("/login");
     }
     sendMail.sendEmailWithToken(user, req.headers.host);
-    res.status(200);
     req.flash("flashSuccess", "Follow email instructions");
     res.redirect("/login");
-  });
+  } catch (err) {
+    return next(err);
+  }
 });
 
 module.exports = router;
