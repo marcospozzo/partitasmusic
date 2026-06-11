@@ -185,4 +185,6 @@ function topFunction() {
   document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
 }
 
+document.getElementById("myBtn").addEventListener("click", topFunction);
+
 ///// Scroll to top button end

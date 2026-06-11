@@ -2,9 +2,10 @@
   <!-- Google tag (gtag.js) -->
   <script
     async
+    nonce="<%= nonce %>"
     src="https://www.googletagmanager.com/gtag/js?id=G-SEW2791D2S"
   ></script>
-  <script>
+  <script nonce="<%= nonce %>">
     window.dataLayer = window.dataLayer || [];
     function gtag() {
       dataLayer.push(arguments);
@@ -45,6 +46,6 @@
   <link rel="stylesheet" href="/assets/css/main.css" />
 </head>
 
-<button onclick="topFunction()" id="myBtn" title="Go to top">
+<button id="myBtn" title="Go to top">
   <i class="icon solid fas fa-arrow-up"></i>
 </button>
