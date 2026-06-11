@@ -6,9 +6,18 @@ const jwt = require("jsonwebtoken");
 const sendMail = require("../models/email/login");
 const passport = require("passport");
 const { validateUser } = require("../middleware");
+const rateLimit = require("express-rate-limit");
+
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: "Too many attempts, please try again later.",
+});
 
 // signup
-router.post("/signup", validateUser, async (req, res, next) => {
+router.post("/signup", authLimiter, validateUser, async (req, res, next) => {
   if (req.body.website) return res.redirect("/login");
   const { name, email, password } = req.body;
   const hashedPassword = await bcrypt.hash(password, 10);
@@ -73,7 +82,7 @@ router.post("/set-password/:token", async (req, res, next) => {
 });
 
 // login
-router.post("/login", (req, res, next) => {
+router.post("/login", authLimiter, (req, res, next) => {
   passport.authenticate("local", {
     successRedirect: req.session.backUrl || "/",
     failureRedirect: "/login",
@@ -93,7 +102,7 @@ router.get("/logout", (req, res, next) => {
 });
 
 // user requests password reset based on email address
-router.post("/reset-password", async (req, res, next) => {
+router.post("/reset-password", authLimiter, async (req, res, next) => {
   if (req.body.website) return res.redirect("/login");
   const { email } = req.body;
 
