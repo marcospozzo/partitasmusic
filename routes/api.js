@@ -23,6 +23,10 @@ const s3 = new S3({
 const myBucket = process.env.AWS_BUCKET_NAME;
 
 const signedUrlExpireSeconds = 60 * 1 * 1; // 60 seconds, 0 minute, 0 hour
+
+function escapeRegex(str) {
+  return str.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+}
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const User = require("../models/User");
@@ -49,10 +53,11 @@ async function getPieces(path) {
 
 async function getPiecesThatMatchQuery(query) {
   try {
+    const safeQuery = escapeRegex(query);
     const pieces = await Piece.find({
       $or: [
-        { title: { $regex: query, $options: "i" } },
-        { description: { $regex: query, $options: "i" } },
+        { title: { $regex: safeQuery, $options: "i" } },
+        { description: { $regex: safeQuery, $options: "i" } },
       ],
     });
     return pieces;
@@ -63,13 +68,14 @@ async function getPiecesThatMatchQuery(query) {
 
 async function getContributorsThatMatchQuery(query) {
   try {
+    const safeQuery = escapeRegex(query);
     const contributors = await Contributor.find({
       $or: [
-        { name: { $regex: query, $options: "i" } },
-        { country: { $regex: query, $options: "i" } },
-        { bio: { $regex: query, $options: "i" } },
-        { contact: { $regex: query, $options: "i" } },
-        { donate: { $regex: query, $options: "i" } },
+        { name: { $regex: safeQuery, $options: "i" } },
+        { country: { $regex: safeQuery, $options: "i" } },
+        { bio: { $regex: safeQuery, $options: "i" } },
+        { contact: { $regex: safeQuery, $options: "i" } },
+        { donate: { $regex: safeQuery, $options: "i" } },
       ],
     });
     await getAllProfilePictures(contributors);
