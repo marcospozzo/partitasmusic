@@ -4,6 +4,12 @@ const PORT = process.env.PORT || 3002;
 const mongoose = require("mongoose");
 const dotenv = require("dotenv").config();
 
+// Suppress DEP0044 (util.isArray) from third-party dependencies
+process.on("warning", (warning) => {
+  if (warning.code === "DEP0044") return;
+  console.warn(warning.stack);
+});
+
 // Validate required environment variables at startup
 const REQUIRED_ENV = [
   "DB_CONNECT",
@@ -106,7 +112,7 @@ app.use(
       touchAfter: 24 * 3600, // only update session once per day unless data changes
     }),
     cookie: {
-      secure: process.env.NODE_ENV === "production",
+      secure: false, // proxy forwards HTTP internally; browser handles HTTPS at edge
       httpOnly: true,
       sameSite: "lax",
       maxAge: 24 * 60 * 60 * 1000, // 24 hours
