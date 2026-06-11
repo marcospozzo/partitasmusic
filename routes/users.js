@@ -83,10 +83,21 @@ router.post("/set-password/:token", async (req, res, next) => {
 
 // login
 router.post("/login", authLimiter, (req, res, next) => {
-  passport.authenticate("local", {
-    successRedirect: req.session.backUrl || "/",
-    failureRedirect: "/login",
-    failureFlash: true,
+  passport.authenticate("local", (err, user, info) => {
+    console.log("[LOGIN] err:", err);
+    console.log("[LOGIN] user:", user ? user.email : null);
+    console.log("[LOGIN] info:", info);
+    if (err) return next(err);
+    if (!user) {
+      req.flash("error", info?.message || "Login failed");
+      return res.redirect("/login");
+    }
+    req.login(user, (loginErr) => {
+      console.log("[LOGIN] req.login error:", loginErr);
+      console.log("[LOGIN] session after login:", req.session);
+      if (loginErr) return next(loginErr);
+      return res.redirect(req.session.backUrl || "/");
+    });
   })(req, res, next);
 });
 
