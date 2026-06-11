@@ -16,9 +16,6 @@ async function fetchContributorWithPieces(path) {
 
 // home
 router.get("/", async (req, res, next) => {
-  console.log("[HOME] req.user:", req.user ? req.user.email : null);
-  console.log("[HOME] session:", req.session);
-  console.log("[HOME] cookies:", req.headers.cookie);
   try {
     const threeContributors = await api.getThreeRandomFeaturedContributors();
     const paths = threeContributors.map((c) => c.path);
