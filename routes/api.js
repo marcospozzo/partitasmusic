@@ -531,13 +531,11 @@ router.get("/generate-contributors-image/:path", async (req, res) => {
 
 // middleware
 function verifyToken(req, res, next) {
-  jwt.verify(
-    req.header("x-access-token"),
-    process.env.CMS_TOKEN,
-    function (err) {
-      return err ? res.sendStatus(498) : next();
-    }
-  );
+  const token = req.header("x-access-token");
+  if (!token) return res.sendStatus(401);
+  jwt.verify(token, process.env.CMS_TOKEN, function (err) {
+    return err ? res.sendStatus(498) : next();
+  });
 }
 
 // middleware
