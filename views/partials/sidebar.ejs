@@ -8,7 +8,7 @@
       </form>
     </section>
 
-    <script>
+    <script nonce="<%= nonce %>">
       var form = document.querySelector("#search form");
       var input = document.querySelector("#search input");
       input.addEventListener("keyup", function (event) {
@@ -92,7 +92,7 @@
 </div>
 
 <!-- aphorism fetch script-->
-<script>
+<script nonce="<%= nonce %>">
   aphorism()
     .then((text) => {
       document.getElementById("aphorism").textContent = `"${text}"`;

@@ -20,6 +20,7 @@ for (const key of REQUIRED_ENV) {
   }
 }
 
+const crypto = require("crypto");
 const passport = require("passport");
 const flash = require("connect-flash");
 const session = require("express-session");
@@ -45,6 +46,12 @@ mongoose
     console.log(error);
   });
 
+// Generate a fresh nonce for every request (used by CSP and EJS templates)
+app.use((req, res, next) => {
+  res.locals.nonce = crypto.randomBytes(16).toString("base64");
+  next();
+});
+
 // middleware
 app.use(
   cors({
@@ -60,7 +67,27 @@ app.use(
   })
 );
 
-app.use(helmet());
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+        "script-src": [
+          "'self'",
+          "https://www.googletagmanager.com",
+          (req, res) => `'nonce-${res.locals.nonce}'`,
+        ],
+        "script-src-attr": ["'none'"],
+        "img-src": ["'self'", "data:", "https://*.amazonaws.com"],
+        "connect-src": [
+          "'self'",
+          "https://www.google-analytics.com",
+          "https://region1.google-analytics.com",
+        ],
+      },
+    },
+  })
+);
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 app.use(express.static("views"));
