@@ -4,6 +4,15 @@ const Contributor = require("../models/Contributor");
 const aphorisms = require("../models/aphorism/aphorisms");
 const router = require("express").Router();
 const sendMail = require("../models/email/contact");
+const rateLimit = require("express-rate-limit");
+
+const cmsLoginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: "Too many attempts, please try again later.",
+});
 const {
   ensureAuthenticatedPieces,
   ensureAuthenticatedForm,
@@ -195,7 +204,9 @@ router.get("/aphorism", async (req, res, next) => {
 
 // contact form
 router.post("/contact-form", ensureAuthenticatedForm, (req, res, next) => {
-  const { name, email, message } = req.body;
+  const name = (req.body.name || "").trim();
+  const email = (req.body.email || "").trim().toLowerCase();
+  const message = (req.body.message || "").trim();
 
   if (!name || !email || !message) {
     return next(createError(400, "Missing fields"));
@@ -239,7 +250,7 @@ router.get("/get-contributor/:path", async (req, res) => {
 });
 
 // cms login
-router.post("/signin", async (req, res) => {
+router.post("/signin", cmsLoginLimiter, async (req, res) => {
   const { username, password } = req.body;
 
   if (!username || !password) {
@@ -251,7 +262,7 @@ router.post("/signin", async (req, res) => {
       email: username,
     });
     if (!user || user.role !== "admin") {
-      return res.sendStatus(404);
+      return res.sendStatus(403);
     } else {
       bcrypt.compare(password, user.password, (err, isMatch) => {
         if (err) {
@@ -470,8 +481,6 @@ async function uploadFileToS3(file, path, fileName) {
     s3.putObject(params, (err, data) => {
       if (err) {
         throw err;
-      } else {
-        // console.log("File created on S3:", data);
       }
     });
   } catch (err) {

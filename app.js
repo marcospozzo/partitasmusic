@@ -3,6 +3,23 @@ const app = express();
 const PORT = process.env.PORT || 3002;
 const mongoose = require("mongoose");
 const dotenv = require("dotenv").config();
+
+// Validate required environment variables at startup
+const REQUIRED_ENV = [
+  "DB_CONNECT",
+  "SESSION_SECRET",
+  "CMS_TOKEN",
+  "RESET_TOKEN",
+  "AWS_ACCESS_KEY_ID",
+  "AWS_SECRET_ACCESS_KEY",
+];
+for (const key of REQUIRED_ENV) {
+  if (!process.env[key]) {
+    console.error(`[FATAL] Missing required environment variable: ${key}`);
+    process.exit(1);
+  }
+}
+
 const passport = require("passport");
 const flash = require("connect-flash");
 const session = require("express-session");
