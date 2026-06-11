@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const random = require("mongoose-simple-random");
 
-const UserSchema = new mongoose.Schema(
+const ContributorSchema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -53,6 +53,11 @@ const UserSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-UserSchema.plugin(random);
-const Contributor = mongoose.model("Contributor", UserSchema);
+ContributorSchema.index({ path: 1 });
+ContributorSchema.index({ category: 1 });
+ContributorSchema.index({ type: 1 });
+ContributorSchema.index({ name: "text", bio: "text", country: "text" });
+
+ContributorSchema.plugin(random);
+const Contributor = mongoose.model("Contributor", ContributorSchema);
 module.exports = Contributor;

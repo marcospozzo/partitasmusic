@@ -7,31 +7,21 @@ const {
   forwardAuthenticated,
 } = require("../config/auth");
 
+async function fetchContributorWithPieces(path) {
+  const contributor = await api.getContributor(path);
+  await api.getProfilePicture(contributor);
+  const pieces = await api.getPieces(path);
+  return { contributor, pieces };
+}
+
 // home
 router.get("/", async (req, res, next) => {
   try {
     const threeContributors = await api.getThreeRandomFeaturedContributors();
+    const paths = threeContributors.map((c) => c.path);
 
-    const pathOne = threeContributors[0].path;
-    const contributorOne = await api.getContributor(pathOne);
-    api.getProfilePicture(contributorOne);
-    const firstContributor = {};
-    firstContributor.contributor = contributorOne;
-    firstContributor.pieces = await api.getPieces(pathOne);
-
-    const pathTwo = threeContributors[1].path;
-    const contributorTwo = await api.getContributor(pathTwo);
-    api.getProfilePicture(contributorTwo);
-    const secondContributor = {};
-    secondContributor.contributor = contributorTwo;
-    secondContributor.pieces = await api.getPieces(pathTwo);
-
-    const pathThree = threeContributors[2].path;
-    const contributorThree = await api.getContributor(pathThree);
-    api.getProfilePicture(contributorThree);
-    const thirdContributor = {};
-    thirdContributor.contributor = contributorThree;
-    thirdContributor.pieces = await api.getPieces(pathThree);
+    const [firstContributor, secondContributor, thirdContributor] =
+      await Promise.all(paths.map(fetchContributorWithPieces));
 
     res.render("home", {
       title: "Home",
@@ -180,20 +170,10 @@ router.get("/music-catalog/:path", async (req, res, next) => {
       firstContributor.pieces = pieces;
 
       const twoContributors = await api.getTwoRandomContributorsExcept(pathOne);
+      const sidePaths = twoContributors.map((c) => c.path);
 
-      const pathTwo = twoContributors[0].path;
-      const contributorTwo = await api.getContributor(pathTwo);
-      await api.getProfilePicture(contributorTwo);
-      const secondContributor = {};
-      secondContributor.contributor = contributorTwo;
-      secondContributor.pieces = await api.getPieces(pathTwo);
-
-      const pathThree = twoContributors[1].path;
-      const contributorThree = await api.getContributor(pathThree);
-      await api.getProfilePicture(contributorThree);
-      const thirdContributor = {};
-      thirdContributor.contributor = contributorThree;
-      thirdContributor.pieces = await api.getPieces(pathThree);
+      const [secondContributor, thirdContributor] =
+        await Promise.all(sidePaths.map(fetchContributorWithPieces));
 
       res.render("single-contributor", {
         title: title,

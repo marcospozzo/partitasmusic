@@ -184,9 +184,13 @@ async function getPdfS3TempUrl(path, key) {
 }
 
 // aphorism
-router.get("/aphorism", async (req, res) => {
-  const aphorism = aphorisms.getAphorismOfTheDay();
-  res.send(aphorism);
+router.get("/aphorism", async (req, res, next) => {
+  try {
+    const aphorism = await aphorisms.getAphorismOfTheDay();
+    res.send(aphorism);
+  } catch (err) {
+    return next(err);
+  }
 });
 
 // contact form

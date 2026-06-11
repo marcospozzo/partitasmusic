@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const UserSchema = new mongoose.Schema(
+const PieceSchema = new mongoose.Schema(
   {
     title: {
       type: String,
@@ -31,5 +31,8 @@ const UserSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Piece = mongoose.model("Piece", UserSchema);
+PieceSchema.index({ path: 1 });
+PieceSchema.index({ title: "text", description: "text" });
+
+const Piece = mongoose.model("Piece", PieceSchema);
 module.exports = Piece;
