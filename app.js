@@ -6,6 +6,7 @@ const dotenv = require("dotenv").config();
 const passport = require("passport");
 const flash = require("connect-flash");
 const session = require("express-session");
+const helmet = require("helmet");
 var cors = require("cors");
 
 app.set("view engine", "ejs");
@@ -42,6 +43,7 @@ app.use(
   })
 );
 
+app.use(helmet());
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 app.use(express.static("views"));
@@ -51,9 +53,14 @@ app.enable("trust proxy");
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
-    resave: true,
-    saveUninitialized: true,
-    cookie: { maxAge: 60 * 24 * 60 * 60 * 1000 }, // 60 days
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: process.env.NODE_ENV === "production",
+      httpOnly: true,
+      sameSite: "strict",
+      maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    },
   })
 );
 
@@ -81,12 +88,13 @@ app.use((req, res) => {
 });
 
 // error handler
-app.use((err, req, res) => {
-  res.status(err.status || 500);
-  res.send({
+app.use((err, req, res, next) => {
+  const status = err.status || 500;
+  const isDev = process.env.NODE_ENV !== "production";
+  res.status(status).json({
     error: {
-      status: err.status || 500,
-      message: err.message || "Internal Server Error",
+      status,
+      message: isDev ? err.message : "Internal Server Error",
     },
   });
 });
