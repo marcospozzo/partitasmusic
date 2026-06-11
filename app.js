@@ -24,6 +24,7 @@ const crypto = require("crypto");
 const passport = require("passport");
 const flash = require("connect-flash");
 const session = require("express-session");
+const MongoStore = require("connect-mongo");
 const helmet = require("helmet");
 var cors = require("cors");
 
@@ -99,6 +100,10 @@ app.use(
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
+    store: MongoStore.create({
+      mongoUrl: process.env.DB_CONNECT,
+      touchAfter: 24 * 3600, // only update session once per day unless data changes
+    }),
     cookie: {
       secure: process.env.NODE_ENV === "production",
       httpOnly: true,
