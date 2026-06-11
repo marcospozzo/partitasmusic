@@ -95,6 +95,9 @@ router.post("/login", authLimiter, (req, res, next) => {
     req.login(user, (loginErr) => {
       console.log("[LOGIN] req.login error:", loginErr);
       console.log("[LOGIN] session after login:", req.session);
+      console.log("[LOGIN] req.secure:", req.secure);
+      console.log("[LOGIN] x-forwarded-proto:", req.headers["x-forwarded-proto"]);
+      console.log("[LOGIN] redirecting to:", req.session.backUrl || "/");
       if (loginErr) return next(loginErr);
       return res.redirect(req.session.backUrl || "/");
     });
