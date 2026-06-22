@@ -385,7 +385,7 @@ router.post(
 );
 
 router.post(
-  "/create-Piece/:path",
+  "/create-piece/:path",
   verifyToken,
   upload.fields([
     { name: "audio", maxCount: 1 },

@@ -1,6 +1,7 @@
 const express = require("express");
+const path = require("path");
 const app = express();
-const PORT = process.env.PORT || 3002;
+const PORT = process.env.PORT || 3003;
 const mongoose = require("mongoose");
 const dotenv = require("dotenv").config();
 
@@ -68,11 +69,8 @@ app.use(
       "http://localhost:3000",
       process.env.API_URL,
       process.env.API_URL_WWW,
-      process.env.CMS_URL,
-      process.env.CMS_URL_WWW,
-      /netlify\.app/,
     ],
-  })
+  }),
 );
 
 app.use(
@@ -92,9 +90,15 @@ app.use(
           "https://www.google-analytics.com",
           "https://region1.google-analytics.com",
         ],
+        "style-src": [
+          "'self'",
+          "'unsafe-inline'",
+          "https://fonts.googleapis.com",
+        ],
+        "font-src": ["'self'", "https://fonts.gstatic.com"],
       },
     },
-  })
+  }),
 );
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
@@ -117,7 +121,7 @@ app.use(
       sameSite: "lax",
       maxAge: 24 * 60 * 60 * 1000, // 24 hours
     },
-  })
+  }),
 );
 
 // passport
@@ -137,6 +141,14 @@ app.use(function (req, res, next) {
 app.use("/", require("./routes/index"));
 app.use("/api", require("./routes/api"));
 app.use("/users", require("./routes/users"));
+
+// Serve CMS static files (JS chunks, CSS, images, etc.)
+app.use("/cms", express.static(path.join(__dirname, "cms/build")));
+
+// React Router catch-all — must come AFTER /api routes
+app.get("/cms/*", (req, res) => {
+  res.sendFile(path.join(__dirname, "cms/build", "index.html"));
+});
 
 // 404 handler
 app.use((req, res) => {

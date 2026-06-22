@@ -2,3 +2,8 @@ node_modules/
 .env
 .DS_Store
 aphorismOfTheDay.json
+cms/node_modules/
+cms/build/
+cms/.env
+cms/.env.development
+cms/.env.local
