@@ -3,7 +3,7 @@ import FormField from "./FormField";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { handlePieceSubmit } from "../../../utils/utils";
+import { handlePieceSubmit, deletePiece } from "../../../utils/utils";
 
 export default function Piece({
   piece = { title: "", description: "" },
@@ -52,6 +52,26 @@ export default function Piece({
     });
   };
 
+  const handleDelete = (e) => {
+    e.preventDefault();
+    if (!window.confirm(`Delete "${data.title}"? This will also remove the audio and score files from S3.`))
+      return;
+    toast.promise(deletePiece(data._id), {
+      pending: "Deleting...",
+      success: {
+        render({ data }) {
+          setTimeout(() => navigate(0), 1000);
+          return data.success;
+        },
+      },
+      error: {
+        render({ data }) {
+          return data?.response?.data?.error || "Error deleting piece";
+        },
+      },
+    });
+  };
+
   return (
     <form className="piece" onSubmit={handleSubmit}>
       <FormField
@@ -69,30 +89,54 @@ export default function Piece({
           value={data.description}
         />
       </div>
+      {!isNewPiece && (
+        <div className="input-row">
+          <label>Status:</label>
+          <select
+            name="status"
+            onChange={handleInputChange}
+            className="input-box input-contributor"
+            value={data.status || "active"}
+          >
+            <option value="active">active</option>
+            <option value="paused">paused</option>
+            <option value="deleted">deleted</option>
+          </select>
+        </div>
+      )}
       <div className="contributor-button-row">
         <Button
           className={audioFile ? "Button file-selected" : ""}
-          style={{ marginBottom: "1em", width: "30%" }}
+          style={{ marginBottom: "1em", width: "25%" }}
           component="label"
         >
-          Select audio file
+          Select audio
           <input hidden onChange={handleAudioChange} accept="audio/mp3" type="file" />
         </Button>
         <Button
           className={scoreFile ? "Button file-selected" : ""}
-          style={{ marginBottom: "1em", width: "30%" }}
+          style={{ marginBottom: "1em", width: "25%" }}
           component="label"
         >
-          Select score file
+          Select score
           <input hidden onChange={handleScoreChange} accept="application/pdf" type="file" />
         </Button>
         <Button
           type="submit"
-          style={{ marginBottom: "1em", width: "30%" }}
+          style={{ marginBottom: "1em", width: "25%" }}
           variant="contained"
         >
-          {isNewPiece ? "Create piece" : "Update piece"}
+          {isNewPiece ? "Create" : "Update"}
         </Button>
+        {!isNewPiece && (
+          <Button
+            style={{ marginBottom: "1em", width: "20%", color: "#d32f2f", borderColor: "#d32f2f" }}
+            onClick={handleDelete}
+            variant="outlined"
+          >
+            Delete
+          </Button>
+        )}
       </div>
     </form>
   );

@@ -61,31 +61,32 @@ function PlusButton() {
 }
 
 function ContributorsList({ data, filterText }) {
-  const list = [];
-
-  data.forEach((contributor) => {
-    if (
-      contributor.name.toLowerCase().indexOf(filterText.toLowerCase()) === -1
-    ) {
-      return;
-    } else {
-      list.push(
-        <ContributorCard
-          key={contributor._id}
-          name={contributor.name}
-          path={contributor.path}
-        />
-      );
-    }
-  });
+  const list = data
+    .filter((c) =>
+      c.name.toLowerCase().includes(filterText.toLowerCase())
+    )
+    .map((c) => (
+      <ContributorCard key={c._id} name={c.name} path={c.path} status={c.status} />
+    ));
 
   return <div className="contributors-list">{list}</div>;
 }
 
-function ContributorCard({ name, path }) {
+function ContributorCard({ name, path, status }) {
+  const statusClass =
+    status === "paused" || status === "deleted"
+      ? `contributor-card--${status}`
+      : "";
+
   return (
-    <Link to={`/contributors/${path}`} className="contributor-card">
+    <Link to={`/contributors/${path}`} className={`contributor-card ${statusClass}`}>
       {name}
+      {status === "paused" && (
+        <span className="status-badge status-badge--paused">paused</span>
+      )}
+      {status === "deleted" && (
+        <span className="status-badge status-badge--deleted">deleted</span>
+      )}
     </Link>
   );
 }

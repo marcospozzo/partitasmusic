@@ -193,6 +193,21 @@ export default function Contributor({ path = "" }) {
             value={data.bio || ""}
           />
         </div>
+        {!isNewContributor && (
+          <div className="input-row">
+            <label>Status:</label>
+            <select
+              name="status"
+              onChange={handleInputChange}
+              className="input-box input-contributor"
+              value={data.status || "active"}
+            >
+              <option value="active">active</option>
+              <option value="paused">paused</option>
+              <option value="deleted">deleted</option>
+            </select>
+          </div>
+        )}
         <div className="contributor-button-row">
           <Button
             style={{ width: "60%" }}

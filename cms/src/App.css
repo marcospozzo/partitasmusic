@@ -113,13 +113,43 @@ input {
   background-color: #DFDBD4;
   color: black;
   border-radius: 0.5em;
-  padding: 1em; 
+  padding: 1em;
   margin-bottom: 0.5em;
   margin-left: 1em;
+  display: flex;
+  align-items: center;
 }
 
 .contributor-card:hover {
   transform: scale(1.02);
+}
+
+.contributor-card--paused {
+  opacity: 0.6;
+}
+
+.contributor-card--deleted {
+  opacity: 0.4;
+  text-decoration: line-through;
+}
+
+.status-badge {
+  font-size: 0.7em;
+  padding: 0.15em 0.45em;
+  border-radius: 3px;
+  margin-left: 0.6em;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.status-badge--paused {
+  background: #f5a623;
+  color: white;
+}
+
+.status-badge--deleted {
+  background: #d32f2f;
+  color: white;
 }
 
 .contributor-edit {
@@ -301,4 +331,26 @@ label {
   align-items: center;
   height: 50vh;
   font-weight: lighter;
+}
+
+.loading-spinner {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loading-spinner::after {
+  content: "";
+  width: 2em;
+  height: 2em;
+  border: 3px solid #C0A897;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }

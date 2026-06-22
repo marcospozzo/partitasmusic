@@ -44,26 +44,32 @@ const upload = multer();
 const nodePath = require("path");
 const puppeteer = require("puppeteer");
 
+// Only show documents that are not paused or deleted on the public site.
+// Using $nin instead of { status: "active" } so pre-existing documents
+// without a status field are treated as active (no migration needed).
+const ACTIVE_FILTER = { status: { $nin: ["paused", "deleted"] } };
+
 async function getGroupContributors() {
-  return Contributor.find({ category: "group" }).sort("sort").exec();
+  return Contributor.find({ ...ACTIVE_FILTER, category: "group" }).sort("sort").exec();
 }
 
 async function getIndividualContributors() {
-  return Contributor.find({ category: "individual" }).sort("sort").exec();
+  return Contributor.find({ ...ACTIVE_FILTER, category: "individual" }).sort("sort").exec();
 }
 
 async function getContributor(path) {
-  return Contributor.findOne({ path: path }).exec();
+  return Contributor.findOne({ ...ACTIVE_FILTER, path: path }).exec();
 }
 
 async function getPieces(path) {
-  return Piece.find({ path: path }).exec();
+  return Piece.find({ ...ACTIVE_FILTER, path: path }).exec();
 }
 
 async function getPiecesThatMatchQuery(query) {
   try {
     const safeQuery = escapeRegex(query);
     const pieces = await Piece.find({
+      ...ACTIVE_FILTER,
       $or: [
         { title: { $regex: safeQuery, $options: "i" } },
         { description: { $regex: safeQuery, $options: "i" } },
@@ -79,6 +85,7 @@ async function getContributorsThatMatchQuery(query) {
   try {
     const safeQuery = escapeRegex(query);
     const contributors = await Contributor.find({
+      ...ACTIVE_FILTER,
       $or: [
         { name: { $regex: safeQuery, $options: "i" } },
         { country: { $regex: safeQuery, $options: "i" } },
@@ -95,7 +102,7 @@ async function getContributorsThatMatchQuery(query) {
 }
 
 async function getTwoRandomContributorsExcept(path) {
-  const filter = { path: { $nin: [path] } };
+  const filter = { ...ACTIVE_FILTER, path: { $nin: [path] } };
 
   return new Promise((resolve, reject) => {
     Contributor.findRandom(filter, {}, { limit: 2 }, function (err, result) {
@@ -105,7 +112,7 @@ async function getTwoRandomContributorsExcept(path) {
 }
 
 async function getThreeRandomFeaturedContributors() {
-  const filter = { type: { $in: "featured" } };
+  const filter = { ...ACTIVE_FILTER, type: { $in: "featured" } };
 
   return new Promise((resolve, reject) => {
     Contributor.findRandom(filter, {}, { limit: 3 }, function (err, result) {
@@ -229,7 +236,7 @@ router.get("/get-pieces/:path", async (req, res) => {
 router.get("/get-contributors", async (req, res) => {
   const contributors = await Contributor.find()
     .sort("sort")
-    .select("name path")
+    .select("name path status")
     .exec();
 
   res.send(contributors);
@@ -354,6 +361,7 @@ router.post(
       category,
       path,
       type,
+      status,
     } = req.body;
 
     try {
@@ -367,6 +375,8 @@ router.post(
       contributor.category = category;
       (type === "featured" || type === "not-featured") &&
         (contributor.type = type);
+      if (["active", "paused", "deleted"].includes(status))
+        contributor.status = status;
 
       // update profile picture if present
       if (imageFile) {
@@ -432,7 +442,7 @@ router.post(
   ]),
   validateRequiredFields(["id", "title", "description"], []),
   async (req, res, next) => {
-    const { id, title, description } = req.body;
+    const { id, title, description, status } = req.body;
     let audioFile, scoreFile;
     if (req.files && req.files["audio"]) {
       audioFile = req.files["audio"][0];
@@ -445,6 +455,8 @@ router.post(
       let piece = await Piece.findById(id);
       piece.title = title;
       piece.description = description;
+      if (["active", "paused", "deleted"].includes(status))
+        piece.status = status;
 
       // update audio file if present
       if (audioFile) {
@@ -491,6 +503,18 @@ async function uploadFileToS3(file, path, fileName) {
 
 router.get("/verifyToken", verifyToken, (req, res) => {
   return res.sendStatus(200);
+});
+
+router.delete("/piece/:id", verifyToken, async (req, res, next) => {
+  try {
+    const piece = await Piece.findById(req.params.id);
+    if (!piece) return res.sendStatus(404);
+
+    await Piece.updateOne({ _id: req.params.id }, { status: "deleted" });
+    res.status(200).json({ success: "Piece deleted" });
+  } catch (err) {
+    return next(err);
+  }
 });
 
 router.get("/generate-contributors-image/:path", async (req, res) => {

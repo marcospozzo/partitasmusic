@@ -49,6 +49,11 @@ const ContributorSchema = new mongoose.Schema(
       type: String,
       enum: ["featured", "not-featured"],
     },
+    status: {
+      type: String,
+      enum: ["active", "paused", "deleted"],
+      default: "active",
+    },
   },
   { timestamps: true }
 );

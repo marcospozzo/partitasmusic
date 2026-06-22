@@ -27,6 +27,11 @@ const PieceSchema = new mongoose.Schema(
       max: 512,
       required: true,
     },
+    status: {
+      type: String,
+      enum: ["active", "paused", "deleted"],
+      default: "active",
+    },
   },
   { timestamps: true }
 );
