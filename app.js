@@ -1,15 +1,15 @@
+// Must be first — mongoose triggers DEP0044 during require, before any later handler would register
+process.on("warning", (warning) => {
+  if (warning.code === "DEP0044") return;
+  console.warn(warning.stack);
+});
+
 const express = require("express");
 const path = require("path");
 const app = express();
 const PORT = process.env.PORT || 3003;
 const mongoose = require("mongoose");
 const dotenv = require("dotenv").config();
-
-// Suppress DEP0044 (util.isArray) from third-party dependencies
-process.on("warning", (warning) => {
-  if (warning.code === "DEP0044") return;
-  console.warn(warning.stack);
-});
 
 // Validate required environment variables at startup
 const REQUIRED_ENV = [
