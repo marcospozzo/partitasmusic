@@ -43,7 +43,6 @@ function App() {
             </Protected>
           }
         />
-        <Route path="*" element={<Navigate to="/" />} />
         <Route
           path="/users"
           element={
@@ -53,6 +52,7 @@ function App() {
             </Protected>
           }
         />
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </>
   );

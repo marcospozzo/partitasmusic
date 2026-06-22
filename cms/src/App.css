@@ -163,23 +163,6 @@ textarea {
   align-items: center;
 }
 
-.editable-title {
-  font-weight: bold;
-  width: 32em;
-  text-align: left;
-}
-
-.editable-title:hover {
-  background-color: #d2d2d2;
-  transition: 500ms;
-}
-
-.editable-row {
-  display: flex;
-  align-items: center;
-  height: 2em;
-}
-
 select {
   border: none;
   outline: none;
@@ -284,6 +267,15 @@ label {
 .pieces-title {
   align-self: center;
   font-weight: lighter;
+  margin: 0;
+}
+
+.pieces-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  padding: 0.5em 0;
 }
 
 @media (max-width: 1000px) {
