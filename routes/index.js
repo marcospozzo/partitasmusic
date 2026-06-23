@@ -123,15 +123,15 @@ router.get("/login", forwardAuthenticated, (req, res) =>
   }),
 );
 
-router.get("/music-catalog", async (req, res, next) => {
+router.get("/original-music", async (req, res, next) => {
   try {
     const groups = await api.getGroupContributors();
     await api.getAllProfilePictures(groups);
     const individuals = await api.getIndividualContributors();
     await api.getAllProfilePictures(individuals);
 
-    res.render("music-catalog", {
-      title: "Music Catalog",
+    res.render("original-music", {
+      title: "Original Music",
       user: req.user,
       groups: groups,
       individuals: individuals,
@@ -141,7 +141,7 @@ router.get("/music-catalog", async (req, res, next) => {
   }
 });
 
-router.get("/music-catalog/:path", async (req, res, next) => {
+router.get("/original-music/:path", async (req, res, next) => {
   try {
     const pathOne = req.params.path;
     const contributorOne = await api.getContributor(pathOne);
@@ -172,8 +172,9 @@ router.get("/music-catalog/:path", async (req, res, next) => {
       const twoContributors = await api.getTwoRandomContributorsExcept(pathOne);
       const sidePaths = twoContributors.map((c) => c.path);
 
-      const [secondContributor, thirdContributor] =
-        await Promise.all(sidePaths.map(fetchContributorWithPieces));
+      const [secondContributor, thirdContributor] = await Promise.all(
+        sidePaths.map(fetchContributorWithPieces),
+      );
 
       res.render("single-contributor", {
         title: title,
@@ -190,7 +191,7 @@ router.get("/music-catalog/:path", async (req, res, next) => {
 
 // redirect for social media legacy urls
 router.get("/contributors/:path", async (req, res) => {
-  res.redirect(`/music-catalog/${req.params.path}`);
+  res.redirect(`/original-music/${req.params.path}`);
 });
 
 module.exports = router;

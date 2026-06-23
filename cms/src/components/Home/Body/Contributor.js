@@ -21,7 +21,7 @@ export default function Contributor({ path = "" }) {
       const promise = new Promise(async (resolve, reject) => {
         try {
           const response = await fetch(
-            `/api/generate-contributors-image/${path}`
+            `/api/generate-contributors-image/${path}`,
           );
           const blob = await response.blob();
           const link = document.createElement("a");
@@ -72,14 +72,17 @@ export default function Contributor({ path = "" }) {
       data,
       newPicture,
       contributorPath,
-      isNewContributor
+      isNewContributor,
     );
     toast.promise(promise, {
       pending: "Loading...",
       success: {
         render({ data }) {
           isNewContributor &&
-            setTimeout(() => navigate(`/contributors/${contributorPath}`), 1000);
+            setTimeout(
+              () => navigate(`/contributors/${contributorPath}`),
+              1000,
+            );
           return data.success;
         },
       },
@@ -117,7 +120,7 @@ export default function Contributor({ path = "" }) {
         {!isNewContributor && (
           <>
             <a
-              href={`/music-catalog/${path}`}
+              href={`/original-music/${path}`}
               className="links unselected"
               target="_blank"
               rel="noreferrer"
@@ -153,11 +156,36 @@ export default function Contributor({ path = "" }) {
             type="file"
           />
         </Button>
-        <FormField label="Name" fieldName="name" value={data.name ?? ""} onChange={handleInputChange} />
-        <FormField label="Sort by" fieldName="sortBy" value={data.sortBy ?? ""} onChange={handleInputChange} />
-        <FormField label="Country" fieldName="country" value={data.country ?? ""} onChange={handleInputChange} />
-        <FormField label="Contact" fieldName="contact" value={data.contact ?? ""} onChange={handleInputChange} />
-        <FormField label="Donate" fieldName="donate" value={data.donate ?? ""} onChange={handleInputChange} />
+        <FormField
+          label="Name"
+          fieldName="name"
+          value={data.name ?? ""}
+          onChange={handleInputChange}
+        />
+        <FormField
+          label="Sort by"
+          fieldName="sortBy"
+          value={data.sortBy ?? ""}
+          onChange={handleInputChange}
+        />
+        <FormField
+          label="Country"
+          fieldName="country"
+          value={data.country ?? ""}
+          onChange={handleInputChange}
+        />
+        <FormField
+          label="Contact"
+          fieldName="contact"
+          value={data.contact ?? ""}
+          onChange={handleInputChange}
+        />
+        <FormField
+          label="Donate"
+          fieldName="donate"
+          value={data.donate ?? ""}
+          onChange={handleInputChange}
+        />
         <div className="input-row">
           <label>Category:</label>
           <select

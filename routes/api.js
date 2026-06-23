@@ -50,11 +50,15 @@ const puppeteer = require("puppeteer");
 const ACTIVE_FILTER = { status: { $nin: ["paused", "deleted"] } };
 
 async function getGroupContributors() {
-  return Contributor.find({ ...ACTIVE_FILTER, category: "group" }).sort("sort").exec();
+  return Contributor.find({ ...ACTIVE_FILTER, category: "group" })
+    .sort("sort")
+    .exec();
 }
 
 async function getIndividualContributors() {
-  return Contributor.find({ ...ACTIVE_FILTER, category: "individual" }).sort("sort").exec();
+  return Contributor.find({ ...ACTIVE_FILTER, category: "individual" })
+    .sort("sort")
+    .exec();
 }
 
 async function getContributor(path) {
@@ -124,13 +128,13 @@ async function getThreeRandomFeaturedContributors() {
 async function getProfilePicture(contributor) {
   contributor.picture = await getS3TempUrl(
     contributor.path,
-    contributor.picture
+    contributor.picture,
   );
 }
 
 async function getAllProfilePictures(array) {
   await Promise.all(
-    array.map(async (element) => await getProfilePicture(element))
+    array.map(async (element) => await getProfilePicture(element)),
   );
 }
 
@@ -147,7 +151,7 @@ router.get(
   async (req, res) => {
     const score = await getPdfS3TempUrl(req.params.folder, req.params.fileName);
     res.redirect(score);
-  }
+  },
 );
 
 async function getS3FileStream(path) {
@@ -167,7 +171,7 @@ async function getS3TempUrl(path, key) {
       }),
       {
         expiresIn: signedUrlExpireSeconds,
-      }
+      },
     );
     return signedUrl;
   } catch (err) {
@@ -190,7 +194,7 @@ async function getPdfS3TempUrl(path, key) {
       }),
       {
         expiresIn: signedUrlExpireSeconds,
-      }
+      },
     );
     return signedUrl;
   } catch (err) {
@@ -281,7 +285,7 @@ router.post("/signin", cmsLoginLimiter, async (req, res) => {
               id: user.id,
             },
             process.env.CMS_TOKEN,
-            { expiresIn: "1w" }
+            { expiresIn: "1w" },
           );
           const data = {
             accessToken: token,
@@ -304,7 +308,7 @@ router.post(
   upload.single("image"),
   validateRequiredFields(
     ["name", "sortBy", "country", "category", "path", "type"],
-    ["image"]
+    ["image"],
   ),
   async (req, res, next) => {
     const {
@@ -342,7 +346,7 @@ router.post(
     } catch (error) {
       return next(error);
     }
-  }
+  },
 );
 
 router.post(
@@ -391,7 +395,7 @@ router.post(
       console.error(err);
       return next(err);
     }
-  }
+  },
 );
 
 router.post(
@@ -430,7 +434,7 @@ router.post(
     } catch (err) {
       return next(err);
     }
-  }
+  },
 );
 
 router.post(
@@ -479,7 +483,7 @@ router.post(
       return next(err);
     }
     res.status(200).json({ success: "Piece updated" });
-  }
+  },
 );
 
 async function uploadFileToS3(file, path, fileName) {
@@ -521,7 +525,7 @@ router.get("/generate-contributors-image/:path", async (req, res) => {
   try {
     const browser = await puppeteer.launch({ headless: "new" });
     const page = await browser.newPage();
-    await page.goto(`${process.env.API_URL}/music-catalog/${req.params.path}`); // Reemplaza 'tu-url' con la URL de tu página
+    await page.goto(`${process.env.API_URL}/original-music/${req.params.path}`); // Reemplaza 'tu-url' con la URL de tu página
     await page.setViewport({ width: 4000, height: 4000, deviceScaleFactor: 3 });
 
     const firstArticle = await page.$("article");
