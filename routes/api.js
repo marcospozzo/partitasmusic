@@ -523,10 +523,22 @@ router.delete("/piece/:id", verifyToken, async (req, res, next) => {
 
 router.get("/generate-contributors-image/:path", async (req, res) => {
   try {
-    const browser = await puppeteer.launch({ headless: "new" });
+    const browser = await puppeteer.launch({
+      headless: "new",
+      args: [
+        "--no-sandbox",
+        "--disable-setuid-sandbox",
+        "--disable-dev-shm-usage",
+        "--disable-gpu",
+      ],
+    });
     const page = await browser.newPage();
-    await page.goto(`${process.env.API_URL}/original-music/${req.params.path}`); // Reemplaza 'tu-url' con la URL de tu página
     await page.setViewport({ width: 4000, height: 4000, deviceScaleFactor: 3 });
+    await page.goto(`${process.env.API_URL}/original-music/${req.params.path}`, {
+      waitUntil: "networkidle2",
+      timeout: 30000,
+    });
+    await page.waitForSelector("article");
 
     const firstArticle = await page.$("article");
 

@@ -15,35 +15,24 @@ export default function Contributor({ path = "" }) {
   const [newPicture, setNewPicture] = useState(null);
   const isNewContributor = path === "";
 
-  const handleDownload = async (event) => {
+  const handleDownload = (event) => {
     event.preventDefault();
-    try {
-      const promise = new Promise(async (resolve, reject) => {
-        try {
-          const response = await fetch(
-            `/api/generate-contributors-image/${path}`,
-          );
-          const blob = await response.blob();
-          const link = document.createElement("a");
-          link.href = window.URL.createObjectURL(blob);
-          link.download = `${path}.png`;
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-          resolve();
-        } catch (error) {
-          reject(error);
-        }
-      });
-      toast.promise(promise, {
-        pending: "Downloading...",
-        success: "Image downloaded successfully",
-        error: "Error downloading image",
-      });
-    } catch (error) {
-      toast.error("Error downloading image");
-      console.error("Error downloading image:", error);
-    }
+    const promise = (async () => {
+      const response = await fetch(`/api/generate-contributors-image/${path}`);
+      if (!response.ok) throw new Error(`Server error: ${response.status}`);
+      const blob = await response.blob();
+      const link = document.createElement("a");
+      link.href = window.URL.createObjectURL(blob);
+      link.download = `${path}.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    })();
+    toast.promise(promise, {
+      pending: "Downloading...",
+      success: "Image downloaded successfully",
+      error: "Error downloading image",
+    });
   };
 
   function handleImageChange(e) {
@@ -127,7 +116,7 @@ export default function Contributor({ path = "" }) {
             >
               Open in Partitas Music
             </a>
-            <button className="links unselected" onClick={handleDownload}>
+            <button type="button" className="links unselected" onClick={handleDownload}>
               Download profile image
             </button>
           </>
