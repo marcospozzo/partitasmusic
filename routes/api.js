@@ -42,7 +42,6 @@ const User = require("../models/User");
 const multer = require("multer");
 const upload = multer();
 const nodePath = require("path");
-const puppeteer = require("puppeteer");
 
 // Only show documents that are not paused or deleted on the public site.
 // Using $nin instead of { status: "active" } so pre-existing documents
@@ -522,7 +521,11 @@ router.delete("/piece/:id", verifyToken, async (req, res, next) => {
 });
 
 router.get("/generate-contributors-image/:path", async (req, res) => {
+  if (!process.env.PUPPETEER_ENABLED) {
+    return res.status(503).json({ error: "Not available in this environment" });
+  }
   try {
+    const puppeteer = require("puppeteer");
     const browser = await puppeteer.launch({
       headless: "new",
       args: [
