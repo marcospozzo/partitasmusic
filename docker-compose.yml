@@ -4,6 +4,6 @@ services:
     container_name: partitasmusic
     restart: unless-stopped
     ports:
-      - "3004:3002"
+      - "3002:3002"
     env_file:
       - .env
