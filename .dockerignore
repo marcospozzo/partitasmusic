@@ -1,0 +1,7 @@
+.git/
+.env*
+node_modules/
+cms/node_modules/
+cms/build/
+*.log
+.pm2/

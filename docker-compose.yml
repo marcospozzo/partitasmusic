@@ -1,0 +1,9 @@
+services:
+  app:
+    build: .
+    container_name: partitasmusic
+    restart: unless-stopped
+    ports:
+      - "3004:3003"
+    env_file:
+      - .env
