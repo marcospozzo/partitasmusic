@@ -13,5 +13,5 @@ COPY package*.json ./
 RUN npm ci --omit=dev
 COPY . .
 COPY --from=cms-builder /build/build ./cms/build
-EXPOSE 3003
+EXPOSE 3002
 CMD ["node", "app.js"]
