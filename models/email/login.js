@@ -13,7 +13,8 @@ function notifyAccountCreation(user) {
   sendMail(data).catch((err) => console.error(err));
 }
 
-function sendEmailWithToken(user, host) {
+// Returns the send promise so the caller can tell the user if it failed.
+function sendEmailWithToken(user) {
   const token = jwt.sign(
     {
       id: user.id,
@@ -22,7 +23,14 @@ function sendEmailWithToken(user, host) {
     { expiresIn: "15m" }
   );
 
-  const resetlURL = `https://${host}/users/set-password/${token}`;
+  // Built from config, never from the request's Host header: a forged Host
+  // would otherwise send the user a reset link (with a valid token) to an
+  // attacker's domain.
+  const siteUrl = (process.env.API_URL || "https://partitasmusic.com").replace(
+    /\/+$/,
+    ""
+  );
+  const resetlURL = `${siteUrl}/users/set-password/${token}`;
 
   const data = {
     to: user.email,
@@ -30,7 +38,7 @@ function sendEmailWithToken(user, host) {
     text: `Dear ${user.name}! \n\nIf you requested a password reset, you can do so by clicking on the following link: \n\n${resetlURL} \n\nBest regards, \nPartitas Music.`,
     html: "",
   };
-  sendMail(data).catch((err) => console.error(err));
+  return sendMail(data);
 }
 
 module.exports.notifyAccountCreation = notifyAccountCreation;

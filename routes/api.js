@@ -240,20 +240,38 @@ router.get("/aphorism", async (req, res, next) => {
 });
 
 // contact form
-router.post("/contact-form", ensureAuthenticatedForm, (req, res, next) => {
-  const name = (req.body.name || "").trim();
-  const email = (req.body.email || "").trim().toLowerCase();
-  const message = (req.body.message || "").trim();
+router.post(
+  "/contact-form",
+  ensureAuthenticatedForm,
+  async (req, res) => {
+    const name = String(req.body.name || "").trim();
+    const email = String(req.body.email || "").trim().toLowerCase();
+    const message = String(req.body.message || "").trim();
 
-  if (!name || !email || !message) {
-    return next(createError(400, "Missing fields"));
-  }
+    if (!name || !email || !message) {
+      req.session.body = { message };
+      req.flash("flashError", "Please fill in all the fields.");
+      return res.redirect("/contact");
+    }
 
-  sendMail.sendContactForm(name, email, message);
-  delete req.session.body;
-  req.flash("flashSuccess", "Message sent");
-  res.redirect("/");
-});
+    try {
+      await sendMail.sendContactForm(name, email, message);
+    } catch (err) {
+      console.error("Contact form email failed:", err);
+      // Keep what they wrote so they can retry without retyping it.
+      req.session.body = { message };
+      req.flash(
+        "flashError",
+        "Your message could not be sent. Please try again later.",
+      );
+      return res.redirect("/contact");
+    }
+
+    delete req.session.body;
+    req.flash("flashSuccess", "Message sent");
+    res.redirect("/");
+  },
+);
 
 // get pieces
 router.get("/get-pieces/:path", async (req, res) => {

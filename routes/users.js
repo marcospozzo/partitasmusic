@@ -104,20 +104,38 @@ router.get("/logout", (req, res, next) => {
 // user requests password reset based on email address
 router.post("/reset-password", authLimiter, async (req, res, next) => {
   if (req.body.website) return res.redirect("/login");
-  const { email } = req.body;
+  // Only a plain string: rejects query objects like { "$ne": null }.
+  const email =
+    typeof req.body.email === "string" ? req.body.email.trim().toLowerCase() : "";
+  if (!email) {
+    req.flash("flashError", "Please enter your email");
+    return res.redirect("/login");
+  }
 
+  let user;
   try {
-    const user = await User.findOne({ email });
-    if (!user) {
-      req.flash("flashError", "Error finding user");
-      return res.redirect("/login");
-    }
-    sendMail.sendEmailWithToken(user, req.headers.host);
-    req.flash("flashSuccess", "Follow email instructions");
-    res.redirect("/login");
+    user = await User.findOne({ email });
   } catch (err) {
     return next(err);
   }
+  if (!user) {
+    req.flash("flashError", "Error finding user");
+    return res.redirect("/login");
+  }
+
+  try {
+    await sendMail.sendEmailWithToken(user);
+  } catch (err) {
+    console.error("Password reset email failed:", err);
+    req.flash(
+      "flashError",
+      "We couldn't send the reset email. Please try again later.",
+    );
+    return res.redirect("/login");
+  }
+
+  req.flash("flashSuccess", "Follow email instructions");
+  res.redirect("/login");
 });
 
 module.exports = router;

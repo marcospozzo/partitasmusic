@@ -10,7 +10,8 @@ function sendContactForm(name, email, message) {
     text: `Name: ${name} \nEmail: ${email} \nMessage: ${message}`,
     html: "",
   };
-  sendMail(data).catch(console.error);
+  // Callers await this to know whether the email actually went out.
+  return sendMail(data);
 }
 
 module.exports.sendContactForm = sendContactForm;
