@@ -38,6 +38,7 @@ function escapeRegex(str) {
 }
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const crypto = require("crypto");
 const User = require("../models/User");
 const multer = require("multer");
 const upload = multer();
@@ -286,44 +287,40 @@ router.get("/get-contributor/:path", async (req, res) => {
 });
 
 // cms login
+// Compared against when the user doesn't exist / isn't an admin, so every
+// failed login costs the same bcrypt time and can't reveal admin emails.
+const DUMMY_PASSWORD_HASH = bcrypt.hashSync(crypto.randomBytes(16).toString("hex"), 10);
+
 router.post("/signin", cmsLoginLimiter, async (req, res) => {
   const { username, password } = req.body;
 
-  if (!username || !password) {
-    return res.sendStatus(404);
+  // Only plain strings: rejects query objects like { "$ne": null }.
+  if (
+    typeof username !== "string" ||
+    typeof password !== "string" ||
+    !username ||
+    !password
+  ) {
+    return res.sendStatus(401);
   }
 
   try {
-    const user = await User.findOne({
-      email: username,
+    const user = await User.findOne({ email: username.toLowerCase().trim() });
+    const isAdmin = Boolean(user && user.role === "admin" && user.password);
+    const isMatch = await bcrypt.compare(
+      password,
+      isAdmin ? user.password : DUMMY_PASSWORD_HASH,
+    );
+    if (!isAdmin || !isMatch) return res.sendStatus(401);
+
+    const token = jwt.sign({ id: user.id }, process.env.CMS_TOKEN, {
+      algorithm: "HS256",
+      expiresIn: "1w",
     });
-    if (!user || user.role !== "admin") {
-      return res.sendStatus(403);
-    } else {
-      bcrypt.compare(password, user.password, (err, isMatch) => {
-        if (err) {
-          return res.sendStatus(404);
-        }
-        if (isMatch) {
-          const token = jwt.sign(
-            {
-              id: user.id,
-            },
-            process.env.CMS_TOKEN,
-            { expiresIn: "1w" },
-          );
-          const data = {
-            accessToken: token,
-          };
-          return res.send(data);
-        } else {
-          return res.sendStatus(404);
-        }
-      });
-    }
+    return res.send({ accessToken: token });
   } catch (err) {
     console.error(err);
-    return res.sendStatus(404);
+    return res.sendStatus(401);
   }
 });
 
