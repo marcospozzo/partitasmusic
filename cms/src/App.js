@@ -45,15 +45,6 @@ function App() {
           }
         />
         <Route
-          path="/users"
-          element={
-            <Protected>
-              <Header />
-              <Users />
-            </Protected>
-          }
-        />
-        <Route
           path="/book-pdf"
           element={
             <Protected>
