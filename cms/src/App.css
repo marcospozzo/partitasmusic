@@ -354,3 +354,14 @@ label {
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
+
+.book-pdf {
+  display: flex;
+  justify-content: center;
+  margin-top: 3em;
+}
+
+.book-pdf-hint {
+  font-weight: lighter;
+  margin-bottom: 1.5em;
+}

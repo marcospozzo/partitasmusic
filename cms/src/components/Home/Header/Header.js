@@ -1,20 +1,26 @@
 import React from "react";
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { USERS, CONTRIBUTORS } from "../../../utils/constants";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { USERS, CONTRIBUTORS, BOOK_PDF } from "../../../utils/constants";
 
 function CenterPanel() {
-  const [activeView, setActiveView] = useState(CONTRIBUTORS);
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const activeView = pathname.startsWith("/users")
+    ? USERS
+    : pathname.startsWith("/book-pdf")
+    ? BOOK_PDF
+    : CONTRIBUTORS;
 
   function handleClickContributors() {
-    setActiveView(CONTRIBUTORS);
     navigate("/");
   }
 
   function handleClickUsers() {
-    setActiveView(USERS);
     navigate("/users");
+  }
+
+  function handleClickBookPdf() {
+    navigate("/book-pdf");
   }
 
   return (
@@ -30,6 +36,12 @@ function CenterPanel() {
         onClick={handleClickUsers}
       >
         {USERS}
+      </button>
+      <button
+        className={activeView === BOOK_PDF ? "selected" : "unselected"}
+        onClick={handleClickBookPdf}
+      >
+        {BOOK_PDF}
       </button>
     </div>
   );

@@ -42,6 +42,7 @@ const User = require("../models/User");
 const multer = require("multer");
 const upload = multer();
 const nodePath = require("path");
+const { watermarkBook } = require("../models/book/watermark");
 
 // Only show documents that are not paused or deleted on the public site.
 // Using $nin instead of { status: "active" } so pre-existing documents
@@ -137,19 +138,41 @@ async function getAllProfilePictures(array) {
   );
 }
 
-router.get("/audio/:folder/:fileName", async (req, res) => {
-  const path = `${req.params.folder}/${req.params.fileName}`;
-  const audio = await getS3FileStream(path);
-  res.attachment(path);
-  audio.Body.pipe(res);
+// Only serve S3 files that belong to a piece, so these routes can't be used
+// to fetch anything else in the bucket (e.g. the book PDF under books/).
+function pieceFileExists(folder, field, fileName) {
+  return Piece.exists({ path: String(folder), [field]: String(fileName) });
+}
+
+router.get("/audio/:folder/:fileName", async (req, res, next) => {
+  try {
+    const { folder, fileName } = req.params;
+    if (!(await pieceFileExists(folder, "audio", fileName))) {
+      return res.sendStatus(404);
+    }
+    const path = `${folder}/${fileName}`;
+    const audio = await getS3FileStream(path);
+    res.attachment(path);
+    audio.Body.pipe(res);
+  } catch (err) {
+    return next(err);
+  }
 });
 
 router.get(
   "/scores/:folder/:fileName",
   ensureAuthenticatedPieces,
-  async (req, res) => {
-    const score = await getPdfS3TempUrl(req.params.folder, req.params.fileName);
-    res.redirect(score);
+  async (req, res, next) => {
+    try {
+      const { folder, fileName } = req.params;
+      if (!(await pieceFileExists(folder, "score", fileName))) {
+        return res.sendStatus(404);
+      }
+      const score = await getPdfS3TempUrl(folder, fileName);
+      res.redirect(score);
+    } catch (err) {
+      return next(err);
+    }
   },
 );
 
@@ -506,6 +529,40 @@ async function uploadFileToS3(file, path, fileName) {
 
 router.get("/verifyToken", verifyToken, (req, res) => {
   return res.sendStatus(200);
+});
+
+// CMS: personalized, watermarked copy of the book PDF
+router.post("/watermark-book", verifyToken, async (req, res, next) => {
+  const bookKey = process.env.BOOK_PDF_S3_KEY;
+  if (!bookKey) {
+    return res
+      .status(503)
+      .json({ error: "BOOK_PDF_S3_KEY is not configured on the server" });
+  }
+  try {
+    const object = await getS3FileStream(bookKey);
+    const sourceBytes = await object.Body.transformToByteArray();
+    const result = await watermarkBook(sourceBytes, req.body.fullName);
+    if (result.error) return res.status(400).json({ error: result.error });
+
+    const baseName = nodePath.basename(bookKey, ".pdf");
+    const fileName = `${baseName} - ${result.fullName}.pdf`;
+    const asciiFileName = fileName
+      .normalize("NFD")
+      .replace(/[^\x20-\x7E]/g, "")
+      .replace(/["\\]/g, "");
+
+    res.set({
+      "Content-Type": "application/pdf",
+      "Content-Length": result.pdfBytes.length,
+      "Content-Disposition": `attachment; filename="${asciiFileName}"; filename*=UTF-8''${encodeURIComponent(fileName)}`,
+      "Cache-Control": "no-store",
+    });
+    return res.end(Buffer.from(result.pdfBytes));
+  } catch (err) {
+    console.error("Error generating watermarked book:", err);
+    return next(err);
+  }
 });
 
 router.delete("/piece/:id", verifyToken, async (req, res, next) => {

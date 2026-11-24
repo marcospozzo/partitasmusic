@@ -37,7 +37,8 @@
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^9.0.1",
     "passport": "^0.6.0",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "pdf-lib": "^1.17.1"
   },
   "devDependencies": {
     "nodemon": "^3.0.2",
@@ -45,6 +46,6 @@
   },
   "engines": {
     "npm": ">=8.0.0",
-    "node": ">=14.0.0"
+    "node": "^22.23.4 || ^24.22.1 || >=26.12.1"
   }
 }
