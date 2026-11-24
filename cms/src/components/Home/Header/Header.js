@@ -1,22 +1,14 @@
 import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { USERS, CONTRIBUTORS, BOOK_PDF } from "../../../utils/constants";
+import { CONTRIBUTORS, BOOK_PDF } from "../../../utils/constants";
 
 function CenterPanel() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const activeView = pathname.startsWith("/users")
-    ? USERS
-    : pathname.startsWith("/book-pdf")
-    ? BOOK_PDF
-    : CONTRIBUTORS;
+  const activeView = pathname.startsWith("/book-pdf") ? BOOK_PDF : CONTRIBUTORS;
 
   function handleClickContributors() {
     navigate("/");
-  }
-
-  function handleClickUsers() {
-    navigate("/users");
   }
 
   function handleClickBookPdf() {
@@ -30,12 +22,6 @@ function CenterPanel() {
         onClick={handleClickContributors}
       >
         {CONTRIBUTORS}
-      </button>
-      <button
-        className={activeView === USERS ? "selected" : "unselected"}
-        onClick={handleClickUsers}
-      >
-        {USERS}
       </button>
       <button
         className={activeView === BOOK_PDF ? "selected" : "unselected"}
