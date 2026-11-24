@@ -329,7 +329,7 @@ router.post("/signin", cmsLoginLimiter, async (req, res) => {
 
 router.post(
   "/create-contributor",
-  verifyToken,
+  requireAdmin,
   upload.single("image"),
   validateRequiredFields(
     ["name", "sortBy", "country", "category", "path", "type"],
@@ -376,7 +376,7 @@ router.post(
 
 router.post(
   "/update-contributor",
-  verifyToken,
+  requireAdmin,
   upload.single("image"),
   async (req, res, next) => {
     const imageFile = req.file;
@@ -425,7 +425,7 @@ router.post(
 
 router.post(
   "/create-piece/:path",
-  verifyToken,
+  requireAdmin,
   upload.fields([
     { name: "audio", maxCount: 1 },
     { name: "score", maxCount: 1 },
@@ -464,7 +464,7 @@ router.post(
 
 router.post(
   "/update-piece",
-  verifyToken,
+  requireAdmin,
   upload.fields([
     { name: "audio", maxCount: 1 },
     { name: "score", maxCount: 1 },
@@ -530,12 +530,12 @@ async function uploadFileToS3(file, path, fileName) {
   }
 }
 
-router.get("/verifyToken", verifyToken, (req, res) => {
+router.get("/verifyToken", requireAdmin, (req, res) => {
   return res.sendStatus(200);
 });
 
 // CMS: personalized, watermarked copy of the book PDF
-router.post("/watermark-book", verifyToken, async (req, res, next) => {
+router.post("/watermark-book", requireAdmin, async (req, res, next) => {
   const bookKey = process.env.BOOK_PDF_S3_KEY;
   if (!bookKey) {
     return res
@@ -570,7 +570,7 @@ router.post("/watermark-book", verifyToken, async (req, res, next) => {
   }
 });
 
-router.delete("/piece/:id", verifyToken, async (req, res, next) => {
+router.delete("/piece/:id", requireAdmin, async (req, res, next) => {
   try {
     const piece = await Piece.findById(req.params.id);
     if (!piece) return res.sendStatus(404);
@@ -648,12 +648,27 @@ router.get("/generate-contributors-image/:path", async (req, res) => {
 });
 
 // middleware
-function verifyToken(req, res, next) {
+// CMS auth: valid JWT *and* the user must still exist and be an admin, so
+// removing the admin role (or the user) revokes access immediately instead
+// of when the token expires.
+function requireAdmin(req, res, next) {
   const token = req.header("x-access-token");
   if (!token) return res.sendStatus(401);
-  jwt.verify(token, process.env.CMS_TOKEN, function (err) {
-    return err ? res.sendStatus(498) : next();
-  });
+  jwt.verify(
+    token,
+    process.env.CMS_TOKEN,
+    { algorithms: ["HS256"] },
+    async function (err, payload) {
+      if (err) return res.sendStatus(498);
+      try {
+        const user = await User.findById(payload.id).select("role").lean();
+        if (!user || user.role !== "admin") return res.sendStatus(403);
+        return next();
+      } catch (dbErr) {
+        return next(dbErr);
+      }
+    },
+  );
 }
 
 // middleware
