@@ -15,7 +15,8 @@ oAuth2Client.setCredentials({
 
 // async..await is not allowed in global scope, must use a wrapper
 async function email(data) {
-  const accessToken = await oAuth2Client.getAccessToken();
+  // getAccessToken() resolves to { token, res }; nodemailer needs the string.
+  const { token: accessToken } = await oAuth2Client.getAccessToken();
 
   const transporter = nodemailer.createTransport({
     service: "gmail",
