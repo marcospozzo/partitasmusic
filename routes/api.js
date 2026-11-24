@@ -42,7 +42,10 @@ const User = require("../models/User");
 const multer = require("multer");
 const upload = multer();
 const nodePath = require("path");
-const { watermarkBook } = require("../models/book/watermark");
+const {
+  watermarkBook,
+  buildDownloadName,
+} = require("../models/book/watermark");
 
 // Only show documents that are not paused or deleted on the public site.
 // Using $nin instead of { status: "active" } so pre-existing documents
@@ -545,8 +548,10 @@ router.post("/watermark-book", verifyToken, async (req, res, next) => {
     const result = await watermarkBook(sourceBytes, req.body.fullName);
     if (result.error) return res.status(400).json({ error: result.error });
 
-    const baseName = nodePath.basename(bookKey, ".pdf");
-    const fileName = `${baseName} - ${result.fullName}.pdf`;
+    const fileName = buildDownloadName(
+      nodePath.basename(bookKey),
+      result.fullName,
+    );
     const asciiFileName = fileName
       .normalize("NFD")
       .replace(/[^\x20-\x7E]/g, "")

@@ -81,4 +81,36 @@ async function watermarkBook(sourcePdfBytes, rawFullName) {
   return { pdfBytes: await pdfDoc.save(), fullName };
 }
 
-module.exports = { watermarkBook, normalizeFullName };
+// First three letters of the surname (last word of the name), without
+// accents, in lowercase, e.g. "José Muñoz" -> "mun".
+function surnamePrefix(fullName) {
+  const words = normalizeFullName(fullName).split(" ");
+  return words[words.length - 1]
+    .normalize("NFD")
+    .replace(/[^A-Za-z]/g, "")
+    .slice(0, 3)
+    .toLowerCase();
+}
+
+// "7GCT-RF_lasMMYY.pdf" -> "7GCT-RF_mun1126.pdf" (surname prefix + month/year
+// of generation). Keys without the "lasMMYY" placeholder fall back to
+// "<name> - <Full Name>.pdf".
+function buildDownloadName(sourceFileName, fullName, date = new Date()) {
+  const base = sourceFileName.replace(/\.pdf$/i, "");
+  const placeholder = "lasMMYY";
+  const idx = base.lastIndexOf(placeholder);
+  if (idx === -1) return `${base} - ${normalizeFullName(fullName)}.pdf`;
+
+  const mm = String(date.getMonth() + 1).padStart(2, "0");
+  const yy = String(date.getFullYear() % 100).padStart(2, "0");
+  return (
+    base.slice(0, idx) +
+    surnamePrefix(fullName) +
+    mm +
+    yy +
+    base.slice(idx + placeholder.length) +
+    ".pdf"
+  );
+}
+
+module.exports = { watermarkBook, normalizeFullName, buildDownloadName };
